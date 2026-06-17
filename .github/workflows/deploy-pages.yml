@@ -1,0 +1,59 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Build Docusaurus
+        run: npm run build
+        env:
+          SITE_URL: https://quilrai.github.io
+          SITE_BASE_URL: /installdocs/
+
+      - name: Rewrite SOP absolute /sop/ paths to /installdocs/sop/
+        # The SOP HTML files use a couple of absolute-root paths (e.g. the
+        # favicon links). Docusaurus only rewrites refs inside its own
+        # markdown/MDX — the static/sop/ HTML is copied verbatim. Patch
+        # those here so the Pages build (served under /installdocs/) works.
+        run: |
+          find ./build/sop -name '*.html' -print0 \
+            | xargs -0 -r sed -i 's|="/sop/|="/installdocs/sop/|g'
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

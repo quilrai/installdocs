@@ -7,8 +7,8 @@ const config = {
   tagline: 'Adapt AI Securely',
   favicon: 'img/favicon.ico',
 
-  url: 'https://installdocs.quilrai.dev',
-  baseUrl: '/',
+  url: process.env.SITE_URL || 'https://installdocs.quilrai.dev',
+  baseUrl: process.env.SITE_BASE_URL || '/',
 
   organizationName: 'quilr-ai',
   projectName: 'endpoint-agent-docs',
