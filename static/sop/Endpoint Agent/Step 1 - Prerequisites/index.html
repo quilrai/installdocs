@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Step 1 · Prerequisites — Quilr Endpoint Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../assets/styles.css" />
+
+  <!-- sop-favicon v1 -->
+  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
+  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">Q</div>
+      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+    </div>
+    <div class="nav-group-title">Overview</div>
+    <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
+    <div class="nav-group-title">Endpoint Agent</div>
+    <ul class="nav">
+      <li><a class="active" href="../Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a href="../Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="nav-group-title">Browser Extension</div>
+    <ul class="nav">
+      <li><a href="../../Browser%20Extension/Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../../Browser%20Extension/Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../../Browser%20Extension/Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../../Browser%20Extension/Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../../Browser%20Extension/Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../../Browser%20Extension/Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a href="../../Browser%20Extension/Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="sidebar-foot">
+      Source: <a href="https://installdocs.quilrai.dev/prerequisites" target="_blank" rel="noopener">installdocs.quilrai.dev</a><br />
+      Support: <a href="mailto:support@quilr.ai">support@quilr.ai</a>
+    </div>
+  </aside>
+  <div class="scrim"></div>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-btn" aria-label="Open navigation">☰</button>
+      <nav class="crumbs">
+        <a href="../../index.html">SOP</a><span class="sep">/</span>
+        <a href="../../index.html">Endpoint Agent</a><span class="sep">/</span>
+        <span class="here">Step 1 · Prerequisites</span>
+      </nav>
+    </header>
+
+    <div class="content">
+      <nav class="wizard" aria-label="Endpoint Agent deployment steps">
+                <a class="wstep current" href="../Step%201%20-%20Prerequisites/index.html"><span class="wdot">1</span><span class="wlabel">Prerequisites</span></a>
+        <a class="wstep" href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="wdot">2</span><span class="wlabel">Validation</span></a>
+        <a class="wstep" href="../Step%203%20-%20Manual%20Installation/index.html"><span class="wdot">3</span><span class="wlabel">Manual Install</span></a>
+        <a class="wstep" href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="wdot">4</span><span class="wlabel">Verify Install</span></a>
+        <a class="wstep" href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="wdot">5</span><span class="wlabel">MDM Rollout</span></a>
+        <a class="wstep" href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="wdot">6</span><span class="wlabel">Verify MDM</span></a>
+        <a class="wstep" href="../Step%207%20-%20Troubleshooting/index.html"><span class="wdot">7</span><span class="wlabel">Troubleshoot</span></a>
+      </nav>
+
+      <span class="eyebrow">Endpoint Agent · Step 1 of 7</span>
+      <h1>Prerequisites</h1>
+      <p class="lead">Everything that must be true <em>before</em> you touch an endpoint: a known tenant environment, supported
+      operating systems, MDM admin access, an unblocked network path, and the verified install bundle.</p>
+
+      <div class="meta-row">
+        <span class="chip"><span class="k">Applies to</span> macOS &amp; Windows</span>
+        <span class="chip"><span class="k">Owner</span> Endpoint / network admin</span>
+        <span class="chip"><span class="k">Gate</span> Do not proceed until complete</span>
+      </div>
+
+      <h2>1 · Quilr environment &amp; install bundle</h2>
+      <ul>
+        <li>Identify your <strong>tenant environment</strong> (for example <strong>US Prod</strong> or <strong>JP POC</strong>). This determines the base/DLP hosts below.</li>
+        <li>Obtain your <strong>tenant ID</strong> from Quilr support — required by the installer to phone home.</li>
+        <li>Download the platform-specific installer bundle.</li>
+      </ul>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Platform</th><th>Bundle contents</th></tr></thead>
+          <tbody>
+            <tr data-os="win"><td><strong>Windows</strong></td><td>MSI installer + 2 CA certificates (root + intermediate)</td></tr>
+            <tr data-os="mac"><td><strong>macOS</strong></td><td>PKG installer + 2 CA certificates + Configuration Profile templates (<code>.mobileconfig</code>)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Bundle download URLs</h4>
+      <div class="code" data-os="win">
+        <div class="code-head"><span class="label"><span class="dot"></span>Windows bundle</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>https://quilr-extensions.quilr.ai/endpoint-agent/prod/windows/installer/quilr-endpoint-agent-win-install-bundle.zip</code></pre>
+      </div>
+      <div class="code" data-os="mac">
+        <div class="code-head"><span class="label"><span class="dot"></span>macOS bundle</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>https://quilr-extensions.quilr.ai/endpoint-agent/prod/mac/installer/quilr-endpoint-agent-install-bundle.zip</code></pre>
+      </div>
+
+      <h2>2 · Administrator access</h2>
+      <p><strong>Local administrator rights on the target device are required</strong> in every case — the installer writes to the
+      system trust store, installs a system service/driver, and (macOS) loads a system extension. For a <strong>manual /
+      technician install</strong> (Step&nbsp;3) you sign in locally as an admin (macOS: an account with <code>sudo</code>; Windows:
+      an elevated session). For an <strong>MDM rollout</strong> (Step&nbsp;5) the management agent supplies the elevation, but you
+      also need administrator credentials for your management platform:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Platform</th><th>Required role</th></tr></thead>
+          <tbody>
+            <tr><td>Microsoft Intune</td><td>Intune Administrator</td></tr>
+            <tr><td>Jamf Pro</td><td>Site or Cloud admin</td></tr>
+            <tr><td>Kandji</td><td>Admin access</td></tr>
+            <tr><td>ManageEngine Endpoint Central</td><td>Admin</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout note">
+        <span class="ico">ℹ️</span>
+        <div><span class="ct">macOS supervision</span>
+        The device must be <strong>MDM-supervised</strong>. DEP / Automated Device Enrollment is strongly preferred so that
+        System and Network Extensions are auto-approved without end-user prompts.</div>
+      </div>
+
+      <h2>3 · Supported operating systems</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>OS</th><th>Supported versions</th></tr></thead>
+          <tbody>
+            <tr data-os="win"><td>Windows</td><td><strong>Windows 10 (version 1809) and later</strong>, or Windows 11 — 64-bit only</td></tr>
+            <tr data-os="mac"><td>macOS</td><td>12 Monterey or later — Apple Silicon or Intel</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>4 · Network requirements</h2>
+      <ul>
+        <li>Endpoints must reach the Quilr backplane hosts on <strong>TCP&nbsp;443</strong> (outbound HTTPS).</li>
+        <li>TLS-intercepting proxies (Zscaler, Netskope, Symantec, Forcepoint, iboss) must <strong>SSL-bypass every Quilr backplane host</strong> — otherwise the proxy re-signs the certificate and the agent&rsquo;s trust chain fails.</li>
+      </ul>
+
+      <h3>Shared hosts — all environments (TCP/443)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Host</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><code>discover.quilrai.dev</code></td><td>Tenant discovery</td></tr>
+            <tr><td><code>log.quilrai.dev</code></td><td>Diagnostic logs</td></tr>
+            <tr><td><code>quilr-extensions.quilr.ai</code></td><td>Updates / distribution</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Tenant-specific base &amp; DLP hosts</h3>
+      <p>Add the row that matches <em>your</em> environment:</p>
+      <div class="table-wrap">
+        <table><thead><tr><th>Environment</th><th>Base URL</th><th>DLP Host</th></tr></thead><tbody><tr data-env="quartz"><td><strong>Quartz</strong></td><td><code>https://quartz.quilr.ai</code></td><td><code>https://dlpone.quilr.ai</code></td></tr><tr data-env="secure"><td><strong>Secure</strong></td><td><code>https://secure.quilr.ai</code></td><td><code>https://dlpone.quilr.ai</code></td></tr><tr data-env="uspoc"><td><strong>US POC</strong></td><td><code>https://app.quilr.ai</code></td><td><code>https://dlpone.quilr.ai</code></td></tr><tr data-env="indpoc"><td><strong>IND POC</strong></td><td><code>https://platform.quilr.ai</code></td><td><code>https://dlp-platform.quilr.ai</code></td></tr><tr data-env="usprod"><td><strong>US Prod</strong></td><td><code>https://app.quilrai.com</code></td><td><code>https://dlpone.quilrai.com</code></td></tr><tr data-env="indprod"><td><strong>IND Prod</strong></td><td><code>https://platform.quilrai.com</code></td><td><code>https://dlp-platform.quilrai.com</code></td></tr><tr data-env="jppoc"><td><strong>JP POC</strong></td><td><code>https://app-jp.quilr.ai</code></td><td><code>https://dlpone-jp-1.quilr.ai</code></td></tr><tr data-env="uaepoc"><td><strong>UAE POC</strong></td><td><code>https://trust.quilr.ai</code></td><td><code>https://dlp-platform.quilr.ai</code></td></tr></tbody></table>
+      </div>
+      <div class="callout note">
+        <span class="ico">🌐</span>
+        <div><span class="ct">Environment-specific CDNs</span>
+        Some environments need an extra CDN host: <code>quilr-extensions.quilrai.com</code> (for <strong>IND Prod</strong> and <strong>US Prod</strong>) and <code>quilr-hub.quilr.ai</code> (for <strong>Secure</strong>).</div>
+      </div>
+
+      <h3>URLs to allow for the selected environment</h3>
+      <p>Allow every host below outbound on <strong>TCP&nbsp;443</strong>, and SSL-bypass them on any TLS-intercepting proxy.
+      The tenant base &amp; DLP hosts update automatically with the <strong>Environment</strong> selector in the top bar.</p>
+      <div class="code">
+        <div class="code-head"><span class="label"><span class="dot"></span>TCP/443 allow-list</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code><span class="c"># Shared — all environments</span>
+discover.quilrai.dev
+log.quilrai.dev
+quilr-extensions.quilr.ai
+
+<span class="c"># Tenant base + DLP — selected environment</span>
+app.quilr.ai
+dlpone.quilr.ai</code></pre>
+      </div>
+
+      <h3>File types the web filter must allow</h3>
+      <p>If your SWG / web filter or download-control policy filters by file type or MIME type, allow the following so the agent
+      bundle, updates, and configuration files download without being stripped or quarantined:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Extension</th><th>MIME type</th><th>Used for</th></tr></thead>
+          <tbody>
+            <tr><td><code>.exe</code></td><td><code>application/x-msdownload</code>, <code>application/octet-stream</code></td><td>Installer / helper binaries</td></tr>
+            <tr><td><code>.msi</code></td><td><code>application/x-msi</code>, <code>application/octet-stream</code></td><td>Agent installer (Windows)</td></tr>
+            <tr><td><code>.msp</code></td><td><code>application/octet-stream</code></td><td>Patch / update (Windows)</td></tr>
+            <tr><td><code>.zip</code></td><td><code>application/zip</code></td><td>Install bundle</td></tr>
+            <tr><td><code>.json</code></td><td><code>application/json</code></td><td>Tenant config &amp; policy</td></tr>
+            <tr><td><code>.toml</code></td><td><code>application/toml</code>, <code>text/plain</code></td><td>Agent configuration</td></tr>
+            <tr><td><code>.xml</code></td><td><code>application/xml</code>, <code>text/xml</code></td><td>Manifests / profiles</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Coexisting with an existing SSL-inspection proxy (PAC)</h2>
+      <p>The Quilr endpoint agent does its <strong>own SSL inspection locally</strong> (WinDivert driver on Windows, Network Extension
+      on macOS). If you <strong>already</strong> run a web filter / SWG (Zscaler, Netskope, Forcepoint, Cisco Umbrella, Palo Alto&hellip;)
+      that does SSL inspection and is published through a <strong>PAC file</strong>, two solutions would otherwise fight over the
+      same TLS session. To let Quilr monitor AI sites cleanly you must:</p>
+      <ol>
+        <li><strong>Merge Quilr&rsquo;s PAC logic into your existing PAC</strong> — route the monitored AI / collaboration hosts to the local Quilr listener, and keep your current routing for everything else.</li>
+        <li><strong>SSL-bypass those same hosts on your SWG</strong> — so the upstream gateway does not re-decrypt and re-sign them.</li>
+      </ol>
+
+      <div class="callout warn">
+        <span class="ico">⚠️</span>
+        <div><span class="ct">Don&rsquo;t double-decrypt</span>
+        PAC routing only decides <em>which path</em> traffic takes — it does <em>not</em> stop an upstream SWG from re-decrypting.
+        If your SWG re-signs certificates for the monitored hosts, Quilr&rsquo;s certificate-pinning validation fails regardless of
+        PAC routing. Always pair the merge with an SSL-bypass entry.</div>
+      </div>
+
+      <h3>Quilr-hosted PAC</h3>
+      <p>Quilr publishes a ready PAC whose <code>FindProxyForURL()</code> sends monitored hosts to the local agent and everything
+      else <code>DIRECT</code>. If you have <em>no</em> existing PAC, point your OS proxy settings straight at this URL; if you
+      <em>do</em>, fetch it and merge:</p>
+      <div class="code">
+        <div class="code-head"><span class="label"><span class="dot"></span>Quilr PAC</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code><span class="c"># Hosted PAC (application/x-ns-proxy-autoconfig)</span>
+https://discover.quilrai.dev/pac/<span class="v">&lt;TENANT-ID&gt;</span>
+
+<span class="c"># Inspect it before merging</span>
+curl -fsSL https://discover.quilrai.dev/pac/<span class="v">&lt;TENANT-ID&gt;</span> -o /tmp/quilr.pac
+less /tmp/quilr.pac</code></pre>
+      </div>
+
+      <h3>Merge into your existing PAC</h3>
+      <div class="code">
+        <div class="code-head"><span class="label"><span class="dot"></span>FindProxyForURL — merged</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>function FindProxyForURL(url, host) {
+    <span class="c">// 1. Your existing corporate routing</span>
+    if (isPlainHostName(host))                  return "DIRECT";
+    if (shExpMatch(host, "*.corp.example.com")) return "DIRECT";
+
+    <span class="c">// 2. Quilr monitored AI / collaboration hosts -&gt; local agent listener</span>
+    var quilrHosts = [
+        "chatgpt.com", "*.oaiusercontent.com",
+        "claude.ai", "api.anthropic.com",
+        "*.openrouter.ai", "api.individual.githubcopilot.com",
+        "*.deepseek.com", "kimi.com",
+        "api.groq.com",
+        "graph.meta.ai", "meta.ai",
+        "gemini.google.com",
+        "substrate.office.com", "substrate.svc.cloud.microsoft",
+        "*.slack.com", "files.slack.com",
+        "teams.microsoft.com", "teams.cloud.microsoft"
+    ];
+    for (var i = 0; i &lt; quilrHosts.length; i++) {
+        if (shExpMatch(host, quilrHosts[i])) {
+            return "PROXY 127.0.0.1:<span class="v">&lt;PORT&gt;</span>; DIRECT";
+        }
+    }
+
+    <span class="c">// 3. Default: hand off to your upstream SWG</span>
+    return "PROXY swg.us.example.com:80; DIRECT";
+}</code></pre>
+      </div>
+
+      <h3>SSL-bypass list (on your SWG)</h3>
+      <p>Add these to the SWG&rsquo;s <em>Do Not Decrypt</em> / SSL-bypass list:</p>
+      <ul>
+        <li><code>quilr-extensions.quilr.ai</code></li>
+        <li><code>discover.quilrai.dev</code></li>
+        <li>All monitored AI &amp; collaboration hosts (the <code>quilrHosts</code> list above)</li>
+      </ul>
+      <p>Validate the merged PAC (e.g. with Node.js) to confirm monitored hosts hit the local Quilr listener, internal hosts stay
+      <code>DIRECT</code>, and other traffic still reaches your upstream proxy.</p>
+
+      <div data-os="win">
+        <h2>Windows — antivirus / EDR exclusion</h2>
+        <p>Allow the Quilr install directory in your antivirus / EDR so the agent service and its WFP kernel driver are not
+        blocked, throttled, or quarantined. Add this exclusion <em>before</em> deployment:</p>
+        <div class="code">
+          <div class="code-head"><span class="label"><span class="dot"></span>AV / EDR exclusion path</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>%ProgramFiles%\QuilrAI\</code></pre>
+        </div>
+        <div class="callout warn">
+          <span class="ico">🛡️</span>
+          <div><span class="ct">Why this matters</span>
+          The Windows agent runs as a LocalSystem service plus a <strong>WFP (Windows Filtering Platform) driver</strong>.
+          Endpoint protection that quarantines unknown drivers or binaries will break interception — exclude
+          <code>%ProgramFiles%\QuilrAI\</code> so the service starts and stays running.</div>
+        </div>
+      </div>
+
+      <h2>5 · Certificate trust chain</h2>
+      <p>The agent&rsquo;s leaf certificate chains to a Quilr <strong>root + intermediate</strong> that must land in the system
+      trust store <em>before the agent service starts</em>. Each deployment method covers CA deployment as its first part —
+      see Steps&nbsp;3 and&nbsp;5.</p>
+
+      <h2>6 · Establish a pilot group</h2>
+      <p>Create a small validation group (suggested naming <code>Quilr-Pilot</code>, e.g. <code>WIN-Quilr-Pilot</code> /
+      <code>MAC-Quilr-Pilot</code>) and prove the full flow there before promoting to production assignment.</p>
+
+      <div class="callout tip">
+        <span class="ico">✅</span>
+        <div><span class="ct">Exit criteria for Step 1</span>
+        Tenant ID in hand · correct environment identified · bundle downloaded · MDM admin access
+        confirmed · pilot group created. Next, <strong>prove the network path</strong> in Step 2.</div>
+      </div>
+
+      <div class="wizard-nav">
+        <a class="wbtn back" href="../../index.html"><span>←</span><span class="wbt"><small>Back</small><b>Overview</b></span></a>
+        <span class="wcount">Step 1 of 7</span>
+        <a class="wbtn next" href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="wbt"><small>Next</small><b>Prerequisites Validation</b></span><span>→</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../../assets/app.js"></script>
+</body>
+</html>

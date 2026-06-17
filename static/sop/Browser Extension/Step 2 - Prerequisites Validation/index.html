@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Step 2 · Prerequisites Validation — Quilr Browser Extension</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../assets/styles.css" />
+
+  <!-- sop-favicon v1 -->
+  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
+  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">Q</div>
+      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+    </div>
+    <div class="nav-group-title">Overview</div>
+    <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
+    <div class="nav-group-title">Browser Extension</div>
+    <ul class="nav">
+      <li><a href="../Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a class="active" href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a href="../Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="nav-group-title">Endpoint Agent</div>
+    <ul class="nav">
+      <li><a href="../../Endpoint%20Agent/Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="sidebar-foot">
+      Source: <a href="https://installdocs.quilrai.dev/extension/troubleshooting" target="_blank" rel="noopener">installdocs.quilrai.dev</a><br />
+      Support: <a href="mailto:support@quilr.ai">support@quilr.ai</a>
+    </div>
+  </aside>
+  <div class="scrim"></div>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-btn" aria-label="Open navigation">☰</button>
+      <nav class="crumbs">
+        <a href="../../index.html">SOP</a><span class="sep">/</span>
+        <a href="../../index.html">Browser Extension</a><span class="sep">/</span>
+        <span class="here">Step 2 · Prerequisites Validation</span>
+      </nav>
+    </header>
+
+    <div class="content">
+      <nav class="wizard" aria-label="Browser Extension deployment steps">
+                <a class="wstep" href="../Step%201%20-%20Prerequisites/index.html"><span class="wdot">1</span><span class="wlabel">Prerequisites</span></a>
+        <a class="wstep current" href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="wdot">2</span><span class="wlabel">Validation</span></a>
+        <a class="wstep" href="../Step%203%20-%20Manual%20Installation/index.html"><span class="wdot">3</span><span class="wlabel">Manual Install</span></a>
+        <a class="wstep" href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="wdot">4</span><span class="wlabel">Verify Install</span></a>
+        <a class="wstep" href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="wdot">5</span><span class="wlabel">MDM Rollout</span></a>
+        <a class="wstep" href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="wdot">6</span><span class="wlabel">Verify MDM</span></a>
+        <a class="wstep" href="../Step%207%20-%20Troubleshooting/index.html"><span class="wdot">7</span><span class="wlabel">Troubleshoot</span></a>
+      </nav>
+
+      <span class="eyebrow">Browser Extension · Step 2 of 7</span>
+      <h1>Prerequisites Validation</h1>
+      <p class="lead">Before deploying, prove from a pilot device that the Quilr CDN, your <em>tenant-specific</em> update
+      manifest, and the <code>.crx</code> package are all reachable and not being re-signed by an upstream proxy. These are the
+      exact checks Step&nbsp;6 troubleshooting falls back to — running them now prevents most rollout failures.</p>
+
+      <div class="callout warn">
+        <span class="ico">⚠️</span>
+        <div><span class="ct">Use your real Tenant ID</span>
+        Substitute your tenant ID in each URL below. A <code>403</code>/<code>404</code> almost always means a wrong tenant ID
+        in the request, not a network problem.</div>
+      </div>
+
+      <h2>Quick smoke test &mdash; every URL in one shot</h2>
+      <p>Paste this single script in an elevated shell on the pilot device. It probes every host in the Step&nbsp;1 allow-list &mdash; the three shared backplane hosts <strong>plus</strong> the base / DLP / auth URLs for the environment selected in the top bar (the hosts auto-swap when you change the <strong>Environment</strong> dropdown). If everything prints <code>[OK]</code>, you can skip the per-host checks below.</p>
+
+      <div class="tabs">
+        <div class="tab-btns">
+          <button class="tab-btn active" data-tab="win">Windows &middot; PowerShell</button>
+          <button class="tab-btn" data-tab="mac">macOS / Linux &middot; shell</button>
+        </div>
+
+        <div class="tab-panel active" data-panel="win">
+          <p class="muted-note">Hosted check &mdash; recommended, nothing to paste:</p>
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>&amp; ([scriptblock]::Create((irm https://quilr-extensions.quilr.ai/Quilr-SOP/BrowserExtension/Windows/quilr-be-connectivity-check.ps1))) -Env uspoc</code></pre></div>
+          <details class="fallback">
+            <summary>Downloads blocked? Paste this full script instead</summary>
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>$hosts = @(
+  # Shared &mdash; all environments
+  'quilr-extensions.quilr.ai',
+  'discover.quilrai.dev',
+  'log.quilrai.dev',
+  # Tenant base + DLP + Auth &mdash; selected environment
+  'app.quilr.ai',
+  'dlpone.quilr.ai',
+  'auth-extension.quilr.ai'
+)
+$failed = @()
+foreach ($h in $hosts) {
+  $ok = Test-NetConnection $h -Port 443 -InformationLevel Quiet -WarningAction SilentlyContinue
+  if ($ok) {
+    Write-Host ("[OK]   {0}" -f $h) -ForegroundColor Green
+  } else {
+    Write-Host ("[FAIL] {0}" -f $h) -ForegroundColor Red
+    $failed += $h
+  }
+}
+if ($failed.Count -eq 0) {
+  Write-Host "All hosts reachable on TCP/443." -ForegroundColor Green
+  exit 0
+} else {
+  Write-Host ("Blocked: " + ($failed -join ', ')) -ForegroundColor Red
+  Write-Host "Allowlist the blocked hosts on the firewall AND SSL-bypass them on any TLS-intercepting SWG, then re-run." -ForegroundColor Yellow
+  exit 1
+}</code></pre></div>
+          </details>
+        </div>
+
+        <div class="tab-panel" data-panel="mac">
+          <p class="muted-note">Hosted check &mdash; recommended, nothing to paste:</p>
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash &middot; zsh</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>curl -fsSL https://quilr-extensions.quilr.ai/Quilr-SOP/BrowserExtension/macOS/quilr-be-connectivity-check.sh | bash -s -- --env uspoc</code></pre></div>
+          <details class="fallback">
+            <summary>Downloads blocked? Paste this full script instead</summary>
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash &middot; zsh</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>hosts=(
+  # Shared &mdash; all environments
+  quilr-extensions.quilr.ai
+  discover.quilrai.dev
+  log.quilrai.dev
+  # Tenant base + DLP + Auth &mdash; selected environment
+  app.quilr.ai
+  dlpone.quilr.ai
+  auth-extension.quilr.ai
+)
+failed=()
+for h in "${hosts[@]}"; do
+  if nc -zv -G 5 "$h" 443 &gt;/dev/null 2&gt;&amp;1; then
+    printf '\033[32m[OK]\033[0m   %s\n' "$h"
+  else
+    printf '\033[31m[FAIL]\033[0m %s\n' "$h"
+    failed+=("$h")
+  fi
+done
+if (( ${#failed[@]} == 0 )); then
+  printf '\033[32mAll hosts reachable on TCP/443.\033[0m\n'
+  exit 0
+else
+  printf '\033[31mBlocked: %s\033[0m\n' "${failed[*]}"
+  printf '\033[33mAllowlist on firewall AND SSL-bypass on any TLS-intercepting SWG, then re-run.\033[0m\n'
+  exit 1
+fi</code></pre></div>
+          </details>
+        </div>
+      </div>
+
+      <div class="expect"><strong>Expected:</strong> every host prints <code>[OK]</code> and the script exits with <code>All hosts reachable on TCP/443.</code>. Any <code>[FAIL]</code> &mdash; allowlist that host and SSL-bypass it on any TLS-intercepting SWG, then re-run. Use the per-host checks below to drill into a specific failure (e.g. tenant-ID 403, SWG cert re-signing).</div>
+
+            <h2>Check 1 · CDN reachability</h2>
+      <div class="tabs">
+        <div class="tab-btns">
+          <button class="tab-btn active" data-tab="win">Windows · PowerShell</button>
+          <button class="tab-btn" data-tab="mac">macOS · Terminal</button>
+        </div>
+        <div class="tab-panel active" data-panel="win">
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>Test-NetConnection quilr-extensions.quilr.ai -Port 443 -InformationLevel Quiet</code></pre></div>
+        </div>
+        <div class="tab-panel" data-panel="mac">
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>nc -zv -G 5 quilr-extensions.quilr.ai 443</code></pre></div>
+        </div>
+      </div>
+      <div class="expect"><strong>Expected:</strong> <code>True</code> / <code>succeeded</code>. A timeout means allowlist <code>quilr-extensions.quilr.ai</code> on TCP/443.</div>
+
+      <h2>Check 2 · Tenant manifest reachable</h2>
+      <div class="tabs">
+        <div class="tab-btns">
+          <button class="tab-btn active" data-tab="wman">Windows · PowerShell</button>
+          <button class="tab-btn" data-tab="mman">macOS · Terminal</button>
+        </div>
+        <div class="tab-panel active" data-panel="wman">
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>$tid = '<span class="v">&lt;TENANT-ID&gt;</span>'
+Invoke-WebRequest "https://quilr-extensions.quilr.ai/$tid/manifest.xml" |
+  Select-Object StatusCode, @{n='Bytes';e={$_.RawContentLength}}</code></pre></div>
+        </div>
+        <div class="tab-panel" data-panel="mman">
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>TENANT_ID="<span class="v">&lt;TENANT-ID&gt;</span>"
+curl -fsSL "https://quilr-extensions.quilr.ai/${TENANT_ID}/manifest.xml" | head -3</code></pre></div>
+        </div>
+      </div>
+      <div class="expect"><strong>Expected:</strong> HTTP <code>200</code>, non-zero bytes, and XML starting with <code>&lt;gupdate xmlns="http://www.google.com/update2/response"…&gt;</code>.</div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Failure</th><th>Cause &amp; fix</th></tr></thead>
+        <tbody>
+          <tr><td>403 / 404</td><td>Wrong tenant ID in the URL — confirm with <a href="mailto:support@quilr.ai">support@quilr.ai</a></td></tr>
+          <tr><td>Connection timeout</td><td>Allowlist <code>quilr-extensions.quilr.ai</code></td></tr>
+          <tr><td>SSL error</td><td>An upstream SWG is decrypting the host and presenting its own cert — add it to the SSL-bypass list</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2>Check 3 · .crx package reachable</h2>
+      <p>The manifest&rsquo;s <code>codebase</code> attribute points to the <code>.crx</code>. Confirm it serves correctly:</p>
+      <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>TENANT_ID="<span class="v">&lt;TENANT-ID&gt;</span>"
+curl -sI "https://quilr-extensions.quilr.ai/${TENANT_ID}/vanguard.crx" \
+  | grep -iE 'HTTP/|content-type|content-length'</code></pre></div>
+      <div class="expect"><strong>Expected:</strong> HTTP <code>200</code>, <code>Content-Type: application/x-chrome-extension</code>, and a non-zero <code>Content-Length</code>.</div>
+      <div class="callout note"><span class="ico">ℹ️</span><div>Some corporate SWGs strip the Chrome-extension content-type. If the type is wrong or stripped, the browser will refuse the package even though it downloads — bypass the host from inspection.</div></div>
+
+      <h2>Check 4 · File-type / MIME allow-list</h2>
+      <p>Some SWG / download-control policies block or rewrite responses based on file extension or <code>Content-Type</code>. The Browser Extension flow needs <strong>six</strong> file types to download cleanly: <code>.exe</code> (helper binaries), <code>.msi</code> (Windows installer), <code>.msp</code> (Windows patch), <code>.json</code> (tenant config), <code>.xml</code> (update manifest), and <code>.crx</code> (the extension package itself). This check downloads a tiny probe file per extension and verifies it returns HTTP 200, the content marker is intact (a proxy block-page would be missing it), and the <code>Content-Type</code> header survived.</p>
+
+      <div class="tabs">
+        <div class="tab-btns">
+          <button class="tab-btn active" data-tab="win">Windows &middot; PowerShell</button>
+          <button class="tab-btn" data-tab="mac">macOS / Linux &middot; shell</button>
+        </div>
+
+        <div class="tab-panel active" data-panel="win">
+          <p class="muted-note">Hosted check &mdash; recommended, nothing to paste:</p>
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>&amp; ([scriptblock]::Create((irm https://quilr-extensions.quilr.ai/Quilr-SOP/BrowserExtension/Windows/quilr-be-filetype-check.ps1)))</code></pre></div>
+          <details class="fallback">
+            <summary>Downloads blocked? Paste this full script instead</summary>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>$base   = 'https://quilr-extensions.quilr.ai/Quilr-SOP/EndpointAgent/mime-test'
+$marker = 'QUILR-MIME-PROBE-OK'
+$exts   = 'exe','msi','msp','json','xml','crx'
+$fail   = $false
+"{0,-6}  {1,-12}  {2}" -f 'Ext', 'Status', 'Content-Type'
+foreach ($e in $exts) {
+  $status='BLOCKED'; $ct='-'
+  try {
+    $r = Invoke-WebRequest -Uri "$base/probe.$e" -UseBasicParsing -TimeoutSec 15
+    $ct = "$($r.Headers['Content-Type'])"; if (-not $ct) { $ct='(none)' }
+    $body = if ($r.Content -is [byte[]]) { [Text.Encoding]::ASCII.GetString($r.Content) } else { [string]$r.Content }
+    if ($r.StatusCode -eq 200 -and $body -like "*$marker*") { $status='OK' }
+    elseif ($r.StatusCode -eq 200) { $status='ALTERED' }
+  } catch {
+    if ($_.Exception.Response) {
+      $c=[int]$_.Exception.Response.StatusCode
+      if ($c -eq 404) { $status='NO-PROBE'; $ct="HTTP 404 (no probe.$e at base)" } else { $ct="HTTP $c" }
+    }
+  }
+  "{0,-6}  {1,-12}  {2}" -f ".$e", $status, $ct
+  if ($status -in 'BLOCKED','ALTERED') { $fail = $true }
+}
+if ($fail) { Write-Host 'RESULT: BLOCKED/ALTERED - allow on SWG and re-run.' -ForegroundColor Red }
+else { Write-Host 'RESULT: all probed types pass.' -ForegroundColor Green }</code></pre></div>
+          </details>
+        </div>
+
+        <div class="tab-panel" data-panel="mac">
+          <p class="muted-note">Hosted check &mdash; recommended, nothing to paste:</p>
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash &middot; zsh</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>curl -fsSL https://quilr-extensions.quilr.ai/Quilr-SOP/BrowserExtension/macOS/quilr-be-filetype-check.sh | sh</code></pre></div>
+          <details class="fallback">
+            <summary>Downloads blocked? Paste this full script instead</summary>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash &middot; zsh</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>BASE='https://quilr-extensions.quilr.ai/Quilr-SOP/EndpointAgent/mime-test'
+MARKER='QUILR-MIME-PROBE-OK'
+TMP="${TMPDIR:-/tmp}/quilr_be_probe.$$"
+FAIL=0
+printf '%-6s  %-12s  %s\n' 'Ext' 'Status' 'Content-Type'
+for e in exe msi msp json xml crx; do
+  meta=$(curl -sS -m 15 -o "$TMP" -w '%{http_code}|%{content_type}' "$BASE/probe.$e")
+  http=${meta%%|*}; ctype=${meta#*|}; [ -n "$ctype" ] || ctype='(none)'
+  case "$http" in
+    200) if grep -q "$MARKER" "$TMP"; then status=OK; else status=ALTERED; FAIL=1; fi ;;
+    404) status=NO-PROBE; ctype="HTTP 404 (no probe.$e at base)" ;;
+    *)   status=BLOCKED;  ctype="HTTP ${http:-000}"; FAIL=1 ;;
+  esac
+  printf '.%-5s  %-12s  %s\n' "$e" "$status" "$ctype"
+done
+rm -f "$TMP"
+if [ "$FAIL" -eq 0 ]; then printf '\033[32mRESULT: all probed types pass.\033[0m\n'
+else printf '\033[31mRESULT: BLOCKED/ALTERED - allow on SWG and re-run.\033[0m\n'; fi</code></pre></div>
+          </details>
+        </div>
+      </div>
+
+      <div class="expect"><strong>Expected:</strong> every row shows <code>OK</code> and the final result is <code>all probed types pass.</code>. A <code>BLOCKED</code> row means the SWG / web-filter is dropping that extension &mdash; allow it. <code>ALTERED</code> means the body was rewritten (block page) &mdash; SSL-bypass the host. <code>NO-PROBE</code> just means the probe file for that extension isn&rsquo;t on the CDN yet; not a SWG block.</div>
+
+            <div class="callout tip">
+        <span class="ico">✅</span>
+        <div><span class="ct">Exit criteria for Step 2</span>
+        CDN reachable · tenant manifest returns valid XML · <code>.crx</code> serves with the correct content-type, all with
+        no SSL interception. You&rsquo;re clear to install.</div>
+      </div>
+
+      <div class="wizard-nav">
+        <a class="wbtn back" href="../Step%201%20-%20Prerequisites/index.html"><span>←</span><span class="wbt"><small>Back</small><b>Prerequisites</b></span></a>
+        <span class="wcount">Step 2 of 7</span>
+        <a class="wbtn next" href="../Step%203%20-%20Manual%20Installation/index.html"><span class="wbt"><small>Next</small><b>Manual Installation</b></span><span>→</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../../assets/app.js"></script>
+</body>
+</html>

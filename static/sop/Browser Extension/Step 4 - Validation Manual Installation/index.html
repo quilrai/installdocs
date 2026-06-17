@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Step 4 · Validate Installation — Quilr Browser Extension</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../assets/styles.css" />
+
+  <!-- sop-favicon v1 -->
+  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
+  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">Q</div>
+      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+    </div>
+    <div class="nav-group-title">Overview</div>
+    <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
+    <div class="nav-group-title">Browser Extension</div>
+    <ul class="nav">
+      <li><a href="../Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a class="active" href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a href="../Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="nav-group-title">Endpoint Agent</div>
+    <ul class="nav">
+      <li><a href="../../Endpoint%20Agent/Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="sidebar-foot">
+      Source: <a href="https://installdocs.quilrai.dev/extension/validate-installation" target="_blank" rel="noopener">installdocs.quilrai.dev</a><br />
+      Support: <a href="mailto:support@quilr.ai">support@quilr.ai</a>
+    </div>
+  </aside>
+  <div class="scrim"></div>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-btn" aria-label="Open navigation">☰</button>
+      <nav class="crumbs">
+        <a href="../../index.html">SOP</a><span class="sep">/</span>
+        <a href="../../index.html">Browser Extension</a><span class="sep">/</span>
+        <span class="here">Step 4 · Validate Installation</span>
+      </nav>
+    </header>
+
+    <div class="content">
+      <nav class="wizard" aria-label="Browser Extension deployment steps">
+                <a class="wstep" href="../Step%201%20-%20Prerequisites/index.html"><span class="wdot">1</span><span class="wlabel">Prerequisites</span></a>
+        <a class="wstep" href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="wdot">2</span><span class="wlabel">Validation</span></a>
+        <a class="wstep" href="../Step%203%20-%20Manual%20Installation/index.html"><span class="wdot">3</span><span class="wlabel">Manual Install</span></a>
+        <a class="wstep current" href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="wdot">4</span><span class="wlabel">Verify Install</span></a>
+        <a class="wstep" href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="wdot">5</span><span class="wlabel">MDM Rollout</span></a>
+        <a class="wstep" href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="wdot">6</span><span class="wlabel">Verify MDM</span></a>
+        <a class="wstep" href="../Step%207%20-%20Troubleshooting/index.html"><span class="wdot">7</span><span class="wlabel">Troubleshoot</span></a>
+      </nav>
+
+      <span class="eyebrow">Browser Extension · Step 4 of 7</span>
+      <h1>Validate the Installation</h1>
+      <p class="lead">The extension needs <strong>both</strong> components running: the WebExtension in the browser and the
+      native messaging agent on the device. All three checks must pass for events to reach the Quilr console.</p>
+
+      <h2>Console-side validation &mdash; the fastest check</h2>
+      <p>If the device successfully phoned home, it will show up in the <strong>Quilr Console</strong> within seconds of install. Open <a data-env-link href="https://app.quilr.ai/en/settings/browser-extension/deployment" target="_blank" rel="noopener"><strong>Settings &rarr; Browser Extension</strong></a> in your tenant Console and switch to the <strong>Deployment Status</strong> tab. Type the test user&rsquo;s email / name in the search box.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Column</th><th>Healthy value</th><th>If it&rsquo;s wrong &hellip;</th></tr></thead>
+        <tbody>
+          <tr><td><strong>IdP User Status</strong></td><td><code>Active</code></td><td>Disabled in IdP / not licensed &mdash; fix in IdP first.</td></tr>
+          <tr><td><strong>Installation Date</strong></td><td>Today&rsquo;s date / time</td><td>Older / missing &rarr; the new install didn&rsquo;t replace the old row &mdash; check the MSI version under <strong>Extension Version</strong>.</td></tr>
+          <tr><td><strong>Browser</strong></td><td>Edge / Chrome / Brave row with the current build number</td><td>Browser missing &rarr; the WebExtension never loaded; jump to <a href="../Step%207%20-%20Troubleshooting/index.html">Step&nbsp;6 &sect; chrome://policy</a>.</td></tr>
+          <tr><td><strong>Extension Status</strong></td><td><code>Enabled</code></td><td><code>Disabled</code> &rarr; user toggled it off or policy was removed.</td></tr>
+          <tr><td><strong>Extension Version</strong></td><td>Matches &ldquo;Latest Extension Version&rdquo; banner top-right</td><td>Stale &rarr; click <strong>Force Update</strong> or wait for the next auto-update.</td></tr>
+          <tr><td><strong>Browser Utility Status</strong></td><td><code>Enabled</code></td><td><code>Disabled</code> &rarr; native messaging agent isn&rsquo;t running; redeploy the MSI / pkg.</td></tr>
+          <tr><td><strong>Browser Utility Version</strong></td><td>Matches the agent build</td><td>Stale or empty &rarr; the MSI / pkg didn&rsquo;t install or the user never relogged.</td></tr>
+          <tr><td><strong>Last Seen</strong></td><td>&ldquo;a few minutes ago&rdquo; / &ldquo;just now&rdquo;</td><td>&gt; 1 hour &rarr; the device went offline. Confirm network access; run the Step&nbsp;2 smoke test.</td></tr>
+          <tr><td><strong>Persona Created</strong></td><td><code>Yes</code></td><td><code>No</code> &rarr; sign the user into the Quilr Console once in a browser tab to seed the persona; the next heartbeat picks it up.</td></tr>
+        </tbody>
+      </table></div>
+      <figure style="margin:12px 0 6px; padding:0;">
+        <img src="../../assets/console-be-deployment-status.png"
+             alt="Quilr Console - Settings - Browser Extension - Deployment Status tab. A user row 'Gurmukhnishan Singh' (gsingh@quilr.ai) is shown with IdP status Active, three browser rows for Windows 11 (Microsoft Edge 149.0.4022.69, Google Chrome 149.0.7827.103, Microsoft Edge 149.0.4022.62), Extension Status Enabled with version 0.24204.842 / 0.24204.833, Browser Utility Status Enabled at 0.55.306, Last Seen times '5 minutes ago' / '3 days ago', and Persona Created = Yes."
+             loading="lazy"
+             style="display:block; width:100%; max-width:1280px; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:10px; background:#0a0c12; box-shadow:0 6px 24px rgba(0,0,0,.35);" />
+        <figcaption style="margin-top:8px; font-size:12.5px; color:var(--ink-soft); text-align:center;">
+          Console &mdash; Settings &rarr; Browser Extension &rarr; <em>Deployment Status</em>. The test user shows up with every browser row Enabled, fresh version numbers, and Persona Created = <code>Yes</code>.
+        </figcaption>
+      </figure>
+      <div class="callout tip" style="margin-top:14px;">
+        <span class="ico">&#x2705;</span>
+        <div><span class="ct">If the row looks like the screenshot above</span>
+        The extension and native agent are <strong>already</strong> talking to the backplane and to each other end-to-end &mdash; the three on-device badges below are redundant. If anything is yellow / red / missing, the badges and Step&nbsp;6 tell you which link broke.</div>
+      </div>
+
+      
+
+      <div class="part">
+        <div class="part-head"><span class="part-badge">1</span><h3>Extension visible &amp; enabled</h3></div>
+        <p>Open your browser&rsquo;s extensions page and confirm Quilr is present, enabled, and (for MDM deployments) marked
+        &ldquo;Installed by your organization&rdquo; with no Remove button:</p>
+        <ul>
+          <li><strong>Microsoft Edge:</strong> <code>edge://extensions</code></li>
+          <li><strong>Google Chrome:</strong> <code>chrome://extensions</code></li>
+          <li><strong>Safari (macOS):</strong> Settings → Extensions</li>
+        </ul>
+      </div>
+
+      <div class="part">
+        <div class="part-head"><span class="part-badge">2</span><h3>Native messaging agent process running</h3></div>
+        <p>The WebExtension cannot function without the <code>quilr-native-messaging-agent</code> binary.</p>
+        <div class="tabs">
+          <div class="tab-btns">
+            <button class="tab-btn active" data-tab="win">Windows</button>
+            <button class="tab-btn" data-tab="mac">macOS</button>
+          </div>
+          <div class="tab-panel active" data-panel="win">
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>Get-Process | Where-Object Name -like '*quilr*'</code></pre></div>
+            <p>Or check Task Manager (Details tab) for <code>quilr-native-messaging-agent.exe</code>.</p>
+          </div>
+          <div class="tab-panel" data-panel="mac">
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>pgrep -lf 'quilr-native-messaging-agent'</code></pre></div>
+            <p>Or search Activity Monitor for <code>quilr-native-messaging-agent</code>.</p>
+          </div>
+        </div>
+        <div class="expect"><strong>Expected:</strong> the process appears with a visible PID and path.</div>
+      </div>
+
+      <div class="part">
+        <div class="part-head"><span class="part-badge">3</span><h3>Popup status is green &mdash; persona active</h3></div>
+        <p>Click the Quilr icon in the browser toolbar. The popup should display <strong>&ldquo;Persona Active &amp; Extension Enabled&rdquo;</strong> with a green indicator, confirming:</p>
+        <ul>
+          <li>Both the WebExtension and native agent are running</li>
+          <li>The user&rsquo;s persona has resolved (the popup shows <code>Registered to: &lt;user&gt;@&lt;tenant&gt;</code>)</li>
+          <li>Version numbers appear in the footer for both <strong>Extension</strong> and <strong>Agent</strong></li>
+        </ul>
+        <figure style="margin:14px 0 4px; padding:0; max-width:560px;">
+          <img src="../../assets/quilr-popup-persona-active.png"
+               alt="Quilr extension popup in its healthy state. Header shows the Quilr logo and the green dot indicator with the text 'Persona Active & Extension Enabled'. Body reads: 'Congratulations! You did it right! You just made the world a much safer place by activating the extension. Registered to: gsingh@quilr.ai. Stay safe. Quilr it!' A green shield with a checkmark sits to the right. Footer shows Extension v0.24204.842 and Agent v0.55.306."
+               loading="lazy"
+               style="display:block; width:100%; height:auto; border:1px solid var(--line); border-radius:10px; background:#fff; box-shadow:0 6px 24px rgba(0,0,0,.18);" />
+          <figcaption style="margin-top:8px; font-size:12.5px; color:var(--ink-soft);">
+            Healthy popup &mdash; green dot &amp; the words <em>Persona Active &amp; Extension Enabled</em> in the header, a <code>Registered to: &hellip;</code> line in the body, and an <code>Extension</code> + <code>Agent</code> version pair in the footer. Anything red / yellow or a missing version pair is a Step&nbsp;6 case.
+          </figcaption>
+        </figure>
+      </div>
+
+      <h2>Pass / fail criteria</h2>
+      <ul class="checklist">
+        <li><span class="ck">✓</span><div>Extension visible and enabled in browser settings</div></li>
+        <li><span class="ck">✓</span><div>Native agent process running in system tools</div></li>
+        <li><span class="ck">✓</span><div>Popup shows green status with version strings for both components</div></li>
+      </ul>
+
+      <h2>Functional test</h2>
+      <p>Two quick visual checks against a real AI site &mdash; the first confirms the extension injected its UI into the page; the second confirms the native agent is actually relaying events to the backend.</p>
+
+      <h3>Test 1 &mdash; Quilr icon visible in the prompt box</h3>
+      <p>Open any of the popular AI websites below in the browser the user typically uses. When the page finishes loading and the prompt input is rendered, the <strong>Quilr icon &mdash; a small atom-style mark with a cyan/pink orbital ring &mdash; appears <em>inside</em> the prompt-input row</strong>, parked between the typing area and the right-side controls (e.g.&nbsp;mic / send buttons). That icon is injected by the WebExtension &mdash; if it&rsquo;s there, the extension is loaded, has page-script permission, and matched the host&rsquo;s content-script rule.</p>
+      <div class="callout note"><span class="ico">&#x1F50D;</span><div><span class="ct">Where to look</span>Example on ChatGPT: the icon sits between the <code>Ask anything</code> text and the <code>Instant</code> model picker. On Claude / Gemini / Copilot it appears in the equivalent inline-controls strip of each provider&rsquo;s prompt box. Hover for the tooltip &ldquo;Quilr&rdquo;; click to open the Quilr popover.</div></div>
+      <figure style="margin:14px 0 6px; padding:0;">
+        <img src="../../assets/quilr-icon-chatgpt-prompt.png"
+             alt="ChatGPT prompt box on chatgpt.com showing the Quilr icon — a small atom-style mark with a cyan/pink orbital ring — rendered inline between the 'Ask anything' input area and the 'Instant' model picker."
+             loading="lazy"
+             style="display:block; width:100%; max-width:980px; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:10px; background:#000; box-shadow:0 6px 24px rgba(0,0,0,.35);" />
+        <figcaption style="margin-top:8px; font-size:12.5px; color:var(--ink-soft); text-align:center;">
+          ChatGPT &mdash; the Quilr icon (atom-style mark, cyan/pink orbital) sits inside the prompt-input row, just before <code>Instant</code>.
+        </figcaption>
+      </figure>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Provider</th><th>URL</th></tr></thead>
+          <tbody>
+            <tr><td>Claude</td>     <td><a href="https://claude.ai" target="_blank" rel="noopener">https://claude.ai</a></td></tr>
+            <tr><td>ChatGPT</td>    <td><a href="https://chatgpt.com" target="_blank" rel="noopener">https://chatgpt.com</a></td></tr>
+            <tr><td>Gemini</td>     <td><a href="https://gemini.google.com" target="_blank" rel="noopener">https://gemini.google.com</a></td></tr>
+            <tr><td>Copilot</td>    <td><a href="https://copilot.microsoft.com" target="_blank" rel="noopener">https://copilot.microsoft.com</a></td></tr>
+            <tr><td>Perplexity</td> <td><a href="https://perplexity.ai" target="_blank" rel="noopener">https://perplexity.ai</a></td></tr>
+            <tr><td>Meta AI</td>    <td><a href="https://meta.ai" target="_blank" rel="noopener">https://meta.ai</a></td></tr>
+            <tr><td>Mistral &middot; Le Chat</td> <td><a href="https://chat.mistral.ai" target="_blank" rel="noopener">https://chat.mistral.ai</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="expect"><strong>Expected:</strong> the Quilr icon is rendered in/next to the prompt input on at least one of these sites. Click the icon to confirm it opens the Quilr popover. No icon on <em>any</em> of these &rarr; the WebExtension is installed but the content-script didn&rsquo;t inject &mdash; the extension is disabled, the page-script permission was revoked, or the host doesn&rsquo;t match the content-script rule. See Step&nbsp;6.</div>
+
+      <h3>Test 2 &mdash; Prompt round-trips to the Quilr console</h3>
+      <p>With the icon visible, type a real prompt (e.g. <em>&ldquo;Summarise this paragraph in one line.&rdquo;</em>) into the prompt box on <a href="https://claude.ai" target="_blank" rel="noopener">https://claude.ai</a> and hit send. The event should appear in the Quilr console within ~2 seconds, proving the WebExtension &rarr; native messaging agent &rarr; backplane pipe is complete.</p>
+      <div class="expect"><strong>Expected:</strong> a corresponding event row shows up in <a data-env-link href="https://app.quilr.ai/" target="_blank" rel="noopener">the Quilr console</a> within ~2 seconds, with the user, host (<code>claude.ai</code>), and prompt body captured. No event &rarr; the icon is loading but the native messaging bridge is broken; see Step&nbsp;6.</div>
+
+      <h3>Test 3 &mdash; DLP control fires on a sensitive prompt</h3>
+      <p>Tests 1 and 2 confirmed the extension renders and the pipe to the console is open. Test 3 confirms the <strong>policy half</strong> of the chain &mdash; a control configured in the console actually reaches the extension, the DLP engine matches a sensitive payload, and the Quilr popup blocks the user before the prompt leaves the device.</p>
+
+      <h4>3.1 &mdash; Enable the &ldquo;Prevent leakage&rdquo; control in Action mode</h4>
+      <ol>
+        <li>In the Quilr Console, open <a data-env-link href="https://app.quilr.ai/en/dashboard/controls" target="_blank" rel="noopener"><strong>Controls</strong></a> and switch to the <strong>AI Risks</strong> tab.</li>
+        <li>Search for <code>preven</code> and find the row <strong>&ldquo;Preventing The Leakage Of Sensitive Data Via An AI App&rdquo;</strong>.</li>
+        <li>Toggle <strong>Status</strong> on (green).</li>
+        <li>In the <strong>Mode</strong> dropdown, pick <strong>Action</strong> (not <em>Monitor</em>). Monitor only logs; Action shows the block popup to the user.</li>
+      </ol>
+      <figure style="margin:10px 0 6px; padding:0;">
+        <img src="../../assets/console-control-prevent-leak.png"
+             alt="Quilr Console - Controls page - AI Risks tab. The row 'Preventing The Leakage Of Sensitive Data Via An AI App' is shown with When This Happens 'a user shares sensitive data with an AI application', Criticality Low, Behavior 'Users Leaking Sensitive Data', Status toggle on, Mode dropdown set to 'Action'."
+             loading="lazy"
+             style="display:block; width:100%; max-width:1280px; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:10px; background:#0a0c12; box-shadow:0 6px 24px rgba(0,0,0,.35);" />
+        <figcaption style="margin-top:8px; font-size:12.5px; color:var(--ink-soft); text-align:center;">
+          Console &mdash; Controls &rarr; AI Risks &rarr; <em>Preventing The Leakage Of Sensitive Data Via An AI App</em> with Status enabled and Mode = <code>Action</code>.
+        </figcaption>
+      </figure>
+      <div class="callout warn" style="margin-top:10px;">
+        <span class="ico">&#x23F1;</span>
+        <div><span class="ct">Wait ~90 seconds before testing</span>
+        Controls reach the extension on the next heartbeat (<code>POST /browser-extension/browser/personas/heartbeat</code>, every 2 min). Wait at least <strong>90&nbsp;seconds</strong> after toggling Mode to <code>Action</code> before submitting a payload &mdash; otherwise the old policy is still in cache and Test&nbsp;3 will pass-through instead of blocking.</div>
+      </div>
+
+      <h4>3.2 &mdash; Paste the synthetic-PII payload into an AI site</h4>
+      <p>Open any monitored AI site (Claude / ChatGPT / Gemini / Copilot &hellip;) and paste the block below into the prompt input. <strong>Do not use real personal data &mdash; the block below is publicly-circulated synthetic test data</strong> (commonly-known fake SSNs / DOBs used in DLP smoke tests) included specifically so this validation never accidentally leaks real PII.</p>
+      <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>synthetic PII &mdash; test only</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>First and Last Name    SSN            Date of Birth
+Robert Aragon          489-36-8350    6/7/1981
+Ashley Borden          514-14-8905    7/8/1981
+Thomas Conley          690-05-5315    8/9/1981
+Susan Davis            421-37-1396    9/10/1981
+Christopher Diaz       458-02-6124    1/10/1975
+Rick Edwards           612-20-6833    2/11/1975
+Victor Faulkner        300-62-3266    3/12/1975
+Lisa Garrison          660-03-8360    4/13/1975
+Marjorie Green         213-46-8915    5/14/1975
+Mark Hall              449-48-3135    6/14/1975
+James Heard            559-81-1301    7/16/1975
+Albert Iorio           322-84-2281    8/17/1975
+Charles Jackson        646-44-9061    9/18/1975
+Teresa Kaminski        465-73-5022    10/19/1975
+Tim Lowe               044-34-6954    1/20/1991
+Monte Mceachern        477-12-8344    2/21/1991</code></pre></div>
+      <p>Click <strong>Send</strong>. <strong>Do not type quickly</strong> &mdash; the extension matches on the rendered prompt body, so it&rsquo;s fine if the paste lands instantly.</p>
+
+      <h4>3.3 &mdash; What you should see</h4>
+      <div class="expect"><strong>Expected:</strong> the Quilr popup appears <em>before</em> the prompt is sent to the AI provider, titled <strong>&ldquo;Potentially Sensitive Data Detected.&rdquo;</strong>, with the tag <code>PERSONALLY IDENTIFIABLE INFORMATION (PII)</code> and the matched rows visible in the body. The user can&rsquo;t submit unmodified &mdash; they have to edit the prompt and click <strong>Resubmit and Continue</strong>.</div>
+      <figure style="margin:12px 0 6px; padding:0; max-width:760px;">
+        <img src="../../assets/quilr-popup-pii-block.png"
+             alt="Quilr Action-mode block popup. Title: &quot;Potentially Sensitive Data Detected.&quot; (yellow). Subtitle: &quot;Please review it and remove the sensitive information before submitting it to this website.&quot; A tag labelled &quot;PERSONALLY IDENTIFIABLE INFORMATION (PII)&quot; sits under &quot;Data types detected&quot;, plus a &quot;Highlight Sensitive Data&quot; button. The body shows the synthetic PII payload (Rick Edwards, Victor Faulkner, Lisa Garrison, &hellip;, Monte Mceachern) with their fake SSNs and DOBs. A green-outline &quot;Resubmit and Continue&quot; button sits in the bottom-right, with the Quilr logo and wordmark in the footer."
+             loading="lazy"
+             style="display:block; width:100%; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:10px; background:#0a0c12; box-shadow:0 6px 24px rgba(0,0,0,.35);" />
+        <figcaption style="margin-top:8px; font-size:12.5px; color:var(--ink-soft); text-align:center;">
+          What a successful Test 3 block looks like &mdash; PII tag, matched body, and the user gated behind <em>Resubmit and Continue</em>.
+        </figcaption>
+      </figure>
+      <div class="callout note" style="margin-top:10px;">
+        <span class="ico">&#x1F4DD;</span>
+        <div><span class="ct">Action mode is a coach, not a hard block</span>
+        Notice the <strong>Resubmit and Continue</strong> button &mdash; in <code>Action</code> mode the user <em>can</em> override after editing, and that override is logged. For a true hard block (no override), use a higher-criticality control or set the Behavior to a no-bypass policy in the Console.</div>
+      </div>
+
+      <h4>3.4 &mdash; Confirm a Finding was generated in the Console</h4>
+      <p>The popup only proves the block happened locally. The finding row proves the event was uploaded to the backplane and attributed to the right user, app, and control. Open <a data-env-link href="https://app.quilr.ai/en/dashboard/findings" target="_blank" rel="noopener"><strong>Findings</strong></a> in the Console, switch to the <strong>Browser Extension Findings</strong> tab, then the <strong>AI Risks</strong> sub-tab. Filter <strong>Finding Type</strong> to <code>A user shares sensitive data with an AI application</code>.</p>
+      <figure style="margin:12px 0 6px; padding:0;">
+        <img src="../../assets/console-findings-be.png"
+             alt="Quilr Console - Findings - Browser Extension Findings - AI Risks tab. Two findings titled 'A user shares sensitive data with an AI application' shown with Finding ID, timestamp (14 Jun 2026), Login Email canary-quilrai@quilr.ai, Persona Email canary-quilrai@quilr.ai, Department Not Available, Account Usage Type Corporate, App ChatGPT (chatgpt.com) tagged Approved / Critical, Auth Type Credentials (Username & Password), Browser Name chrome, Extension version 0.24204.736, Control 'Preventing The Leakage Of Sensitive Data Via An AI App', Event Prompt, Outcome Not available as of now. Each row tagged AI Risks / Low criticality."
+             loading="lazy"
+             style="display:block; width:100%; max-width:1280px; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:10px; background:#0a0c12; box-shadow:0 6px 24px rgba(0,0,0,.35);" />
+        <figcaption style="margin-top:8px; font-size:12.5px; color:var(--ink-soft); text-align:center;">
+          Console &mdash; Findings &rarr; Browser Extension Findings &rarr; AI Risks. The block fired Test&nbsp;3 produces a finding with the user, app, browser, extension version, and the matching <em>Control</em> all populated.
+        </figcaption>
+      </figure>
+
+      <div class="table-wrap"><table>
+        <thead><tr><th>Field on the finding</th><th>Healthy value</th><th>If it&rsquo;s wrong &hellip;</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Finding Type</strong></td><td><code>A user shares sensitive data with an AI application</code></td><td>Different type &rarr; the popup matched a different control; recheck which control fired in 3.1.</td></tr>
+          <tr><td><strong>Login Email</strong> / <strong>Persona Email</strong></td><td>The test user&rsquo;s email</td><td><code>Unknown</code> or empty &rarr; persona didn&rsquo;t resolve; see Step&nbsp;6&nbsp;&sect;&nbsp;7 (<code>Persona not found</code>).</td></tr>
+          <tr><td><strong>App</strong></td><td>The AI site you submitted on (e.g. <code>ChatGPT &mdash; chatgpt.com</code>) with its Approved / Critical tag</td><td>Listed as <em>Unknown app</em> &rarr; the host isn&rsquo;t in the tenant&rsquo;s monitored-apps list.</td></tr>
+          <tr><td><strong>Browser Name</strong> + <strong>Extension version</strong></td><td>Matches the browser + extension build you tested</td><td>Stale version &rarr; the extension hasn&rsquo;t updated; click <strong>Force Update</strong> from Deployment Status.</td></tr>
+          <tr><td><strong>Control</strong></td><td><code>Preventing The Leakage Of Sensitive Data Via An AI App</code></td><td>A different control (or empty) &rarr; the rule that fired isn&rsquo;t the one you enabled; verify Mode = <code>Action</code> in the Console and re-wait 90&nbsp;s.</td></tr>
+          <tr><td><strong>Event</strong></td><td><code>Prompt</code></td><td><code>Paste</code> / <code>Upload</code> when you expected a Prompt &rarr; the classifier fired on a different signal; usually harmless but tells you which content path matched.</td></tr>
+          <tr><td><strong>Outcome</strong></td><td><code>blocked</code> (or <code>Not available as of now</code> on early-rollout builds &mdash; treat as success if Finding ID + timestamp are present)</td><td>Empty / dash &rarr; finding fired but the verdict didn&rsquo;t persist; capture the Finding ID and escalate.</td></tr>
+          <tr><td><strong>Device Name</strong></td><td>The pilot device hostname</td><td>Empty &rarr; the native messaging agent didn&rsquo;t supply the device context; reinstall the MSI / pkg.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout note" style="margin-top:10px;">
+        <span class="ico">&#x1F50D;</span>
+        <div><span class="ct">Use the Finding ID for escalation</span>
+        Every finding has a UUID (e.g. <code>a4ead1ed-ff81-4830-bc43-d9cc8cec2cea</code> in the screenshot). If a downstream system &mdash; SOAR, SIEM, ticketing &mdash; missed the event, hand the UUID to support; they can trace the whole upload &middot; classify &middot; persist chain from that single ID.</div>
+      </div>
+
+      <h3>Test 4 &mdash; Multi-channel DLP coverage (copy &middot; upload &middot; paste)</h3>
+      <p>Test 3 covered the <strong>prompt</strong> channel &mdash; sensitive data typed / pasted into an AI site&rsquo;s prompt input. Three other controls cover the remaining user-action channels. Enabling all four together confirms the DLP engine intercepts on every supported user signal, not just one.</p>
+
+      <h4>4.1 &mdash; Enable the three additional controls (all Action mode)</h4>
+      <p>In <a data-env-link href="https://app.quilr.ai/en/dashboard/controls" target="_blank" rel="noopener"><strong>Controls &rarr; AI Risks</strong></a>, enable each row below and set Mode = <strong>Action</strong>. Same propagation rule as Test 3 &mdash; wait <strong>~90&nbsp;seconds</strong> after the last toggle before testing.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Control name</th><th>When this happens</th><th>Behavior</th><th>Channel tested</th></tr></thead>
+        <tbody>
+          <tr><td><strong>User is copying sensitive data</strong></td><td>a user is copying sensitive data</td><td>Users Copying Data</td><td>Browser <em>copy</em> (Ctrl+C / Cmd+C on selected text)</td></tr>
+          <tr><td><strong>User is trying to upload sensitive data</strong></td><td>a user is uploading sensitive data</td><td>Users Uploading Data</td><td>File <em>upload</em> / attach to an AI site</td></tr>
+          <tr><td><strong>User is pasting sensitive data</strong></td><td>a user is pasting sensitive data</td><td>Users Pasting Data</td><td>Browser <em>paste</em> (Ctrl+V / Cmd+V into any input)</td></tr>
+        </tbody>
+      </table></div>
+      <figure style="margin:10px 0 6px; padding:0;">
+        <img src="../../assets/console-controls-copy-upload-paste.png"
+             alt="Quilr Console Controls page showing three rows: 'User is copying sensitive data' (when: a user is copying sensitive data, behavior: Users Copying Data), 'User is trying to upload sensitive data' (when: a user is uploading sensitive data, behavior: Users Uploading Data), and 'User is pasting sensitive data' (when: a user is pasting sensitive data, behavior: Users Pasting Data). All three are Low criticality, Status enabled (green toggle), Mode set to Action, Created By QuilrAI."
+             loading="lazy"
+             style="display:block; width:100%; max-width:1280px; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:10px; background:#0a0c12; box-shadow:0 6px 24px rgba(0,0,0,.35);" />
+        <figcaption style="margin-top:8px; font-size:12.5px; color:var(--ink-soft); text-align:center;">
+          Console &mdash; the three additional DLP controls (copy &middot; upload &middot; paste) enabled in <em>Action</em> mode.
+        </figcaption>
+      </figure>
+
+      <h4>4.2 &mdash; Trigger each channel with the synthetic-PII payload</h4>
+      <p>Use the same synthetic-PII block from Test&nbsp;3.2 as the source content. After enabling all three controls + waiting 90&nbsp;s, perform each action below in turn on a monitored AI site (Claude / ChatGPT / Gemini &hellip;). Each one should produce its own popup + finding.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>#</th><th>Action to perform</th><th>Expected popup &amp; finding</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>4.2a</td>
+            <td><strong>Copy</strong> &mdash; open a page that already contains the synthetic-PII block (e.g. paste it into the prompt box of an AI site, then select it and press <kbd>Ctrl</kbd>+<kbd>C</kbd> / <kbd>Cmd</kbd>+<kbd>C</kbd>).</td>
+            <td>Popup with the same <strong>&ldquo;Potentially Sensitive Data Detected&rdquo;</strong> title fires <em>at the copy moment</em> &mdash; clipboard write is held / cancelled. Finding row in Console shows <strong>Event</strong>&nbsp;= <code>Copy</code>, Control = <code>User is copying sensitive data</code>.</td>
+          </tr>
+          <tr>
+            <td>4.2b</td>
+            <td><strong>Upload</strong> &mdash; save the synthetic-PII block as <code>test-pii.txt</code> on the desktop, then drag-drop or use the AI site&rsquo;s attach-file button to upload it.</td>
+            <td>Popup fires <em>before</em> the file reaches the AI provider. Finding shows <strong>Event</strong>&nbsp;= <code>Upload</code>, Control = <code>User is trying to upload sensitive data</code>; the file name appears in the matched-payload excerpt.</td>
+          </tr>
+          <tr>
+            <td>4.2c</td>
+            <td><strong>Paste</strong> &mdash; in another browser tab, copy the synthetic-PII block from a non-AI source (Notepad, a wiki page, etc.). Return to the AI site and paste with <kbd>Ctrl</kbd>+<kbd>V</kbd> / <kbd>Cmd</kbd>+<kbd>V</kbd> into the prompt input.</td>
+            <td>Popup fires <em>on the paste event</em> before the text lands in the input. Finding shows <strong>Event</strong>&nbsp;= <code>Paste</code>, Control = <code>User is pasting sensitive data</code>. (Distinct from Test&nbsp;3&rsquo;s &ldquo;Prompt&rdquo; event, which fires when the user presses Send.)</td>
+          </tr>
+        </tbody>
+      </table></div>
+
+      <h4>4.3 &mdash; Confirm 3 distinct findings in the Console</h4>
+      <p>Back in <a data-env-link href="https://app.quilr.ai/en/dashboard/findings" target="_blank" rel="noopener"><strong>Findings &rarr; Browser Extension Findings &rarr; AI Risks</strong></a>, you should now have <strong>three new finding rows</strong> &mdash; one per channel &mdash; in addition to the one from Test 3. Filter <strong>Finding Type</strong> in the right-side panel to confirm each fired:</p>
+      <ul>
+        <li><code>A user is copying sensitive data</code></li>
+        <li><code>A user is uploading sensitive data</code></li>
+        <li><code>A user is pasting sensitive data</code></li>
+      </ul>
+      <div class="expect"><strong>Expected:</strong> four distinct findings in total (one from Test&nbsp;3 prompt + three new ones), each with its own UUID, populated Login Email, App, Device Name, and the <strong>Event</strong> column matching the channel you triggered (<code>Prompt</code> / <code>Copy</code> / <code>Upload</code> / <code>Paste</code>).</div>
+
+      <div class="table-wrap" style="margin-top:14px;"><table>
+        <thead><tr><th>Channel</th><th>If the popup didn&rsquo;t fire</th></tr></thead>
+        <tbody>
+          <tr><td><code>Copy</code></td><td>Browser may block content scripts from reading clipboard writes on some sites. Verify the host is in <strong>Settings &rarr; Browser Extension &rarr; Monitored Apps</strong>; some hosts disable clipboard listeners and need an explicit allow.</td></tr>
+          <tr><td><code>Upload</code></td><td>The AI site may use a non-standard file-picker (custom drag-drop zone). Try the explicit attach-file button instead. If still no fire, capture the upload widget&rsquo;s DOM &mdash; the trigger selector may need a tenant-side update.</td></tr>
+          <tr><td><code>Paste</code></td><td>Most common cause: the synthetic-PII source was already in the same AI site (which the extension counts as &ldquo;Prompt&rdquo;, not &ldquo;Paste&rdquo;). Copy from <strong>Notepad / TextEdit / a non-AI tab</strong> and retry.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout tip" style="margin-top:10px;">
+        <span class="ico">&#x21A9;</span>
+        <div><span class="ct">Reset all four controls after testing</span>
+        Same caveat as Test&nbsp;3 &mdash; if this is production, flip all four controls back to <strong>Monitor</strong> after validation so real users don&rsquo;t hit four block popups on every sensitive paste.</div>
+      </div>
+
+
+      <div class="table-wrap" style="margin-top:14px;"><table>
+        <thead><tr><th>What you saw</th><th>What it means</th><th>Where to look next</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Popup appeared &middot; Send blocked &middot; Audit Log entry present</td>
+            <td>End-to-end DLP chain healthy. Move on to Step&nbsp;5.</td>
+            <td>&mdash;</td>
+          </tr>
+          <tr>
+            <td>No popup &middot; prompt sent through &middot; no Audit Log entry</td>
+            <td>The control didn&rsquo;t reach the extension or the DLP engine isn&rsquo;t classifying SSN.</td>
+            <td>Re-confirm Step&nbsp;3.1 Mode = <code>Action</code>, re-wait 90&nbsp;s. If still nothing, open <code>chrome://extensions</code> &rarr; Quilr &rarr; <strong>Inspect views: service worker</strong> &rarr; Network tab &mdash; look for the <code>controls/synctoui</code> call and check it returned controls with this rule. See <a href="../Step%207%20-%20Troubleshooting/index.html">Step&nbsp;6&nbsp;&sect;&nbsp;7</a>.</td>
+          </tr>
+          <tr>
+            <td>No popup but the Audit Log <em>does</em> show the event with verdict <code>monitor</code></td>
+            <td>Control is in <em>Monitor</em> mode, not <em>Action</em>. The chain works; you just chose the wrong mode.</td>
+            <td>Flip Mode to <code>Action</code> in the Console, wait 90&nbsp;s, retry.</td>
+          </tr>
+          <tr>
+            <td>Popup appeared but the Audit Log entry is missing</td>
+            <td>Extension intercepted locally but the upload to the backplane choked.</td>
+            <td>Check <code>%APPDATA%\sentinel\logs</code> for <code>upload failed</code> entries; see <a href="../Step%207%20-%20Troubleshooting/index.html">Step&nbsp;6&nbsp;&sect;&nbsp;6</a> (file-upload issues).</td>
+          </tr>
+          <tr>
+            <td>Popup appeared even on innocent prompts</td>
+            <td>The Sensitive-Data rule is matching aggressively (regex too broad), or another control is overlapping.</td>
+            <td>Open the control&rsquo;s detail page in the Console; tune the rule and lower criticality if needed.</td>
+          </tr>
+        </tbody>
+      </table></div>
+      <div class="callout tip" style="margin-top:10px;">
+        <span class="ico">&#x21A9;</span>
+        <div><span class="ct">Reset after testing</span>
+        If this is a production tenant, set the control back to <strong>Monitor</strong> (or your normal baseline) after the test so a non-pilot user doesn&rsquo;t hit a real block. Pilot tenants can stay in <code>Action</code>.</div>
+      </div>
+
+
+      <div class="callout warn">
+        <span class="ico">🟡</span>
+        <div><span class="ct">If the popup is red or yellow</span>
+        The WebExtension is installed but the native agent isn&rsquo;t running — the two are separate installs. Redeploy the
+        pkg/MSI. See Step&nbsp;6 for the full diagnostic chain.</div>
+      </div>
+
+      <div class="callout tip">
+        <span class="ico">✅</span>
+        <div><span class="ct">Exit criteria for Step 4</span>
+        All three checks green and the functional test produces a console event. The device is protected for Chrome/Edge/Safari.
+        For fleet rollout, continue to Step&nbsp;5.</div>
+      </div>
+
+      <div class="wizard-nav">
+        <a class="wbtn back" href="../Step%203%20-%20Manual%20Installation/index.html"><span>←</span><span class="wbt"><small>Back</small><b>Manual Installation</b></span></a>
+        <span class="wcount">Step 4 of 7</span>
+        <a class="wbtn next" href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="wbt"><small>Next</small><b>Installing using MDM</b></span><span>→</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+services:
+  quilr-docs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: quilr-docs:latest
+    container_name: quilr-docs
+    restart: unless-stopped
+    ports:
+      - "8090:80"
+    networks:
+      - default       # internal compose network (host port 8090 path)
+      - quilr-proxy   # shared with the quilr-proxy (Caddy) container
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+networks:
+  default:
+  quilr-proxy:
+    name: deploy_default
+    external: true

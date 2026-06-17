@@ -1,0 +1,237 @@
+---
+title: Prerequisites
+description: Shared prerequisites for every Quilr Endpoint Agent deployment (Windows + macOS, all MDMs).
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Prerequisites
+
+Common requirements that apply to **every** Quilr Endpoint Agent rollout — Windows or macOS, Intune / Jamf / Kandji / ManageEngine / manual. Each deployment guide additionally lists a short **platform-specific** prereq table.
+
+:::tip Pick your platform
+Selecting *macOS* or *Windows* in the tabs below filters this page to that platform only — and it syncs with the sidebar **Filter** widget. So if you've already picked Windows in the sidebar, the Windows tab opens automatically (via the `?platform=…` query string).
+:::
+
+## What you need before starting
+
+<Tabs groupId="platform" queryString="platform">
+
+<TabItem value="all" label="All Platforms" default>
+
+| Requirement | Details |
+|---|---|
+| **Quilr environment** | Know which Quilr tenant your bundle was built against (e.g. `quilr-saas-usa-prod`, `quilr-saas-japan`, `quilr-saas-ind-prod`). The environment determines which backplane hosts you allowlist below. Confirm with Quilr support if unsure. |
+| **Install bundle** | **Windows**: [`…/windows/installer/quilr-endpoint-agent-win-install-bundle.zip`](https://quilr-extensions.quilr.ai/endpoint-agent/prod/windows/installer/quilr-endpoint-agent-win-install-bundle.zip) &middot; **macOS**: [`…/mac/installer/quilr-endpoint-agent-install-bundle.zip`](https://quilr-extensions.quilr.ai/endpoint-agent/prod/mac/installer/quilr-endpoint-agent-install-bundle.zip). Verify the checksum before extracting. Bundle contents differ by platform — Windows: `quilr-endpoint-agent.msi` + 2 CA `.crt`s. macOS: `quilr-endpoint-agent-installer.pkg` + 2 CA `.cer`s + Configuration Profile templates. |
+| **MDM access** | Admin rights on your MDM platform: *Microsoft Intune* (Intune Administrator), *Jamf Pro* (Site or Cloud admin), *Kandji* (admin), *ManageEngine Endpoint Central* (admin). For macOS the device must be **MDM-supervised** (DEP / Automated Device Enrollment is preferred so System / Network Extensions are auto-approved). |
+| **Endpoint OS** | **Windows:** 10 1809+ or 11, **x64 only**. **macOS:** 12 Monterey or later, **Apple Silicon or Intel**. Older OS versions are not supported by the agent's WinDivert driver / System Extension. |
+| **Network egress (TCP 443)** | Endpoints must reach the Quilr backplane hosts on TCP 443. The full allowlist (shared hosts + per-tenant Base URL / DLP) is in [§ Firewall and Network Allowlist](#firewall-and-network-allowlist) below. |
+| **TLS-intercepting SWG** *(if used)* | Zscaler / Netskope / Symantec WSS / Forcepoint / iboss must **SSL-bypass** every Quilr backplane host. The agent pins TLS against Quilr's internal CA chain (deployed in Part 2 of each guide) — SWG re-signing breaks the handshake. |
+| **Pilot group** | A small group of devices (suggested naming `Quilr-Pilot`) to validate against before broad rollout. Promote to `Quilr-Production` after validation. |
+| **CA trust deployment** | The agent's leaf cert chains to a Quilr root + intermediate that must land in the system trust store **before** the agent service starts. Each deployment guide's *Part 2* covers this. *(Optional on Windows — the MSI installs the chain itself.)* |
+
+</TabItem>
+
+<TabItem value="macos" label="macOS">
+
+| Requirement | Details |
+|---|---|
+| **Quilr environment** | Know which Quilr tenant your bundle was built against (`quilr-saas-usa-prod`, `quilr-saas-japan`, `quilr-saas-ind-prod`, …). Confirm with Quilr support if unsure. |
+| **Install bundle (macOS)** | [`https://quilr-extensions.quilr.ai/endpoint-agent/prod/mac/installer/quilr-endpoint-agent-install-bundle.zip`](https://quilr-extensions.quilr.ai/endpoint-agent/prod/mac/installer/quilr-endpoint-agent-install-bundle.zip). Verify the checksum before extracting. Contents: `quilr-endpoint-agent-installer.pkg` + 2 CA `.cer`s + Configuration Profile templates. |
+| **MDM access** | Admin on your MDM (Intune / Jamf Pro / Kandji). The Mac must be **MDM-supervised** — DEP / Automated Device Enrollment is preferred so the System Extension and Network Extension are auto-approved without user clicks. |
+| **Endpoint OS** | **macOS 12 Monterey or later**, Apple Silicon or Intel. Older versions are not supported by the agent's System / Network Extension. |
+| **Network egress (TCP 443)** | Reach the Quilr backplane hosts on TCP 443 — see [§ Firewall and Network Allowlist](#firewall-and-network-allowlist). |
+| **TLS-intercepting SWG** *(if used)* | Zscaler / Netskope / Symantec WSS / Forcepoint / iboss must SSL-bypass every Quilr backplane host. The agent pins TLS — SWG re-signing breaks the handshake. |
+| **Pilot group** | Small `MAC-Quilr-Pilot` group to validate before broad rollout. |
+| **CA trust deployment** | Quilr root + intermediate CAs land in the System keychain via your MDM **before** the pkg installs (Part 2 of each macOS guide). |
+
+</TabItem>
+
+<TabItem value="windows" label="Windows">
+
+| Requirement | Details |
+|---|---|
+| **Quilr environment** | Know which Quilr tenant your bundle was built against (`quilr-saas-usa-prod`, `quilr-saas-japan`, `quilr-saas-ind-prod`, …). Confirm with Quilr support if unsure. |
+| **Install bundle (Windows)** | [`https://quilr-extensions.quilr.ai/endpoint-agent/prod/windows/installer/quilr-endpoint-agent-win-install-bundle.zip`](https://quilr-extensions.quilr.ai/endpoint-agent/prod/windows/installer/quilr-endpoint-agent-win-install-bundle.zip). Verify the checksum before extracting. Contents: `quilr-endpoint-agent.msi` + 2 CA `.crt`s. |
+| **MDM access** | Admin on your MDM (Microsoft Intune Administrator / ManageEngine Endpoint Central admin). For Intune, the Win32 Content Prep Tool (`IntuneWinAppUtil.exe`) is required to wrap the MSI. |
+| **Endpoint OS** | **Windows 10 1809+ or Windows 11**, **x64 only**. The agent's WinDivert filter driver does not support 32-bit Windows. |
+| **Network egress (TCP 443)** | Reach the Quilr backplane hosts on TCP 443 — see [§ Firewall and Network Allowlist](#firewall-and-network-allowlist). |
+| **TLS-intercepting SWG** *(if used)* | Zscaler / Netskope / Symantec WSS / Forcepoint / iboss must SSL-bypass every Quilr backplane host. The agent pins TLS — SWG re-signing breaks the handshake. |
+| **Pilot group** | Small `WIN-Quilr-Pilot` Entra ID group to validate before broad rollout. |
+| **`TENANTID` parameter** | The MSI requires `TENANTID=<TENANT-ID>` (Intune Win32 install command, or ManageEngine *MSI/MSP Properties*). Replace `<TENANT-ID>` with the tenant ID from **Quilr support** (`support@quilr.ai`). Without it the agent installs but cannot phone home. |
+| **CA trust deployment** | **Optional — the MSI installs the Quilr root + intermediate into the Local Machine trust store itself.** Use the per-MDM Trusted Certificate profile only if you want central control of CA rotation. |
+
+</TabItem>
+
+</Tabs>
+
+## Platform-specific add-ons
+
+Each guide lists the tools / preconditions unique to that MDM. Quick pointer to where the platform-specific prereqs live:
+
+<Tabs groupId="platform" queryString="platform">
+<TabItem value="all" label="All Platforms" default>
+
+| MDM / path | Platform-specific prereqs in |
+|---|---|
+| Microsoft Intune (Windows) | [Intune — Windows guide § Prerequisites](/deployment/intune-windows#2-prerequisites) |
+| Microsoft Intune (macOS) | [Intune — macOS guide § Prerequisites](/deployment/intune-macos#2-prerequisites) |
+| Jamf Pro | [Jamf Pro guide § Prerequisites](/deployment/jamf#2-prerequisites) |
+| Kandji | [Kandji guide § Prerequisites](/deployment/kandji#2-prerequisites) |
+| ManageEngine Endpoint Central | [ManageEngine guide § Prerequisites](/deployment/manageengine-msi#2-prerequisites) |
+| Manual macOS install | [Manual install guide § Prerequisites](/deployment/macos-manual#2-prerequisites) |
+
+</TabItem>
+<TabItem value="macos" label="macOS">
+
+| MDM / path | Platform-specific prereqs in |
+|---|---|
+| Microsoft Intune (macOS) | [Intune — macOS guide § Prerequisites](/deployment/intune-macos#2-prerequisites) |
+| Jamf Pro | [Jamf Pro guide § Prerequisites](/deployment/jamf#2-prerequisites) |
+| Kandji | [Kandji guide § Prerequisites](/deployment/kandji#2-prerequisites) |
+| Manual macOS install | [Manual install guide § Prerequisites](/deployment/macos-manual#2-prerequisites) |
+
+</TabItem>
+<TabItem value="windows" label="Windows">
+
+| MDM / path | Platform-specific prereqs in |
+|---|---|
+| Microsoft Intune (Windows) | [Intune — Windows guide § Prerequisites](/deployment/intune-windows#2-prerequisites) |
+| ManageEngine Endpoint Central | [ManageEngine guide § Prerequisites](/deployment/manageengine-msi#2-prerequisites) |
+
+</TabItem>
+</Tabs>
+
+## Firewall and Network Allowlist
+
+The Quilr Endpoint Agent makes outbound **HTTPS (TCP 443)** to a small set of Quilr backplane hosts. Where the perimeter is enforced — corporate firewall, egress proxy, or TLS-intercepting Secure Web Gateway (Zscaler, Netskope, Symantec, Forcepoint, etc.) — these hosts must be allowed **before** the agent installer is deployed.
+
+:::info Pick the row that matches your tenant
+The host set depends on which Quilr environment your bundle was built against (`bff`, `dlpPrefix`, `updateUrlPrefix`). Confirm with Quilr support if you are unsure which environment applies.
+:::
+
+### Step A. Quilr control-plane hosts
+
+**Shared across all environments** — allowlist these regardless of tenant:
+
+| Host | Purpose |
+|---|---|
+| `discover.quilrai.dev` | Tenant / endpoint discovery |
+| `log.quilrai.dev` | Diagnostic log shipping (enabled when diagnostics are turned on) |
+| `quilr-extensions.quilr.ai` | Browser-extension / agent update distribution (default CDN) |
+
+**Per-environment** — pick the row that matches your tenant:
+
+| Environment | Base URL | DLP Host |
+|---|---|---|
+| **Quartz** | `https://quartz.quilr.ai` | `https://dlpone.quilr.ai` |
+| **Secure** | `https://secure.quilr.ai` | `https://dlpone.quilr.ai` |
+| **US POC** | `https://app.quilr.ai` | `https://dlpone.quilr.ai` |
+| **IND POC** | `https://platform.quilr.ai` | `https://dlp-platform.quilr.ai` |
+| **US Prod** | `https://app.quilrai.com` | `https://dlpone.quilrai.com` |
+| **IND Prod** | `https://platform.quilrai.com` | `https://dlp-platform.quilrai.com` |
+| **JP POC** | `https://app-jp.quilr.ai` | `https://dlpone-jp-1.quilr.ai` |
+| **UAE POC** | `https://trust.quilr.ai` | `https://dlp-platform.quilr.ai` |
+:::note Dedicated PaaS / on-prem deployments
+If your tenant runs on a customer-owned domain (your own DNS / on-prem control plane), the shared hosts above still apply — Quilr support provides the tailored Base URL + DLP allowlist for your specific deployment. Contact `support@quilr.ai`.
+:::
+
+### Step B. Additional update / artifact CDN (env-specific)
+
+Most environments use the default `quilr-extensions.quilr.ai` (already in Step A). A few environments use an additional CDN — allowlist the matching row **in addition to** Step A:
+
+| Host | Used by environments |
+|---|---|
+| `quilr-extensions.quilrai.com` | `quilr-saas-ind-prod`, `quilr-saas-usa-prod` |
+| `quilr-hub.quilr.ai` | `quilr-poc2` |
+
+If your environment is not listed above, Step A alone covers update distribution.
+
+### Step C. TLS-intercepting proxies — SSL-bypass
+
+If your egress sits behind Zscaler / Netskope / Symantec WSS / Forcepoint / iboss / etc., add **every** host from Steps A and B to the **SSL-bypass** (no TLS inspection) list. The agent pins TLS to Quilr's internal CA chain (deployed in Part 2 of each deployment guide) — re-signing through the SWG's CA breaks the handshake and the agent will fail to connect.
+
+For the *upstream* SWG rules covering monitored **AI** hosts (ChatGPT, Claude, Gemini, etc.), see the companion [URL Exception List — AI Apps](/reference/url-exceptions-ai) and [URL Exception List — Non-AI Apps](/reference/url-exceptions-nonai) — those cover apps the agent **inspects**, not the Quilr backplane itself.
+
+### Step D. Validate egress from a pilot device
+
+From a pilot endpoint, verify reachability **before** installing the agent.
+
+<Tabs groupId="platform" queryString="platform">
+
+<TabItem value="all" label="All Platforms" default>
+
+Run **one** of the commands below depending on which OS you're testing from.
+
+</TabItem>
+
+<TabItem value="macos" label="macOS">
+
+```bash
+for h in app.quilr.ai dlpone.quilr.ai discover.quilrai.dev log.quilrai.dev quilr-extensions.quilr.ai; do
+  out=$(nc -zv -G 5 "$h" 443 2>&1)
+  if [[ "$out" == *succeeded* ]] || [[ "$out" == *open* ]]; then status=OK; else status=BLOCKED; fi
+  printf "%-40s  TCP/443  %s\n" "$h" "$status"
+done
+```
+
+</TabItem>
+
+<TabItem value="windows" label="Windows">
+
+```powershell
+# Replace the first two hosts with the row from Step A that matches your tenant.
+$targets = @(
+    'app.quilr.ai',              # Base URL
+    'dlpone.quilr.ai',           # DLP
+    'discover.quilrai.dev',      # Discover (shared)
+    'log.quilrai.dev',           # Diagnostic log (shared)
+    'quilr-extensions.quilr.ai'  # Update / extension CDN (shared)
+)
+foreach ($h in $targets) {
+    $ok = Test-NetConnection -ComputerName $h -Port 443 `
+            -InformationLevel Quiet -WarningAction SilentlyContinue
+    "{0,-40}  TCP/443  {1}" -f $h, $(if ($ok) { 'OK' } else { 'BLOCKED' })
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+Any `BLOCKED` host means the firewall / SWG / corporate proxy still needs adjustment. Re-run the test after the network team applies the allowlist.
+
+### Notes on endpoint firewalls
+
+<Tabs groupId="platform" queryString="platform">
+
+<TabItem value="all" label="All Platforms" default>
+
+On a default install of either Windows or macOS, outbound TCP 443 is unrestricted — per-host outbound rules on the endpoint firewall are normally **not required**. The standard path is to allowlist Quilr backplane FQDNs at the **egress proxy / SWG / corporate firewall**, not on the per-endpoint Defender Firewall (Windows) or PF (macOS). Each deployment guide's *Section 3* covers the platform-specific path when endpoint-firewall rules *are* required.
+
+</TabItem>
+
+<TabItem value="macos" label="macOS">
+
+On a default macOS install the **Application Firewall** controls **inbound** connections only — outbound TCP 443 is unrestricted, so per-host outbound rules are normally **not required** on the endpoint.
+
+The standard path is to allowlist Quilr backplane FQDNs at the **egress proxy / SWG / corporate firewall**. If fleet policy enforces PF-based outbound block-by-default on the endpoint, the [Intune — macOS](/deployment/intune-macos) guide's Section 3 documents a PF anchor that the agent `.pkg` postinstall can drop at `/etc/pf.anchors/quilr-allowlist`.
+
+</TabItem>
+
+<TabItem value="windows" label="Windows">
+
+On a default Windows install, **Defender Firewall** allows outbound TCP 443 — per-host outbound rules are normally **not required** on the endpoint.
+
+If your fleet enforces an outbound block-by-default Defender Firewall policy, the [Microsoft Intune — Windows](/deployment/intune-windows) and [ManageEngine — Windows](/deployment/manageengine-msi) guides cover the program-path allow rules to add for the Quilr agent binaries under `%ProgramFiles%\QuilrAI\`.
+
+</TabItem>
+
+</Tabs>
+
+## See also
+
+- [Validate Installation](/reference/validate-installation) — what to confirm after the rollout.
+- [Troubleshooting](/reference/troubleshooting) — common failure modes.
+- [URL Exception List — AI Apps](/reference/url-exceptions-ai) — AI hosts the agent monitors (SWG SSL-bypass on these too).

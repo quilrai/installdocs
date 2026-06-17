@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Step 6 · Troubleshooting — Quilr Endpoint Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../assets/styles.css" />
+
+  <!-- sop-favicon v1 -->
+  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
+  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">Q</div>
+      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+    </div>
+    <div class="nav-group-title">Overview</div>
+    <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
+    <div class="nav-group-title">Endpoint Agent</div>
+    <ul class="nav">
+      <li><a href="../Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a class="active" href="../Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="nav-group-title">Browser Extension</div>
+    <ul class="nav">
+      <li><a href="../../Browser%20Extension/Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../../Browser%20Extension/Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../../Browser%20Extension/Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../../Browser%20Extension/Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../../Browser%20Extension/Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../../Browser%20Extension/Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a href="../../Browser%20Extension/Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="sidebar-foot">
+      Source: <a href="https://installdocs.quilrai.dev/reference/troubleshooting" target="_blank" rel="noopener">installdocs.quilrai.dev</a><br />
+      Support: <a href="mailto:support@quilr.ai">support@quilr.ai</a>
+    </div>
+  </aside>
+  <div class="scrim"></div>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-btn" aria-label="Open navigation">☰</button>
+      <nav class="crumbs">
+        <a href="../../index.html">SOP</a><span class="sep">/</span>
+        <a href="../../index.html">Endpoint Agent</a><span class="sep">/</span>
+        <span class="here">Step 6 · Troubleshooting</span>
+      </nav>
+    </header>
+
+    <div class="content">
+      <nav class="wizard" aria-label="Endpoint Agent deployment steps">
+                <a class="wstep" href="../Step%201%20-%20Prerequisites/index.html"><span class="wdot">1</span><span class="wlabel">Prerequisites</span></a>
+        <a class="wstep" href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="wdot">2</span><span class="wlabel">Validation</span></a>
+        <a class="wstep" href="../Step%203%20-%20Manual%20Installation/index.html"><span class="wdot">3</span><span class="wlabel">Manual Install</span></a>
+        <a class="wstep" href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="wdot">4</span><span class="wlabel">Verify Install</span></a>
+        <a class="wstep" href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="wdot">5</span><span class="wlabel">MDM Rollout</span></a>
+        <a class="wstep" href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="wdot">6</span><span class="wlabel">Verify MDM</span></a>
+        <a class="wstep current" href="../Step%207%20-%20Troubleshooting/index.html"><span class="wdot">7</span><span class="wlabel">Troubleshoot</span></a>
+      </nav>
+
+      <span class="eyebrow">Endpoint Agent · Step 7 of 7</span>
+      <h1>Troubleshooting</h1>
+      <p class="lead">Start with the 30-second triage — it diagnoses roughly 80% of field issues. If triage is all-green but
+      behavior is still wrong, capture a diagnostic bundle and escalate.</p>
+
+      <div data-os="win">
+      <h2>30-second triage (Windows)</h2>
+      <p>Run in elevated PowerShell. A healthy endpoint shows the service <code>Running</code>, WinDivert filters present, both CAs in the trust stores, and the extension force-installed.</p>
+      <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code><span class="c"># 1 · Service running / automatic</span>
+Get-Service | Where-Object { $_.Name -match 'quilrai|quilr' } | Select Name, Status, StartType
+
+<span class="c"># 2 · WinDivert filter / driver registered</span>
+netsh wfp show state file=$env:TEMP\wfp.xml | Out-Null
+Select-String $env:TEMP\wfp.xml -Pattern 'quilr' -SimpleMatch | Select -First 5
+
+<span class="c"># 3 · CA chain in Local Machine trust stores</span>
+certutil -store Root | findstr /i quilr
+certutil -store CA   | findstr /i quilr
+
+<span class="c"># 4 · Browser extension force-installed</span>
+Get-ChildItem 'HKLM:\SOFTWARE\Policies\Microsoft\Edge\ExtensionInstallForcelist', `
+  'HKLM:\SOFTWARE\Policies\Google\Chrome\ExtensionInstallForcelist' -EA SilentlyContinue | Get-ItemProperty</code></pre></div>
+      </div>
+
+      <div data-os="mac">
+      <h2>30-second triage (macOS)</h2>
+      <p>Seven quick checks. A healthy endpoint shows: agent process running, system extension <code>[activated enabled]</code>, two CAs in the keychain, and FDA <code>allowed=1</code>.</p>
+      <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash · sudo</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code><span class="c"># 1 · Agent process</span>
+pgrep -lf "quilrai|quilrai-proxy"
+
+<span class="c"># 2 · Network Extension status</span>
+systemextensionsctl list | grep -i quilr
+
+<span class="c"># 3 · Content filter present</span>
+profiles show -type configuration | grep -A2 -i "ContentFilter"
+
+<span class="c"># 4 · CA chain in System keychain (expect 2)</span>
+security find-certificate -a /Library/Keychains/System.keychain | grep -ci quilr
+
+<span class="c"># 5 · Full Disk Access (expect allowed=1)</span>
+sqlite3 "/Library/Application Support/com.apple.TCC/TCC.db" \
+  "select client, allowed from access where service='kTCCServiceSystemPolicyAllFiles' and client like '%quilr%';"
+
+<span class="c"># 6 · API reachability (expect 200/401/405 from each)</span>
+for u in quilr-hub.quilr.ai secure.quilr.ai dlpone.quilr.ai; do
+  curl -s -o /dev/null -w "%{http_code}  $u\n" -X POST -d '{}' -H 'content-type: application/json' "https://$u"
+done
+
+<span class="c"># 7 · Profile count (expect 3)</span>
+profiles list | grep -i quilr | wc -l</code></pre></div>
+      </div>
+
+      <h2>Required network allow-list</h2>
+      <p>These four must be reachable, allowed by SWG/DNS, and <strong>bypassed from SSL inspection</strong>:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Host</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><code>quilr-hub.quilr.ai</code></td><td>CDN for installer / updates</td></tr>
+          <tr><td><code>secure.quilr.ai</code> (or <code>QUILR_BACKEND_BASE_URL</code>)</td><td>BFF, config, events</td></tr>
+          <tr><td><code>dlpone.quilr.ai</code> (or <code>QUILR_DLP_ENDPOINT</code>)</td><td>DLP detection</td></tr>
+          <tr><td><code>openidconnect.googleapis.com</code></td><td>Google SSO userinfo</td></tr>
+        </tbody>
+      </table></div>
+      <p>Probe each with <code>curl -X POST -d '{}' -H 'content-type: application/json'</code> — expect <code>200</code>, <code>401</code>, or <code>405</code>.</p>
+
+      <h2>Agent log surface &mdash; what to grep for</h2>
+      <p>The agent writes to three rotating log files per platform &mdash; <code>agent.log</code>, <code>proxy.log</code>, and <code>monitor.log</code> (paths in the platform-specific tables below). The string patterns themselves are identical across Windows and macOS. The two tables below let an operator <em>grep</em> the right log and immediately know whether the boot was clean or which subsystem failed.</p>
+
+      <h3>Healthy startup &mdash; lines you <em>should</em> see</h3>
+      <p>Tail the agent and proxy logs right after a service restart; these lines should print within ~5 seconds in roughly this order. A missing line points at the failure in the right column.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Log line (substring &mdash; greppable)</th><th>Log file</th><th>Proves</th></tr></thead>
+        <tbody>
+          <tr><td><code>Environment initialized</code></td><td><code>agent.log</code></td><td>Install path, config dir, env vars all set.</td></tr>
+          <tr><td><code>All services started successfully</code></td><td><code>agent.log</code></td><td>Dependent services (Vault, TimeKeeper) up.</td></tr>
+          <tr><td><code>Health monitor started</code></td><td><code>agent.log</code></td><td>Watchdog active &mdash; will auto-restart a crashed subprocess.</td></tr>
+          <tr><td><code>Diagnostics IPC initialized</code></td><td><code>agent.log</code></td><td>Broker channel up; diag-events from proxy / monitor will stream.</td></tr>
+          <tr><td><code>File logging initialized in</code></td><td><code>proxy.log</code></td><td>Proxy&rsquo;s daily-rotating appender opened the file you&rsquo;re tailing.</td></tr>
+          <tr><td><code>Proxy starting</code></td><td><code>proxy.log</code></td><td>Proxy crossed the bootstrap gate; about to bind sockets.</td></tr>
+          <tr><td><code>Listeners bound</code> (with <code>http_port</code> &amp; <code>https_port</code> fields)</td><td><code>proxy.log</code></td><td>Both HTTP and HTTPS listeners successfully bound &mdash; the in-line MITM proxy is live.</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Failure modes &mdash; lines you should <em>not</em> see, and what they mean</h3>
+      <p>Filter the same logs on <code>ERROR</code> / <code>error</code>. Each row below maps an actual error string to its root cause; the Fix column points at the right Step in this troubleshooting page.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Log line</th><th>Log file</th><th>Root cause</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>Packet redirector error</code> &nbsp;<span style="opacity:.7;">(<code>ProxyRedirectorFail</code>)</span></td>
+            <td><code>proxy.log</code></td>
+            <td>Windows: WinDivert driver not registered. macOS: Network Extension not approved or not installed.</td>
+            <td>Windows &rarr; verify <code>sc query WinDivert</code> returns <code>STATE: RUNNING</code>; see Step&nbsp;1 of <a href="../Step%204%20-%20Validation%20Manual%20Installation/index.html">Verify Install</a>. macOS &rarr; approve the system extension in <strong>System Settings &rarr; Privacy &amp; Security &rarr; Allow</strong>.</td>
+          </tr>
+          <tr>
+            <td><code>TLS handshake failed</code> &nbsp;<span style="opacity:.7;">(<code>ProxyTlsHandshakeFail</code>)</span></td>
+            <td><code>proxy.log</code></td>
+            <td>Client TLS handshake failure &mdash; usually AV/EDR running its own MITM proxy in front of Quilr, or the system root store rejecting the Quilr CA.</td>
+            <td>Verify the Quilr root cert is present in the system store (Step&nbsp;4 of Verify Install). Add AV/EDR exclusion for <code>%ProgramFiles%\QuilrAI\</code> / <code>/Applications/QuilrAIProxy.app/</code>.</td>
+          </tr>
+          <tr>
+            <td><code>Forward failed</code> &nbsp;<span style="opacity:.7;">(<code>ProxyForwardFail</code>)</span></td>
+            <td><code>proxy.log</code></td>
+            <td>Upstream host unreachable &mdash; most often <code>discover.quilrai.dev</code> or the env-specific base/DLP host blocked by firewall / DNS / SWG.</td>
+            <td>Re-run the Step&nbsp;2 connectivity check; allowlist + SSL-bypass per the Required network allow-list table above.</td>
+          </tr>
+          <tr>
+            <td><code>Certificate generation failed</code> &nbsp;<span style="opacity:.7;">(<code>ProxyCertFail</code>)</span></td>
+            <td><code>proxy.log</code></td>
+            <td>Self-signed leaf CA couldn&rsquo;t be issued at runtime &mdash; disk full, permission denied on the cert dir, or AV quarantining the cert binary.</td>
+            <td>Check disk space + permissions on <code>%ProgramData%\QuilrAI\</code> / <code>/Library/Application Support/QuilrAI/</code>. Check AV/EDR quarantine for cert-gen binary.</td>
+          </tr>
+          <tr>
+            <td><code>DLP engine initialization failed</code> &nbsp;<span style="opacity:.7;">(<code>ProxyDlpInitialized</code> error case)</span></td>
+            <td><code>proxy.log</code></td>
+            <td>DLP persona auth failed &mdash; email-discovery results missing, or the Persona service unreachable. Agent falls back to heuristic DLP only.</td>
+            <td>Re-run email-discovery (Step&nbsp;3 of Verify Install). Confirm the env-specific base host is reachable on TCP/443.</td>
+          </tr>
+          <tr>
+            <td><code>Agent must be spawned with --spawned-by-bootstrap flag</code></td>
+            <td><code>agent.log</code></td>
+            <td>Bootstrap validation failed &mdash; somebody launched the agent binary directly instead of through the bootstrap wrapper. Security check, agent exits immediately.</td>
+            <td>Always start the agent via the service manager (Windows SCM / macOS LaunchDaemon). Never invoke <code>quilrai-endpoint.exe</code> by hand.</td>
+          </tr>
+          <tr>
+            <td><code>Rolling file appender initialization panicked for &hellip;; using console-only logging</code></td>
+            <td>stderr only (no file)</td>
+            <td>The log directory isn&rsquo;t writable &mdash; permissions or disk full &mdash; so the file appender failed and proxy fell back to stderr only.</td>
+            <td>Fix permissions / free disk space on the log directory; restart the proxy service.</td>
+          </tr>
+          <tr>
+            <td><code>No writable log directory available</code></td>
+            <td>stderr only</td>
+            <td>Every candidate log dir failed the writable check &mdash; no persistent logging at all.</td>
+            <td>Same as above; verify <code>%PROGRAMDATA%\quilrai\logs\</code> / <code>/Library/Application Support/QuilrAI/logs/</code> exists and the service account owns it.</td>
+          </tr>
+        </tbody>
+      </table></div>
+
+      <h3>No live-tail / DevTools surface</h3>
+      <p>Unlike the Browser Extension (where <code>chrome://extensions &rarr; Inspect views: service worker</code> gives you a live Console + Network), the Endpoint Agent has <strong>no equivalent debug socket or <code>--tail</code> CLI</strong>. Real-time diagnostics happen over an internal IPC broker (<code>quilrai_broker</code> / <code>quilrai_alerting</code>) consumed by the diagnostics service &mdash; not human-friendly. <strong>Disk tail is the operator&rsquo;s only path:</strong></p>
+      <div class="tabs">
+        <div class="tab-btns">
+          <button class="tab-btn active" data-tab="win">Windows &middot; PowerShell</button>
+          <button class="tab-btn" data-tab="mac">macOS &middot; shell</button>
+        </div>
+        <div class="tab-panel active" data-panel="win">
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code><span class="c"># Tail today&#39;s proxy + agent logs in parallel windows</span>
+$today = Get-Date -Format yyyy-MM-dd
+Get-Content "$env:PROGRAMDATA\quilrai\logs\proxy.log.$today" -Wait -Tail 100
+<span class="c"># In a second window:</span>
+Get-Content "$env:PROGRAMDATA\quilrai\logs\agent.log.$today" -Wait -Tail 100</code></pre></div>
+        </div>
+        <div class="tab-panel" data-panel="mac">
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash &middot; sudo</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code><span class="c"># Tail today&#39;s proxy + agent logs (each in its own terminal pane)</span>
+TODAY=$(date +%Y-%m-%d)
+sudo tail -F "/Library/Application Support/QuilrAI/logs/proxy.log.${TODAY}"
+sudo tail -F "/Library/Application Support/QuilrAI/logs/agent.log.${TODAY}"</code></pre></div>
+        </div>
+      </div>
+
+            <div data-os="mac">
+      <h2>Critical log locations (macOS)</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Component</th><th>Path</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>Install</td><td><code>/Library/Application Support/QuilrAI/logs/</code></td><td>Install trace</td></tr>
+          <tr><td>Upload / sync</td><td><code>/Library/Application Support/QuilrAI/logs/</code></td><td>Cloud upload &amp; telemetry</td></tr>
+          <tr><td>Agent (runtime)</td><td><code>/Library/Logs/quilrai/agent.stderr.log</code></td><td>Lifecycle, init, heartbeat</td></tr>
+          <tr><td>Proxy daemon (runtime)</td><td><code>/Library/Logs/quilrai/proxy.log.YYYY-MM-DD</code></td><td>DLP engine, TLS events</td></tr>
+          <tr><td>Templating engine (runtime)</td><td><code>/Library/Logs/quilrai/templating-engine.log.YYYY-MM-DD</code></td><td>UI alerts</td></tr>
+          <tr><td>System installer</td><td><code>/var/log/install.log</code></td><td>Gatekeeper, disk space</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2>Known issues</h2>
+      <p style="color:var(--ink-soft); margin-top:-6px;">Specific failure modes seen in the field — match the diagnostic clue in the left column to skip straight to the fix.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Diagnostic clue</th><th>Likely cause</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>discover.quilrai.dev</code> unreachable from the endpoint (<code>nc -zv discover.quilrai.dev 443</code> reports BLOCKED, or <code>curl -v https://discover.quilrai.dev/</code> fails). Agent runs but never enrolls into a tenant.</td>
+            <td>Corporate firewall, DNS filter (Cisco Umbrella / NextDNS), or upstream SWG (Zscaler / Netskope / Symantec / Forcepoint) blocking or TLS-intercepting the host.</td>
+            <td>Allowlist <code>discover.quilrai.dev</code> on the firewall <strong>and</strong> add it to the SWG&rsquo;s SSL-bypass / Do Not Decrypt list. Retest with <code>nc -zv … 443</code>. See <a href="../Step%201%20-%20Prerequisites/index.html#network">Step 1 § Network allow-list</a>.</td>
+          </tr>
+          <tr>
+            <td>Pkg install fails — <code>installer:</code> output shows <em>&ldquo;Operation not permitted&rdquo;</em> or the postinstall script returns non-zero. <code>sentinel-endpoint.log</code> mentions quarantine or codesign rejection.</td>
+            <td>AV / EDR (CrowdStrike Falcon for Mac, SentinelOne, Microsoft Defender for Endpoint on Mac, Sophos) is blocking the Network Extension binary or one of the helper tools.</td>
+            <td>Add <strong>AV / EDR exclusions</strong> for <code>/Applications/QuilrAIProxy.app/</code> and <code>/Library/Application Support/QuilrAI/</code>, then re-run the pkg. See <a href="../Step%201%20-%20Prerequisites/index.html#av">Step 1 § AV exclusions</a>.</td>
+          </tr>
+          <tr>
+            <td>Network Extension shows <code>[activated waiting for user]</code> after pkg install on an ADE-enrolled Mac, even though the SystemExtensions payload is present.</td>
+            <td>Bundle ID in the SystemExtensions payload does not match the binary, or the Team ID was changed in a re-signed build.</td>
+            <td>Re-validate the <code>.mobileconfig</code> bundle ID against <code>codesign -dr -</code> on the <code>.systemextension</code>. Request a refreshed payload from Quilr support if the binary was re-signed.</td>
+          </tr>
+          <tr>
+            <td>FDA prompt is shown to the user on first launch.</td>
+            <td>PPPC profile not installed, or its CodeRequirement does not match a re-signed binary.</td>
+            <td>Confirm the PPPC Custom Profile is <em>Installed</em>; check the TCC db for an <code>allowed=1, auth_reason=4</code> row; if the binary was re-signed, request a refreshed PPPC bundle.</td>
+          </tr>
+        </tbody>
+      </table></div>
+
+            <h2>Common issues &amp; fixes</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Symptom</th><th>Resolution</th></tr></thead>
+        <tbody>
+          <tr><td>Package fails (exit 1)</td><td>Check Gatekeeper: <code>spctl --assess --type install -vvv</code>; ensure 300&nbsp;MB free disk; remove conflicting prior builds via the uninstall script.</td></tr>
+          <tr><td>Codesign mismatch</td><td>The PPPC profile&rsquo;s CodeRequirement must match the agent&rsquo;s Team ID. Request a matching bundle if Quilr re-signs binaries.</td></tr>
+          <tr><td>Profile won&rsquo;t install</td><td><code>sudo profiles renew -type enrollment</code>; confirm User-Approved MDM; re-upload (don&rsquo;t re-sign) in Jamf.</td></tr>
+          <tr><td>CA cert untrusted</td><td>Verify <em>both</em> root and intermediate are in the System keychain; re-upload Certificate payloads if only one is present.</td></tr>
+          <tr><td>FDA not granted</td><td>Confirm the PPPC profile is installed; verify a <code>SystemPolicyAllFiles</code> entry with matching CodeRequirement; query TCC for <code>allowed=1</code>.</td></tr>
+          <tr><td>Network Extension inactive</td><td>Confirm both SystemExtensions and WebContentFilter payloads are in the profile; bundle ID must match the binary (<code>codesign -dr -</code>); last resort <code>sudo systemextensionsctl reset</code> (Recovery Mode).</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2>Escalation</h2>
+      <p>When issues persist after triage, capture a diagnostic bundle:</p>
+      <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash · sudo</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>sudo /Applications/QuilrAIProxy.app/Contents/Resources/diag-bundle.sh \
+  -o ~/Desktop/quilr-diag-$(hostname)-$(date +%Y%m%d-%H%M).tar.gz</code></pre></div>
+      <p>Send the bundle to <a href="mailto:support@quilr.ai">support@quilr.ai</a> when: an all-green triage shows no console events, the Network Extension crash-loops, or genuine apps report TLS errors. Include the one-liner output, functional-test results, log files, tenant UUID, device hostname, agent version, the test time window, OS version, and whether an upstream SWG is present.</p>
+
+      <div class="callout warn">
+        <span class="ico">🧹</span>
+        <div><span class="ct">Clean uninstall</span>
+        Run the bundled uninstaller — <code>sudo "/Library/Application Support/QuilrAI/quilrai-endpoint-uninstaller"</code> — which
+        stops the processes, removes the system extension, and deletes the LaunchDaemons, app, and config folders. Then unscope the
+        profiles in your MDM. <strong>Do not delete the CA from the keychain</strong> unless you are also rolling back the
+        certificate profile.</div>
+      </div>
+      </div>
+
+      <div data-os="win">
+      <h2>Critical log locations (Windows)</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Component</th><th>Path</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>Agent runtime (all services)</td><td><code>%PROGRAMDATA%\quilrai\logs\</code></td><td>Root directory for every sentinel-service trace (proxy, templating engine, broker)</td></tr>
+          <tr><td>Proxy daemon (runtime)</td><td><code>%PROGRAMDATA%\quilrai\logs\proxy.log.YYYY-MM-DD</code></td><td>DLP engine, TLS interception, <code>flow.matched</code> events &mdash; daily-rotating</td></tr>
+          <tr><td>Templating engine (runtime)</td><td><code>%PROGRAMDATA%\quilrai\logs\templating-engine.log.YYYY-MM-DD</code></td><td>DLP alert popups &mdash; daily-rotating, only active when an alert renders</td></tr>
+          <tr><td>IPC broker (runtime)</td><td><code>%PROGRAMDATA%\quilrai\logs\agent.stderr.log</code> &nbsp;<span style="opacity:.7;">(also <code>agent.stdout.log</code>)</span></td><td>Lifecycle, init, heartbeat, inter-process broker traffic</td></tr>
+          <tr><td>MSI install &mdash; interactive (signed-in user)</td><td><code>%TEMP%\sentinel-msi-install.log</code> &nbsp;<span style="opacity:.7;">(= <code>C:\Users\&lt;USER&gt;\AppData\Local\Temp\sentinel-msi-install.log</code>)</span></td><td>MSI verbose trace when the user double-clicked / msiexec'd the package</td></tr>
+          <tr><td>MSI install &mdash; SYSTEM (MDM-pushed)</td><td><code>C:\Windows\Temp\sentinel-msi-install.log</code></td><td>Same trace when Intune Win32 / ManageEngine / GPO ran the MSI as <code>LocalSystem</code></td></tr>
+          <tr><td>MSI uninstall / rollback</td><td><code>%TEMP%\sentinel-msi-uninstall.log</code> &nbsp;<span style="opacity:.7;">or</span>&nbsp; <code>C:\Windows\Temp\sentinel-msi-uninstall.log</code></td><td>Rollback / uninstall verbose trace &mdash; mirror of the install log</td></tr>
+          <tr><td>Intune Management Extension</td><td><code>%PROGRAMDATA%\Microsoft\IntuneManagementExtension\Logs\IntuneManagementExtension.log</code></td><td>Win32 app download &middot; hash check &middot; install orchestration (only when Intune pushed the MSI)</td></tr>
+          <tr><td>Windows Event Log &mdash; System</td><td><code>Get-WinEvent -LogName System | ? { $_.ProviderName -match 'WinDivert' } | Select -First 50</code></td><td>WinDivert kernel-driver load / registration failures (run elevated)</td></tr>
+          <tr><td>Windows Event Log &mdash; Application</td><td><code>Get-WinEvent -LogName Application | ? { $_.ProviderName -match 'Quilr' } | Select -First 50</code></td><td>User-mode service crashes &middot; uncaught exceptions surfaced to WER</td></tr>
+        </tbody>
+      </table></div>
+      <p style="color:var(--ink-soft); font-size:.9em; margin-top:-6px;">Templating-engine / broker filenames mirror the macOS layout; if a file is missing on a given build, confirm the exact name with Quilr support before escalating.</p>
+
+      <h2>Known issues</h2>
+      <p style="color:var(--ink-soft); margin-top:-6px;">Specific failure modes seen in the field — match the diagnostic clue in the left column to skip straight to the fix.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Diagnostic clue</th><th>Likely cause</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>discover.quilrai.dev</code> unreachable from the endpoint (timeout / DNS fail / SSL handshake error). <code>Test-NetConnection discover.quilrai.dev -Port 443</code> returns <code>BLOCKED</code>. Agent runs but no events reach the console, log shows &ldquo;discover failed&rdquo; / no tenant resolution.</td>
+            <td>Corporate firewall, DNS filter (Cisco Umbrella / Defender DNS / NetSweeper / iboss), or upstream SWG (Zscaler / Netskope / Forcepoint / Symantec) is blocking or TLS-intercepting <code>discover.quilrai.dev</code>.</td>
+            <td>Allowlist <code>discover.quilrai.dev</code> on the firewall <strong>and</strong> add it to the SWG&rsquo;s SSL-bypass / Do Not Decrypt list. Retest with <code>Test-NetConnection</code>. See <a href="../Step%201%20-%20Prerequisites/index.html#network">Step 1 § Network allow-list</a>.</td>
+          </tr>
+          <tr>
+            <td>MSI install fails with <strong>exit code 1603</strong> (&ldquo;Fatal error during installation&rdquo;). The install log <code>%TEMP%\sentinel-msi-install.log</code> contains lines like <code>MSI (s) (XX:XX) Return value 3.</code> followed by a CustomAction or driver-registration failure.</td>
+            <td>AV / EDR (CrowdStrike Falcon, SentinelOne, Microsoft Defender for Endpoint, Sophos, Trellix, …) is quarantining the WinDivert driver or the MSI CustomAction at install time.</td>
+            <td>Add <strong>AV / EDR exclusions</strong> for <code>%ProgramFiles%\QuilrAI\</code> and <code>%ProgramData%\QuilrAI\</code>, then re-run the MSI. Confirm by tailing the AV quarantine log around the install attempt; quarantined files referencing <code>WinDivert</code> / <code>QuilrAI</code> are a positive match. See <a href="../Step%201%20-%20Prerequisites/index.html#av">Step 1 § AV exclusions</a>.</td>
+          </tr>
+          <tr>
+            <td>MSI install fails with <strong>exit code 1618</strong> (&ldquo;Another installation is already in progress&rdquo;).</td>
+            <td>Concurrent MSI install — Windows Installer is single-threaded; Intune Management Extension and a manual <code>msiexec</code> can race.</td>
+            <td>Wait 60&nbsp;s and re-run the install, or restart the <code>msiserver</code> service.</td>
+          </tr>
+          <tr>
+            <td><code>sc query WinDivert</code> returns <em>&ldquo;The specified service does not exist as an installed service&rdquo;</em> even though the MSI says it succeeded.</td>
+            <td>WinDivert driver was loaded but failed to register (Authenticode revoked, mismatched OS build, AV blocking driver registration).</td>
+            <td>Check the AV/EDR live block log first (most common cause). If clean, capture the MSI install log and the Windows System Event log at install time; escalate with the WinDivert error code.</td>
+          </tr>
+          <tr>
+            <td>Agent installed and service running, but every probe to <code>app.quilr.ai</code> / <code>dlpone.quilr.ai</code> returns HTTP <code>200</code> with HTML body (a login page).</td>
+            <td>Captive portal or SWG block page replacing the response.</td>
+            <td>SSL-bypass the Quilr backplane hosts on the SWG; revisit captive-portal coverage if the endpoint is roaming. See <a href="../Step%201%20-%20Prerequisites/index.html#network">Step 1 § Network allow-list</a>.</td>
+          </tr>
+        </tbody>
+      </table></div>
+
+            <h2>Common issues &amp; fixes</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Symptom</th><th>Resolution</th></tr></thead>
+        <tbody>
+          <tr><td>Service won&rsquo;t start / TLS errors</td><td>Missing intermediate CA — confirm <em>both</em> certs imported (<code>certutil -store Root</code> and <code>-store CA</code>); the intermediate is required for the chain.</td></tr>
+          <tr><td>No Quilr cert in store</td><td>CA script not applied or wrong store — re-run <code>certutil -addstore -f Root</code> / <code>-addstore -f CA</code>, or let the MSI re-import; redeploy.</td></tr>
+          <tr><td>Agent installed but idle</td><td><code>TENANTID</code> was omitted from the MSI command — reinstall with <code>TENANTID=&lt;TENANT-ID&gt;</code>.</td></tr>
+          <tr><td>MDM config stuck / not applied</td><td>Trigger a manual sync (Intune) or refresh cycle (Endpoint Central); for GPO run <code>gpupdate /force</code>.</td></tr>
+          <tr><td>Browser extension missing</td><td>Verify the <code>ExtensionInstallForcelist</code> value and extension ID/URL; restart the browser; redeploy the policy.</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2>Escalation</h2>
+      <p>Collect the service status, <code>certutil</code> outputs, the tail of <code>%PROGRAMDATA%\quilrai\logs\proxy.log.*</code>, and the MSI logs from <code>%WINDIR%\Temp\</code>. Send them to <a href="mailto:support@quilr.ai">support@quilr.ai</a> with the tenant UUID, device hostname, agent version, OS version, and whether an upstream SWG is present.</p>
+
+      <div class="callout warn">
+        <span class="ico">🧹</span>
+        <div><span class="ct">Clean uninstall</span>
+        Change the MSI assignment to <strong>Uninstall</strong> (or run <code>msiexec /x "{QUILR-MSI-PRODUCT-CODE}" /qn</code>), unassign the CA certificate profiles, and remove the extension force-install policy. <strong>Leave the CAs</strong> unless you are also rolling back the certificate profiles.</div>
+      </div>
+      </div>
+
+      <div class="callout tip">
+        <span class="ico">🎉</span>
+        <div><span class="ct">Endpoint Agent track complete</span>
+        You&rsquo;ve covered prerequisites, validation, manual + MDM installation, and troubleshooting. To protect Chrome and
+        Edge, move on to the <a href="../../Browser%20Extension/Step%201%20-%20Prerequisites/index.html">Browser Extension</a> track.</div>
+      </div>
+
+      <div class="wizard-nav">
+        <a class="wbtn back" href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span>←</span><span class="wbt"><small>Back</small><b>Verify MDM Install</b></span></a>
+        <span class="wcount">Step 7 of 7</span>
+        <a class="wbtn next" href="../../Browser%20Extension/Step%201%20-%20Prerequisites/index.html"><span class="wbt"><small>Next track</small><b>Browser Extension</b></span><span>→</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../../assets/app.js"></script>
+</body>
+</html>

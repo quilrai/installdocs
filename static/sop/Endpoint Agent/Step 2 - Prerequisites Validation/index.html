@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Step 2 · Prerequisites Validation — Quilr Endpoint Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../assets/styles.css" />
+
+  <!-- sop-favicon v1 -->
+  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
+  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">Q</div>
+      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+    </div>
+    <div class="nav-group-title">Overview</div>
+    <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
+    <div class="nav-group-title">Endpoint Agent</div>
+    <ul class="nav">
+      <li><a href="../Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a class="active" href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a href="../Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="nav-group-title">Browser Extension</div>
+    <ul class="nav">
+      <li><a href="../../Browser%20Extension/Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../../Browser%20Extension/Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../../Browser%20Extension/Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../../Browser%20Extension/Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../../Browser%20Extension/Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../../Browser%20Extension/Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a href="../../Browser%20Extension/Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="sidebar-foot">
+      Source: <a href="https://installdocs.quilrai.dev/prerequisites" target="_blank" rel="noopener">installdocs.quilrai.dev</a><br />
+      Support: <a href="mailto:support@quilr.ai">support@quilr.ai</a>
+    </div>
+  </aside>
+  <div class="scrim"></div>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-btn" aria-label="Open navigation">☰</button>
+      <nav class="crumbs">
+        <a href="../../index.html">SOP</a><span class="sep">/</span>
+        <a href="../../index.html">Endpoint Agent</a><span class="sep">/</span>
+        <span class="here">Step 2 · Prerequisites Validation</span>
+      </nav>
+    </header>
+
+    <div class="content">
+      <nav class="wizard" aria-label="Endpoint Agent deployment steps">
+                <a class="wstep" href="../Step%201%20-%20Prerequisites/index.html"><span class="wdot">1</span><span class="wlabel">Prerequisites</span></a>
+        <a class="wstep current" href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="wdot">2</span><span class="wlabel">Validation</span></a>
+        <a class="wstep" href="../Step%203%20-%20Manual%20Installation/index.html"><span class="wdot">3</span><span class="wlabel">Manual Install</span></a>
+        <a class="wstep" href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="wdot">4</span><span class="wlabel">Verify Install</span></a>
+        <a class="wstep" href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="wdot">5</span><span class="wlabel">MDM Rollout</span></a>
+        <a class="wstep" href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="wdot">6</span><span class="wlabel">Verify MDM</span></a>
+        <a class="wstep" href="../Step%207%20-%20Troubleshooting/index.html"><span class="wdot">7</span><span class="wlabel">Troubleshoot</span></a>
+      </nav>
+
+      <span class="eyebrow">Endpoint Agent · Step 2 of 7</span>
+      <h1>Prerequisites Validation</h1>
+      <p class="lead">Before installing anything, prove from a pilot device that every Quilr backplane host answers on
+      TCP&nbsp;443. A single blocked host means the agent cannot enroll or report — fix it with your firewall/proxy team first.</p>
+
+      <div class="callout warn">
+        <span class="ico">⚠️</span>
+        <div><span class="ct">Run this on a real pilot endpoint</span>
+        Validate from inside the network segment the production fleet lives in, through the same proxy/SWG. A green result
+        from an admin laptop on a different egress path does not count.</div>
+      </div>
+
+      <h2>Connectivity check — per environment</h2>
+      <p>Run the <strong>hosted</strong> check on a pilot endpoint — it is fetched and executed directly, so there is no
+      copy-paste of the script body and no transcription mistakes. Pick your <strong>Environment</strong> in the top bar to get
+      the exact command (the environment is passed as an argument). Run PowerShell <em>elevated</em>; the shell version needs
+      <code>nc</code>. Every host must print <code>OK</code>.</p>
+
+      <!-- ===== US default ===== -->
+      <div data-env="uspoc">
+        <h3>US POC</h3>
+        <div class="tabs">
+          <div class="tab-btns">
+            <button class="tab-btn active" data-tab="win"> Windows · PowerShell</button>
+            <button class="tab-btn" data-tab="mac"> macOS / Linux · shell</button>
+          </div>
+          <div class="tab-panel active" data-panel="win">
+            <p class="muted-note">Hosted check — recommended, nothing to paste:</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>&amp; ([scriptblock]::Create((irm https://quilr-extensions.quilr.ai/Quilr-SOP/EndpointAgent/Windows/quilr-connectivity-check.ps1))) -Env us</code></pre></div>
+            <details class="fallback">
+              <summary>Downloads blocked? Paste this full script instead</summary>
+              <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code><span class="c"># Paste into an elevated PowerShell console</span>
+$targets = @(
+  'discover.quilrai.dev','log.quilrai.dev','quilr-extensions.quilr.ai',
+  'app.quilr.ai','dlpone.quilr.ai'
+)
+foreach ($h in $targets) {
+    $ok = Test-NetConnection -ComputerName $h -Port 443 -InformationLevel Quiet -WarningAction SilentlyContinue
+    "{0,-34}  TCP/443  {1}" -f $h, $(if ($ok) { 'OK' } else { 'BLOCKED' })
+}</code></pre></div>
+            </details>
+          </div>
+          <div class="tab-panel" data-panel="mac">
+            <p class="muted-note">Hosted check — recommended, nothing to paste:</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash / sh</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>curl -fsSL https://quilr-extensions.quilr.ai/Quilr-SOP/EndpointAgent/macOS/quilr-connectivity-check.sh | sh -s -- us</code></pre></div>
+            <details class="fallback">
+              <summary>Downloads blocked? Paste this full script instead</summary>
+              <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash / sh</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code><span class="c"># Paste into Terminal (needs nc)</span>
+for h in discover.quilrai.dev log.quilrai.dev quilr-extensions.quilr.ai \
+         app.quilr.ai dlpone.quilr.ai; do
+  if nc -z -G 5 "$h" 443 2>/dev/null || nc -z -w 5 "$h" 443 2>/dev/null; then s=OK; else s=BLOCKED; fi
+  printf "%-34s  TCP/443  %s\n" "$h" "$s"
+done</code></pre></div>
+            </details>
+          </div>
+        </div>
+        <h4>Expected output</h4>
+        <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>output</span></div>
+<pre><code>Quilr connectivity check  -  US POC
+------------------------------------------------------------
+discover.quilrai.dev          TCP/443  OK
+log.quilrai.dev               TCP/443  OK
+quilr-extensions.quilr.ai     TCP/443  OK
+app.quilr.ai                  TCP/443  OK
+dlpone.quilr.ai               TCP/443  OK
+------------------------------------------------------------
+RESULT: all hosts reachable on TCP/443.</code></pre></div>
+      </div>
+
+      <!-- ===== USA prod ===== -->
+      <div data-env="usprod">
+        <h3>US Prod</h3>
+        <div class="tabs">
+          <div class="tab-btns">
+            <button class="tab-btn active" data-tab="win"> Windows · PowerShell</button>
+            <button class="tab-btn" data-tab="mac"> macOS / Linux · shell</button>
+          </div>
+          <div class="tab-panel active" data-panel="win">
+            <p class="muted-note">Hosted check — recommended, nothing to paste:</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>&amp; ([scriptblock]::Create((irm https://quilr-extensions.quilr.ai/Quilr-SOP/EndpointAgent/Windows/quilr-connectivity-check.ps1))) -Env usa</code></pre></div>
+            <details class="fallback">
+              <summary>Downloads blocked? Paste this full script instead</summary>
+              <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code><span class="c"># Paste into an elevated PowerShell console</span>
+$targets = @(
+  'discover.quilrai.dev','log.quilrai.dev','quilr-extensions.quilr.ai',
+  'quilr-extensions.quilrai.com',
+  'app.quilrai.com','dlpone.quilrai.com'
+)
+foreach ($h in $targets) {
+    $ok = Test-NetConnection -ComputerName $h -Port 443 -InformationLevel Quiet -WarningAction SilentlyContinue
+    "{0,-34}  TCP/443  {1}" -f $h, $(if ($ok) { 'OK' } else { 'BLOCKED' })
+}</code></pre></div>
+            </details>
+          </div>
+          <div class="tab-panel" data-panel="mac">
+            <p class="muted-note">Hosted check — recommended, nothing to paste:</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash / sh</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>curl -fsSL https://quilr-extensions.quilr.ai/Quilr-SOP/EndpointAgent/macOS/quilr-connectivity-check.sh | sh -s -- usa</code></pre></div>
+            <details class="fallback">
+              <summary>Downloads blocked? Paste this full script instead</summary>
+              <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash / sh</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code><span class="c"># Paste into Terminal (needs nc)</span>
+for h in discover.quilrai.dev log.quilrai.dev quilr-extensions.quilr.ai \
+         quilr-extensions.quilrai.com \
+         app.quilrai.com dlpone.quilrai.com; do
+  if nc -z -G 5 "$h" 443 2>/dev/null || nc -z -w 5 "$h" 443 2>/dev/null; then s=OK; else s=BLOCKED; fi
+  printf "%-34s  TCP/443  %s\n" "$h" "$s"
+done</code></pre></div>
+            </details>
+          </div>
+        </div>
+        <h4>Expected output</h4>
+        <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>output</span></div>
+<pre><code>Quilr connectivity check  -  US Prod
+------------------------------------------------------------
+discover.quilrai.dev          TCP/443  OK
+log.quilrai.dev               TCP/443  OK
+quilr-extensions.quilr.ai     TCP/443  OK
+quilr-extensions.quilrai.com  TCP/443  OK
+app.quilrai.com               TCP/443  OK
+dlpone.quilrai.com            TCP/443  OK
+------------------------------------------------------------
+RESULT: all hosts reachable on TCP/443.</code></pre></div>
+      </div>
+
+      <!-- ===== Japan ===== -->
+      <div data-env="jppoc">
+        <h3>JP POC</h3>
+        <div class="tabs">
+          <div class="tab-btns">
+            <button class="tab-btn active" data-tab="win"> Windows · PowerShell</button>
+            <button class="tab-btn" data-tab="mac"> macOS / Linux · shell</button>
+          </div>
+          <div class="tab-panel active" data-panel="win">
+            <p class="muted-note">Hosted check — recommended, nothing to paste:</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>&amp; ([scriptblock]::Create((irm https://quilr-extensions.quilr.ai/Quilr-SOP/EndpointAgent/Windows/quilr-connectivity-check.ps1))) -Env japan</code></pre></div>
+            <details class="fallback">
+              <summary>Downloads blocked? Paste this full script instead</summary>
+              <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code><span class="c"># Paste into an elevated PowerShell console</span>
+$targets = @(
+  'discover.quilrai.dev','log.quilrai.dev','quilr-extensions.quilr.ai',
+  'app-jp.quilr.ai','dlpone-jp-1.quilr.ai'
+)
+foreach ($h in $targets) {
+    $ok = Test-NetConnection -ComputerName $h -Port 443 -InformationLevel Quiet -WarningAction SilentlyContinue
+    "{0,-34}  TCP/443  {1}" -f $h, $(if ($ok) { 'OK' } else { 'BLOCKED' })
+}</code></pre></div>
+            </details>
+          </div>
+          <div class="tab-panel" data-panel="mac">
+            <p class="muted-note">Hosted check — recommended, nothing to paste:</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash / sh</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>curl -fsSL https://quilr-extensions.quilr.ai/Quilr-SOP/EndpointAgent/macOS/quilr-connectivity-check.sh | sh -s -- japan</code></pre></div>
+            <details class="fallback">
+              <summary>Downloads blocked? Paste this full script instead</summary>
+              <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash / sh</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code><span class="c"># Paste into Terminal (needs nc)</span>
+for h in discover.quilrai.dev log.quilrai.dev quilr-extensions.quilr.ai \
+         app-jp.quilr.ai dlpone-jp-1.quilr.ai; do
+  if nc -z -G 5 "$h" 443 2>/dev/null || nc -z -w 5 "$h" 443 2>/dev/null; then s=OK; else s=BLOCKED; fi
+  printf "%-34s  TCP/443  %s\n" "$h" "$s"
+done</code></pre></div>
+            </details>
+          </div>
+        </div>
+        <h4>Expected output</h4>
+        <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>output</span></div>
+<pre><code>Quilr connectivity check  -  JP POC
+------------------------------------------------------------
+discover.quilrai.dev          TCP/443  OK
+log.quilrai.dev               TCP/443  OK
+quilr-extensions.quilr.ai     TCP/443  OK
+app-jp.quilr.ai               TCP/443  OK
+dlpone-jp-1.quilr.ai          TCP/443  OK
+------------------------------------------------------------
+RESULT: all hosts reachable on TCP/443.</code></pre></div>
+      </div>
+
+      <!-- ===== India ===== -->
+      <div data-env="indprod">
+        <h3>IND Prod</h3>
+        <div class="tabs">
+          <div class="tab-btns">
+            <button class="tab-btn active" data-tab="win"> Windows · PowerShell</button>
+            <button class="tab-btn" data-tab="mac"> macOS / Linux · shell</button>
+          </div>
+          <div class="tab-panel active" data-panel="win">
+            <p class="muted-note">Hosted check — recommended, nothing to paste:</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>&amp; ([scriptblock]::Create((irm https://quilr-extensions.quilr.ai/Quilr-SOP/EndpointAgent/Windows/quilr-connectivity-check.ps1))) -Env india</code></pre></div>
+            <details class="fallback">
+              <summary>Downloads blocked? Paste this full script instead</summary>
+              <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code><span class="c"># Paste into an elevated PowerShell console</span>
+$targets = @(
+  'discover.quilrai.dev','log.quilrai.dev','quilr-extensions.quilr.ai',
+  'quilr-extensions.quilrai.com',
+  'platform.quilrai.com','dlp-platform.quilrai.com'
+)
+foreach ($h in $targets) {
+    $ok = Test-NetConnection -ComputerName $h -Port 443 -InformationLevel Quiet -WarningAction SilentlyContinue
+    "{0,-34}  TCP/443  {1}" -f $h, $(if ($ok) { 'OK' } else { 'BLOCKED' })
+}</code></pre></div>
+            </details>
+          </div>
+          <div class="tab-panel" data-panel="mac">
+            <p class="muted-note">Hosted check — recommended, nothing to paste:</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash / sh</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>curl -fsSL https://quilr-extensions.quilr.ai/Quilr-SOP/EndpointAgent/macOS/quilr-connectivity-check.sh | sh -s -- india</code></pre></div>
+            <details class="fallback">
+              <summary>Downloads blocked? Paste this full script instead</summary>
+              <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash / sh</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code><span class="c"># Paste into Terminal (needs nc)</span>
+for h in discover.quilrai.dev log.quilrai.dev quilr-extensions.quilr.ai \
+         quilr-extensions.quilrai.com \
+         platform.quilrai.com dlp-platform.quilrai.com; do
+  if nc -z -G 5 "$h" 443 2>/dev/null || nc -z -w 5 "$h" 443 2>/dev/null; then s=OK; else s=BLOCKED; fi
+  printf "%-34s  TCP/443  %s\n" "$h" "$s"
+done</code></pre></div>
+            </details>
+          </div>
+        </div>
+        <h4>Expected output</h4>
+        <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>output</span></div>
+<pre><code>Quilr connectivity check  -  IND Prod
+------------------------------------------------------------
+discover.quilrai.dev          TCP/443  OK
+log.quilrai.dev               TCP/443  OK
+quilr-extensions.quilr.ai     TCP/443  OK
+quilr-extensions.quilrai.com  TCP/443  OK
+platform.quilrai.com          TCP/443  OK
+dlp-platform.quilrai.com      TCP/443  OK
+------------------------------------------------------------
+RESULT: all hosts reachable on TCP/443.</code></pre></div>
+      </div>
+
+      <p><strong>Reading the result:</strong> every host should print <code>OK</code> and the script exits <code>0</code>. A
+      blocked host looks like the following and the script exits <code>1</code> — fix it before continuing:</p>
+      <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>output · blocked example</span></div>
+<pre><code>discover.quilrai.dev          TCP/443  OK
+log.quilrai.dev               TCP/443  OK
+quilr-extensions.quilr.ai     TCP/443  OK
+app.quilr.ai                  TCP/443  BLOCKED
+dlpone.quilr.ai               TCP/443  OK
+------------------------------------------------------------
+RESULT: one or more hosts BLOCKED - unblock and SSL-bypass them before installing.</code></pre></div>
+
+      <h2>If a host is BLOCKED</h2>
+      <ul>
+        <li><strong>Firewall:</strong> open outbound TCP/443 to the host.</li>
+        <li><strong>TLS-intercepting proxy / SWG:</strong> add the host to the SSL-bypass (no decryption) list. A re-signed certificate breaks the agent&rsquo;s trust chain even when the port is technically reachable.</li>
+        <li><strong>DNS:</strong> confirm the host resolves on the endpoint&rsquo;s resolver.</li>
+      </ul>
+      <p>Re-run the check until every host reports <code>OK</code>.</p>
+
+      <h2>File-type / MIME allow check</h2>
+      <p>The agent bundle, updates, and config files are <code>.exe .msi .msp .zip .json .toml .xml</code>. If a download-control
+      policy or SWG blocks or rewrites those types, install and updates fail. This check downloads a small probe of each type and
+      confirms it arrives intact with the right Content-Type. It is environment-independent — run it once:</p>
+      <div class="tabs">
+        <div class="tab-btns">
+          <button class="tab-btn active" data-tab="win"> Windows · PowerShell</button>
+          <button class="tab-btn" data-tab="mac"> macOS / Linux · shell</button>
+        </div>
+        <div class="tab-panel active" data-panel="win">
+          <p class="muted-note">Hosted check — recommended, nothing to paste:</p>
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>&amp; ([scriptblock]::Create((irm https://quilr-extensions.quilr.ai/Quilr-SOP/EndpointAgent/Windows/quilr-filetype-check.ps1)))</code></pre></div>
+          <details class="fallback">
+            <summary>Downloads blocked? Paste this full script instead</summary>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code><span class="c"># Paste into PowerShell</span>
+$base = 'https://quilr-extensions.quilr.ai/Quilr-SOP/EndpointAgent/mime-test'
+$marker = 'QUILR-MIME-PROBE-OK'
+foreach ($e in 'exe','msi','msp','zip','json','toml','xml') {
+    $st = 'BLOCKED'; $ct = '-'
+    try {
+        $r = Invoke-WebRequest "$base/probe.$e" -UseBasicParsing -TimeoutSec 15
+        $ct = "$($r.Headers['Content-Type'])"
+        $body = if ($r.Content -is [byte[]]) { [Text.Encoding]::ASCII.GetString($r.Content) } else { [string]$r.Content }
+        if ($body -like "*$marker*") { $st = 'OK' } else { $st = 'ALTERED' }
+    } catch { $st = 'BLOCKED' }
+    "{0,-6}  {1,-8}  {2}" -f ".$e", $st, $ct
+}</code></pre></div>
+          </details>
+        </div>
+        <div class="tab-panel" data-panel="mac">
+          <p class="muted-note">Hosted check — recommended, nothing to paste:</p>
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash / sh</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>curl -fsSL https://quilr-extensions.quilr.ai/Quilr-SOP/EndpointAgent/macOS/quilr-filetype-check.sh | sh</code></pre></div>
+          <details class="fallback">
+            <summary>Downloads blocked? Paste this full script instead</summary>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash / sh</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code><span class="c"># Paste into Terminal</span>
+base='https://quilr-extensions.quilr.ai/Quilr-SOP/EndpointAgent/mime-test'
+marker=QUILR-MIME-PROBE-OK
+tmp="${TMPDIR:-/tmp}/qp.$$"
+for e in exe msi msp zip json toml xml; do
+  m=$(curl -sS -m 15 -o "$tmp" -w '%{http_code}|%{content_type}' "$base/probe.$e" 2>/dev/null)
+  http=${m%%|*}; ct=${m#*|}
+  if [ "$http" != 200 ]; then st=BLOCKED; ct="HTTP ${http:-000}"
+  elif ! grep -q "$marker" "$tmp" 2>/dev/null; then st=ALTERED
+  else st=OK; fi
+  printf '.%-5s  %-8s  %s\n' "$e" "$st" "$ct"
+done
+rm -f "$tmp"</code></pre></div>
+          </details>
+        </div>
+      </div>
+      <h4>Expected output</h4>
+      <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>output</span></div>
+<pre><code>Quilr file-type / MIME allow check
+Base: https://quilr-extensions.quilr.ai/Quilr-SOP/EndpointAgent/mime-test
+----------------------------------------------------------------
+.exe    OK        application/x-msdownload
+.msi    OK        application/x-msi
+.msp    OK        application/octet-stream
+.zip    OK        application/zip
+.json   OK        application/json
+.toml   OK        application/toml
+.xml    OK        application/xml
+----------------------------------------------------------------
+RESULT: all file types downloadable with intact content.</code></pre></div>
+      <p>A type returning <code>BLOCKED</code> (download refused) or <code>ALTERED</code> (replaced by a block page) must be
+      allowed on your SWG / download-control policy — see the file-type allow-list in
+      <a href="../Step%201%20-%20Prerequisites/index.html">Step&nbsp;1</a>.</p>
+
+      <div class="callout tip">
+        <span class="ico">✅</span>
+        <div><span class="ct">Exit criteria for Step 2</span>
+        All shared and environment-specific hosts return <code>OK</code>, and every required file type passes the MIME check,
+        from a representative pilot device — with SSL-bypass confirmed on any intercepting proxy. You are clear to install.</div>
+      </div>
+
+      <div class="wizard-nav">
+        <a class="wbtn back" href="../Step%201%20-%20Prerequisites/index.html"><span>←</span><span class="wbt"><small>Back</small><b>Prerequisites</b></span></a>
+        <span class="wcount">Step 2 of 7</span>
+        <a class="wbtn next" href="../Step%203%20-%20Manual%20Installation/index.html"><span class="wbt"><small>Next</small><b>Manual Installation</b></span><span>→</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../../assets/app.js"></script>
+</body>
+</html>

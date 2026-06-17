@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Step 5 · Installing using MDM — Quilr Browser Extension</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../assets/styles.css" />
+
+  <!-- sop-favicon v1 -->
+  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
+  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">Q</div>
+      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+    </div>
+    <div class="nav-group-title">Overview</div>
+    <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
+    <div class="nav-group-title">Browser Extension</div>
+    <ul class="nav">
+      <li><a href="../Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a class="active" href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a href="../Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="nav-group-title">Endpoint Agent</div>
+    <ul class="nav">
+      <li><a href="../../Endpoint%20Agent/Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="sidebar-foot">
+      Source: <a href="https://installdocs.quilrai.dev" target="_blank" rel="noopener">installdocs.quilrai.dev</a><br />
+      Support: <a href="mailto:support@quilr.ai">support@quilr.ai</a>
+    </div>
+  </aside>
+  <div class="scrim"></div>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-btn" aria-label="Open navigation">☰</button>
+      <nav class="crumbs">
+        <a href="../../index.html">SOP</a><span class="sep">/</span>
+        <a href="../../index.html">Browser Extension</a><span class="sep">/</span>
+        <span class="here">Step 5 · Installing using MDM</span>
+      </nav>
+    </header>
+
+    <div class="content">
+      <nav class="wizard" aria-label="Browser Extension deployment steps">
+                <a class="wstep" href="../Step%201%20-%20Prerequisites/index.html"><span class="wdot">1</span><span class="wlabel">Prerequisites</span></a>
+        <a class="wstep" href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="wdot">2</span><span class="wlabel">Validation</span></a>
+        <a class="wstep" href="../Step%203%20-%20Manual%20Installation/index.html"><span class="wdot">3</span><span class="wlabel">Manual Install</span></a>
+        <a class="wstep" href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="wdot">4</span><span class="wlabel">Verify Install</span></a>
+        <a class="wstep current" href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="wdot">5</span><span class="wlabel">MDM Rollout</span></a>
+        <a class="wstep" href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="wdot">6</span><span class="wlabel">Verify MDM</span></a>
+        <a class="wstep" href="../Step%207%20-%20Troubleshooting/index.html"><span class="wdot">7</span><span class="wlabel">Troubleshoot</span></a>
+      </nav>
+
+      <span class="eyebrow">Browser Extension · Step 5 of 7</span>
+      <h1>Installing using MDM</h1>
+      <p class="lead">Roll out to the fleet. The installer (MSI/pkg) is always required and installs both the native agent and
+      the WebExtension; the optional browser policy only adds enforcement (force-install, pin, prevent removal). Pick your
+      MDM below.</p>
+
+      <div class="callout note">
+        <span class="ico">ℹ️</span>
+        <div><span class="ct">macOS order</span> Deploy the two configuration profiles <strong>before</strong> the pkg so permissions are granted before the agent runs. On Windows the MSI is self-contained.</div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab-btns">
+          <button class="tab-btn active" data-tab="intune-win"> Intune · Windows</button>
+          <button class="tab-btn" data-tab="intune-mac"> Intune · macOS</button>
+          <button class="tab-btn" data-tab="jamf"> Jamf Pro</button>
+          <button class="tab-btn" data-tab="kandji"> Kandji</button>
+          <button class="tab-btn" data-tab="me"> ManageEngine</button>
+        </div>
+
+        <!-- INTUNE WINDOWS -->
+        <div class="tab-panel active" data-panel="intune-win">
+          <h3>Microsoft Intune — Windows</h3>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">1</span><h3>Wrap the MSI</h3></div>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>cmd</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>IntuneWinAppUtil.exe -c C:\Staging\QuilrExtension -s Quilr.msi -o C:\Staging\Out</code></pre></div>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">2</span><h3>Create the Win32 app</h3></div>
+            <p><strong>Apps → All apps → Add → Windows app (Win32)</strong>, upload <code>Quilr.intunewin</code>. Name &ldquo;Quilr Browser Extension,&rdquo; publisher &ldquo;Quilr AI.&rdquo;</p>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Field</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Install</td><td><code>msiexec /i Quilr.msi TENANT=&lt;TENANT-ID&gt; /qn /norestart</code></td></tr>
+                <tr><td>Install behavior</td><td>System</td></tr>
+                <tr><td>Device restart</td><td>No specific action</td></tr>
+              </tbody>
+            </table></div>
+            <div class="callout crit"><span class="ico">⛔</span><div><span class="ct">Parameter is TENANT</span> Mandatory — obtain from <a href="mailto:support@quilr.ai">support@quilr.ai</a>.</div></div>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">3</span><h3>Detection rule &amp; assignment</h3></div>
+            <p>Detection: MSI (auto) or a registry check that <code>HKLM\SOFTWARE\Policies\Microsoft\Edge\ExtensionInstallForcelist</code> contains <code>piajhjohgigijkddhdpgbjdcfhmammbk</code>. Assign as <strong>Required</strong> to the <code>WIN-Quilr-Extension</code> group.</p>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">4</span><h3>Optional · enforce via browser policy</h3></div>
+            <p>If you centrally manage extensions, add a Settings Catalog policy &mdash; &ldquo;Configure extension management settings&rdquo; under both Edge and Chrome:</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>json</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>{
+  "piajhjohgigijkddhdpgbjdcfhmammbk": {
+    "installation_mode": "force_installed",
+    "override_update_url": true,
+    "toolbar_state": "force_shown",
+    "update_url": "https://quilr-extensions.quilr.ai/<span class="v">&lt;TENANT-ID&gt;</span>/manifest.xml"
+  }
+}</code></pre></div>
+          </div>
+        </div>
+
+        <!-- INTUNE MACOS -->
+        <div class="tab-panel" data-panel="intune-mac">
+          <h3>Microsoft Intune — macOS</h3>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">1</span><h3>Gather three artifacts</h3></div>
+            <ul>
+              <li>Tenant pkg: <code>https://quilr-extensions.quilr.ai/&lt;TENANT-ID&gt;/browser-util/quilr-installer-mac.pkg</code></li>
+              <li>Tenant <code>.mobileconfig</code> from the Quilr console (Settings → Browser Extension → Deployment → MDM → macOS / Intune)</li>
+              <li>File-Access <code>.mobileconfig</code>: <code>https://quilr-extensions.quilr.ai/browser-agent/prod/mac/quilr_browser_util_Files_Access.mobileconfig</code></li>
+            </ul>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">2</span><h3>Upload both profiles (Device channel)</h3></div>
+            <p><strong>Devices → Configuration → Create → New Policy</strong>, macOS, Templates → Custom. Name them &ldquo;Quilr Browser Extension — Tenant Approval&rdquo; and &ldquo;— File Access,&rdquo; deployment channel <strong>Device</strong>, assign to <code>MAC-Quilr-Extension</code>.</p>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">3</span><h3>Add the PKG app</h3></div>
+            <p><strong>Apps → Add → macOS app (PKG)</strong> (unmanaged), upload <code>quilr-installer-mac.pkg</code>, publisher &ldquo;Quilr AI,&rdquo; assign Required to the same group.</p>
+            <div class="callout warn"><span class="ico">⚠️</span><div><span class="ct">Profiles before PKG</span> Deploy the configuration profiles first so permissions are granted before the installer runs.</div></div>
+          </div>
+        </div>
+
+        <!-- JAMF -->
+        <div class="tab-panel" data-panel="jamf">
+          <h3>Jamf Pro — macOS</h3>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">1</span><h3>Gather three artifacts</h3></div>
+            <p>Tenant pkg (CDN), tenant <code>.mobileconfig</code> (Quilr console → macOS / Jamf Pro), and the public File-Access <code>.mobileconfig</code>.</p>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">2</span><h3>Deploy both profiles</h3></div>
+            <p>Upload each <code>.mobileconfig</code> as a separate Configuration Profile — &ldquo;Quilr Browser Extension — Tenant Approval&rdquo; and &ldquo;— File Access&rdquo; — Computer Level, Install Automatically, scoped to your macOS group.</p>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">3</span><h3>Package + policy</h3></div>
+            <p>Upload the pkg (display name &ldquo;Quilr Browser Extension,&rdquo; category Endpoint Security). Create a policy &ldquo;Install Quilr Browser Extension&rdquo; — Recurring Check-in, Once per computer — attach the package and scope to the same group.</p>
+          </div>
+        </div>
+
+        <!-- KANDJI -->
+        <div class="tab-panel" data-panel="kandji">
+          <h3>Kandji — macOS</h3>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">1</span><h3>Gather three artifacts</h3></div>
+            <p>Tenant pkg (CDN), tenant <code>.mobileconfig</code> (Quilr console → macOS / Kandji), public File-Access <code>.mobileconfig</code>.</p>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">2</span><h3>Custom Profiles (both mobileconfigs)</h3></div>
+            <p><strong>Library → Add Library Item → Custom Profile</strong> for each: &ldquo;Quilr Browser Extension — Tenant Approval&rdquo; and &ldquo;— File Access.&rdquo; Run on macOS; assign to your Blueprint. Profiles install first.</p>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">3</span><h3>Custom App (pkg)</h3></div>
+            <p><strong>Library → Add Library Item → Custom App</strong>, upload the pkg, name &ldquo;Quilr Browser Extension,&rdquo; configure Audit &amp; Enforce (request the script from Quilr support), assign to the same Blueprint.</p>
+          </div>
+        </div>
+
+        <!-- MANAGEENGINE -->
+        <div class="tab-panel" data-panel="me">
+          <h3>ManageEngine Endpoint Central — Windows</h3>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">1</span><h3>Download the MSI</h3></div>
+            <p>Retrieve <code>https://quilr-extensions.quilr.ai/Quilr.msi</code> and place it on the Endpoint Central server or upload it directly.</p>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">2</span><h3>Add the package</h3></div>
+            <p><strong>Software Deployment → Add Package → Add Windows Package.</strong> Name &ldquo;Quilr Browser Extension,&rdquo; category Security, browse to <code>Quilr.msi</code>. In MSI/MSP Properties enter:</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>MSI properties</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>TENANTID=<span class="v">&lt;TENANT-ID&gt;</span></code></pre></div>
+            <div class="callout warn"><span class="ico">⚠️</span><div><span class="ct">Confirm the property name</span> The ManageEngine guide specifies <code>TENANTID</code>, while the Intune guide uses <code>TENANT</code> for the same MSI. If the extension stays idle after install, re-check this value with <a href="mailto:support@quilr.ai">support@quilr.ai</a>. Without it, the extension installs but stays idle until reinstalled.</div></div>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">3</span><h3>Install configuration</h3></div>
+            <p><strong>Configurations → Add Configuration → Install MSI Software.</strong> Name &ldquo;Install Quilr Browser Extension,&rdquo; select the package, Run as System, target <code>WIN-Quilr-Extension</code>, Deploy.</p>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">4</span><h3>Optional · enforce via browser policy</h3></div>
+            <p>Deploy <code>ExtensionSettings</code> via a Custom Script configuration:</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>$JSON = @'{"piajhjohgigijkddhdpgbjdcfhmammbk": {"installation_mode": "force_installed","override_update_url": true,"toolbar_state": "force_shown","update_url": "https://quilr-extensions.quilr.ai/<span class="v">&lt;TENANT-ID&gt;</span>/manifest.xml"}}'@
+
+foreach ($key in @('HKLM:\SOFTWARE\Policies\Microsoft\Edge','HKLM:\SOFTWARE\Policies\Google\Chrome')) {
+  if (-not (Test-Path $key)) { New-Item -Path $key -Force | Out-Null }
+  Set-ItemProperty -Path $key -Name 'ExtensionSettings' -Value $JSON -Type String
+}</code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <h2>Validate after MDM rollout</h2>
+      <p>Whichever platform you used, repeat the validation on a pilot device &mdash; install vector changed, runtime expectations didn&rsquo;t. The full check-list (Console-side validation + on-device badges + functional tests) lives in <a href="../Step%206%20-%20Verify%20MDM%20Install/index.html">Step&nbsp;6 &middot; Verify MDM Install</a>. Promote pilot &rarr; production only after every check is green.</p>
+
+      <div class="callout tip">
+        <span class="ico">✅</span>
+        <div><span class="ct">Exit criteria for Step 5</span>
+        Installer scoped to the pilot group and reporting success · pilot device passes all Step&nbsp;4 checks · assignment
+        promoted to production. If anything misbehaves, go to Step&nbsp;6.</div>
+      </div>
+
+      <div class="wizard-nav">
+        <a class="wbtn back" href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span>←</span><span class="wbt"><small>Back</small><b>Validate Manual Install</b></span></a>
+        <span class="wcount">Step 5 of 7</span>
+        <a class="wbtn next" href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="wbt"><small>Next</small><b>Verify MDM Install</b></span><span>→</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../../assets/app.js"></script>
+</body>
+</html>

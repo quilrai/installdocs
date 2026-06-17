@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Step 6 · Troubleshooting — Quilr Browser Extension</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../assets/styles.css" />
+
+  <!-- sop-favicon v1 -->
+  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
+  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">Q</div>
+      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+    </div>
+    <div class="nav-group-title">Overview</div>
+    <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
+    <div class="nav-group-title">Browser Extension</div>
+    <ul class="nav">
+      <li><a href="../Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a class="active" href="../Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="nav-group-title">Endpoint Agent</div>
+    <ul class="nav">
+      <li><a href="../../Endpoint%20Agent/Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="sidebar-foot">
+      Source: <a href="https://installdocs.quilrai.dev/extension/troubleshooting" target="_blank" rel="noopener">installdocs.quilrai.dev</a><br />
+      Support: <a href="mailto:support@quilr.ai">support@quilr.ai</a>
+    </div>
+  </aside>
+  <div class="scrim"></div>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-btn" aria-label="Open navigation">☰</button>
+      <nav class="crumbs">
+        <a href="../../index.html">SOP</a><span class="sep">/</span>
+        <a href="../../index.html">Browser Extension</a><span class="sep">/</span>
+        <span class="here">Step 6 · Troubleshooting</span>
+      </nav>
+    </header>
+
+    <div class="content">
+      <nav class="wizard" aria-label="Browser Extension deployment steps">
+                <a class="wstep" href="../Step%201%20-%20Prerequisites/index.html"><span class="wdot">1</span><span class="wlabel">Prerequisites</span></a>
+        <a class="wstep" href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="wdot">2</span><span class="wlabel">Validation</span></a>
+        <a class="wstep" href="../Step%203%20-%20Manual%20Installation/index.html"><span class="wdot">3</span><span class="wlabel">Manual Install</span></a>
+        <a class="wstep" href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="wdot">4</span><span class="wlabel">Verify Install</span></a>
+        <a class="wstep" href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="wdot">5</span><span class="wlabel">MDM Rollout</span></a>
+        <a class="wstep" href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="wdot">6</span><span class="wlabel">Verify MDM</span></a>
+        <a class="wstep current" href="../Step%207%20-%20Troubleshooting/index.html"><span class="wdot">7</span><span class="wlabel">Troubleshoot</span></a>
+      </nav>
+
+      <span class="eyebrow">Browser Extension · Step 7 of 7</span>
+      <h1>Troubleshooting</h1>
+      <p class="lead">When the extension doesn&rsquo;t appear or shows a red status, walk the install chain in order:
+      <strong>policy applied → manifest reachable → .crx reachable → browser picks it up</strong>. The first broken link is
+      your culprit.</p>
+
+      <div class="callout warn" style="margin-top:18px;">
+        <span class="ico">&#x1F50D;</span>
+        <div><span class="ct">Symptom: no Quilr icon after install</span>
+        The MSI / pkg ran clean, the extension shows in <code>chrome://extensions</code> as <em>force-installed</em>&hellip; but the Quilr icon never appears in the AI-site prompt box (Step&nbsp;4 Test&nbsp;1). 99% of these cases trace back to <strong>Step&nbsp;1 &mdash; browser-policy &ldquo;Blocked&rdquo;</strong>. Run the check below first.</div>
+      </div>
+
+      <h2>Step 1 · Browser policy verification</h2>
+      <p>Visit <code>chrome://policy</code>, <code>edge://policy</code>, or <code>brave://policy</code> and search for &ldquo;Quilr&rdquo; or the extension ID
+      <code>piajhjohgigijkddhdpgbjdcfhmammbk</code>. You should see:</p>
+      <ul>
+        <li>An <code>ExtensionSettings</code> or <code>ExtensionInstallForcelist</code> entry</li>
+        <li>The tenant update URL <code>https://quilr-extensions.quilr.ai/&lt;TENANT-ID&gt;/manifest.xml</code></li>
+        <li>Status column showing <strong>OK</strong></li>
+      </ul>
+      <p>If missing: reload policies, restart the browser, sync your MDM (Intune / ManageEngine), or run <code>gpupdate /force</code> for GPO environments.</p>
+
+      <p style="margin-top:12px;"><strong>Read the <em>Status</em> column carefully &mdash; it tells you exactly what is wrong:</strong></p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Status seen on <code>chrome://policy</code></th><th>What it means</th><th>Fix</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong style="color:#22c55e;">OK</strong> &mdash; with an <code>ExtensionSettings</code> / <code>ExtensionInstallForcelist</code> row containing the Quilr extension ID</td>
+              <td>Policy was pushed and accepted. The browser <em>will</em> load the off-store extension. If the icon is still missing, jump to Step&nbsp;2 (manifest reachability).</td>
+              <td>Continue to Step&nbsp;2.</td>
+            </tr>
+            <tr>
+              <td><strong style="color:#ef4444;">Blocked</strong> / <em>Ignored</em> / <em>Conflict</em> next to the Quilr policy row</td>
+              <td>The browser <strong>refused</strong> the policy &mdash; almost always because the device is <strong>not managed by MDM or Active Directory</strong>. Chrome / Edge will only honour <code>ExtensionInstallForcelist</code> when the policy is delivered through a recognised management channel (MDM payload on macOS, GPO / Intune CSP / Registry-under-managed-policies on Windows). Locally-set registry keys are flagged <em>Blocked</em>.</td>
+              <td>Enrol the device in your MDM (Intune / Jamf / Kandji / ManageEngine) or join it to AD, then have the MDM / GPO push the Quilr <code>ExtensionSettings</code> policy. Manual installation on an unmanaged device is not supported &mdash; the off-store extension cannot load without a managed-policy whitelist (Step&nbsp;1 of <a href="../Step%201%20-%20Prerequisites/index.html">Prerequisites</a>).</td>
+            </tr>
+            <tr>
+              <td>No Quilr row at all under <em>Extension Policies</em></td>
+              <td>The policy never reached the browser. Either the MDM payload was scoped to a different group, the MDM sync didn&rsquo;t run yet, or for GPO the OU doesn&rsquo;t target this machine.</td>
+              <td>Force a policy refresh: <code>gpupdate /force</code> (Windows + AD), <code>sudo profiles renew -type=enrollment</code> (macOS + Jamf/Kandji), or trigger a manual sync from Intune. Re-check <code>chrome://policy</code>.</td>
+            </tr>
+            <tr>
+              <td>Quilr row present with a <em>tenant ID</em> that doesn&rsquo;t match your tenant in the manifest URL</td>
+              <td>The wrong tenant&rsquo;s policy was pushed.</td>
+              <td>Update the <code>ExtensionSettings</code> payload in MDM / GPO with the correct <code>TENANT-ID</code>; resync.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <h2>Step 2 · Manifest reachability</h2>
+      <div class="tabs">
+        <div class="tab-btns">
+          <button class="tab-btn active" data-tab="win">Windows</button>
+          <button class="tab-btn" data-tab="mac">macOS</button>
+        </div>
+        <div class="tab-panel active" data-panel="win">
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>$tid = '<span class="v">&lt;TENANT-ID&gt;</span>'
+Invoke-WebRequest "https://quilr-extensions.quilr.ai/$tid/manifest.xml" |
+  Select-Object StatusCode, RawContentLength</code></pre></div>
+        </div>
+        <div class="tab-panel" data-panel="mac">
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>TENANT_ID="<span class="v">&lt;TENANT-ID&gt;</span>"
+curl -fsSL "https://quilr-extensions.quilr.ai/${TENANT_ID}/manifest.xml" | head -3</code></pre></div>
+        </div>
+      </div>
+      <div class="expect"><strong>Expected:</strong> HTTP 200, non-zero bytes, XML starting <code>&lt;gupdate xmlns="http://www.google.com/update2/response"…&gt;</code>.</div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Failure</th><th>Remedy</th></tr></thead>
+        <tbody>
+          <tr><td>403 / 404</td><td>Wrong tenant ID in the policy — contact <a href="mailto:support@quilr.ai">support@quilr.ai</a></td></tr>
+          <tr><td>Connection timeout</td><td>Allowlist <code>quilr-extensions.quilr.ai</code></td></tr>
+          <tr><td>SSL error</td><td>An upstream SWG is decrypting the host and presenting its own cert — add it to the SSL-bypass list</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2>Step 3 · .crx package validation</h2>
+      <p>The manifest&rsquo;s <code>codebase</code> points to <code>https://quilr-extensions.quilr.ai/&lt;TENANT-ID&gt;/vanguard.crx</code>. HEAD it:</p>
+      <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>TENANT_ID="<span class="v">&lt;TENANT-ID&gt;</span>"
+curl -sI "https://quilr-extensions.quilr.ai/${TENANT_ID}/vanguard.crx" \
+  | grep -iE 'HTTP/|content-type|content-length'</code></pre></div>
+      <div class="expect"><strong>Expected:</strong> HTTP 200 · <code>Content-Type: application/x-chrome-extension</code> · non-zero <code>Content-Length</code>.</div>
+      <div class="callout note"><span class="ico">ℹ️</span><div>A corporate SWG may strip the Chrome-extension content-type — confirm it isn&rsquo;t being restricted.</div></div>
+
+      <h2>Step 4 · Extension still not appearing</h2>
+      <p>When policy, manifest, and <code>.crx</code> all validate but the extension is absent:</p>
+      <ul>
+        <li>Restart the browser completely</li>
+        <li><strong>Edge:</strong> go to <code>edge://policy/</code>, reload, close all windows, relaunch</li>
+        <li><strong>Chrome:</strong> enable Developer mode, click Update, then reload policies</li>
+      </ul>
+
+      <h2>Step 5 · Extension visible but popup is red / yellow</h2>
+      <div class="callout warn">
+        <span class="ico">🟡</span>
+        <div><span class="ct">Native agent not running</span>
+        The WebExtension and native agent are two separate installs. A red status means the
+        <code>quilr-native-messaging-agent</code> process isn&rsquo;t running — <strong>redeploy the MSI/pkg</strong> via your MDM.
+        Re-confirm with the process check in <a href="../Step%204%20-%20Validation%20Manual%20Installation/index.html">Step&nbsp;4</a>.</div>
+      </div>
+
+      <h2>Step 6 &middot; File-upload issues &mdash; check the upload log</h2>
+      <p>When a user uploads a file to an AI tool (drag-and-drop into ChatGPT / Claude / Copilot, etc.) but the upload event <strong>never shows up in the Quilr console</strong>, the extension picked the event up locally but the native-agent upload pipe choked. The per-user upload log captures every attempt &mdash; success or failure.</p>
+
+      <div class="table-wrap"><table>
+        <thead><tr><th>OS</th><th>Log directory</th></tr></thead>
+        <tbody>
+          <tr><td>Windows</td><td><code>%APPDATA%\sentinel\logs\</code> &nbsp;<span style="opacity:.7;">(= <code>C:\Users\&lt;USER&gt;\AppData\Roaming\sentinel\logs\</code>)</span></td></tr>
+          <tr><td>macOS</td><td><code>~/Library/Logs/sentinel/</code> &nbsp;<span style="opacity:.7;">(confirm the exact filename with Quilr support if absent)</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <p>Open the most recent <code>.log</code> in the directory and grep for the upload attempt. Most failures fall into one of three buckets:</p>
+
+      <div class="tabs">
+        <div class="tab-btns">
+          <button class="tab-btn active" data-tab="win">Windows &middot; PowerShell</button>
+          <button class="tab-btn" data-tab="mac">macOS &middot; shell</button>
+        </div>
+        <div class="tab-panel active" data-panel="win">
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code><span class="c"># Tail the most recently-modified log in the upload-log directory</span>
+$dir = "$env:APPDATA\sentinel\logs"
+Get-ChildItem $dir -File | Sort LastWriteTime -Desc | Select -First 1 |
+  ForEach-Object { "==> $($_.FullName)"; Get-Content $_.FullName -Tail 200 }</code></pre></div>
+        </div>
+        <div class="tab-panel" data-panel="mac">
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>tail -n 200 "$(ls -t ~/Library/Logs/sentinel/*.log 2&gt;/dev/null | head -1)"</code></pre></div>
+        </div>
+      </div>
+
+      <div class="table-wrap"><table>
+        <thead><tr><th>Pattern in the log</th><th>Root cause</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>upload failed: 401</code> / <code>403</code></td>
+            <td>The native-agent auth token has expired or the tenant doesn&rsquo;t recognise this user persona.</td>
+            <td>Click the extension icon &rarr; confirm the popup still says <em>Persona Active &amp; Extension Enabled</em>. If not, the persona didn&rsquo;t refresh &mdash; restart the browser (or run <code>taskkill /IM quilr-native-messaging-agent.exe</code> and reopen the browser to let it restart).</td>
+          </tr>
+          <tr>
+            <td><code>upload failed: timeout</code> / <code>connection reset</code> against <code>dlpone.quilr.ai</code> (or the env-specific DLP host)</td>
+            <td>A TLS-intercepting SWG re-signed the cert on the DLP host, or the DLP host is missing from the allow-list. The upload reaches the agent but the agent can&rsquo;t POST it to the backend.</td>
+            <td>Re-run the Quick smoke test from <a href="../Step%202%20-%20Prerequisites%20Validation/index.html">Step&nbsp;2</a> &mdash; the selected env&rsquo;s DLP host must be <code>[OK]</code>. SSL-bypass the DLP host on the SWG.</td>
+          </tr>
+          <tr>
+            <td><code>upload failed: 413 Payload Too Large</code></td>
+            <td>File exceeded the tenant&rsquo;s per-upload size cap.</td>
+            <td>Raise the cap in <a data-env-link href="https://app.quilr.ai/en/settings/browser-extension/deployment" target="_blank" rel="noopener">Quilr Console &rarr; Settings &rarr; Browser Extension &rarr; Deployment</a> (DLP &rarr; Limits), or instruct the user to chunk the file. Per-file caps are enforced server-side.</td>
+          </tr>
+          <tr>
+            <td>No matching entry at all for the timestamp the user attempted the upload</td>
+            <td>The WebExtension&rsquo;s content-script never matched the upload trigger on that page &mdash; the host isn&rsquo;t covered by the tenant&rsquo;s monitored-app list, or the page uses a non-standard upload widget.</td>
+            <td>Confirm the AI host is enabled under <strong>Settings &rarr; Browser Extension &rarr; Monitored Apps</strong>. If it is, capture the upload widget&rsquo;s DOM with DevTools and escalate to <a href="mailto:support@quilr.ai">support@quilr.ai</a> &mdash; the trigger selector may need updating.</td>
+          </tr>
+        </tbody>
+      </table></div>
+
+            <h2>Step 7 &middot; Deep dive &mdash; inspect the extension service worker</h2>
+      <p>When the symptom doesn&rsquo;t fit any of the above patterns &mdash; everything &ldquo;looks&rdquo; installed but the extension misbehaves quietly &mdash; the next stop is the Quilr extension&rsquo;s own background service worker. It logs every API call, every native-agent ping, and every DLP verdict. The Console tab tells you <em>why</em>; the Network tab tells you <em>where</em>.</p>
+
+      <h3>Opening the service worker DevTools</h3>
+      <ol>
+        <li>Visit <code>chrome://extensions</code> (or <code>edge://extensions</code> / <code>brave://extensions</code>).</li>
+        <li>Toggle <strong>Developer mode</strong> on (top-right).</li>
+        <li>Find the Quilr row (ID <code>piajhjohgigijkddhdpgbjdcfhmammbk</code>).</li>
+        <li>Click <strong>Inspect views: service worker</strong> &mdash; this is the link directly under the extension name on Chrome MV3.</li>
+        <li>A new DevTools window opens scoped to the background service worker. Most useful surfaces: <strong>Console</strong> + <strong>Network</strong>.</li>
+      </ol>
+      <div class="callout note">
+        <span class="ico">&#x1F4A1;</span>
+        <div><span class="ct">Three different contexts &mdash; pick the right one</span>
+        The popup, the page&rsquo;s content script, and the background service worker each have a separate Console / Network. Only the <strong>service worker</strong> shows the Quilr&nbsp;&rarr;&nbsp;backplane API traffic and the native-messaging handshake. The popup&rsquo;s DevTools (right-click popup &rarr; Inspect) is useful for auth-status UI bugs only; the page&rsquo;s own DevTools (F12 on the AI site) shows content-script interception of the user&rsquo;s prompts &mdash; not the Quilr API calls.</div>
+      </div>
+
+      <h3>Console &mdash; what a healthy startup looks like</h3>
+      <p>Within ~5 seconds of opening the inspector, you should see these lines in order. Anything missing here points to the failure mode on the right.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Healthy log line</th><th>Proves</th></tr></thead>
+        <tbody>
+          <tr><td><code>[LOG] Starting Background script</code></td><td>Service worker actually launched (MV3 sometimes evicts it; this re-fires on wake).</td></tr>
+          <tr><td><code>[LOG] BootstrapService: selfHealthCheck</code></td><td>Persona loaded, heartbeat loop ticking (re-fires every 20&nbsp;s).</td></tr>
+          <tr><td><code>[LOG] NativeAgentService: Connecting to native host com.quilr.sentinel.native</code></td><td>The WebExtension found the native host manifest and opened a port.</td></tr>
+          <tr><td><code>[LOG] ConstantsSyncService: Starting initialization</code></td><td>Tenant config (monitored apps, DLP controls) is being pulled.</td></tr>
+          <tr><td><code>[INFO] NetworkService: Making network request to &hellip;/dlp/v2/stream/detect</code></td><td>First DLP check fired &mdash; the upload / paste pipe is wired up.</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Console &mdash; failure lines and what they mean</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Error line (filter Console on <code>[ERROR]</code>)</th><th>Root cause</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>[ERROR] BootstrapService: Persona not found</code></td>
+            <td>No auth token in extension storage &mdash; the persona never resolved.</td>
+            <td>Sign the user into the Quilr console in another tab; the extension picks up the cookie on next heartbeat. If it stays missing, the SSO &rarr; <a data-env-link href="https://app.quilr.ai/" target="_blank" rel="noopener">tenant Console</a> handshake is broken (Step&nbsp;1 &amp; allow-list).</td>
+          </tr>
+          <tr>
+            <td><code>[ERROR] NativeAgentService: Failed to connect to native host</code></td>
+            <td>Either the MSI / pkg isn&rsquo;t installed, or the native-messaging-host JSON manifest isn&rsquo;t in the place the browser expects.</td>
+            <td>Re-run the MSI / pkg from <a href="../Step%203%20-%20Manual%20Installation/index.html">Step&nbsp;3</a>. Confirm the <code>quilr-native-messaging-agent</code> process is running. Reload the extension and recheck.</td>
+          </tr>
+          <tr>
+            <td><code>[ERROR] FetchOrgDomains: Missing Persona, No token data available</code></td>
+            <td>Same as &ldquo;Persona not found&rdquo; but caught later in the org-domains call &mdash; usually means the persona expired mid-session.</td>
+            <td>Sign in again to the Quilr console; the next heartbeat will refresh the token.</td>
+          </tr>
+          <tr>
+            <td><code>[ERROR] DLPService: Error in DLP service</code> followed by a timeout / 403</td>
+            <td>The selected env&rsquo;s DLP host is unreachable or the SWG re-signed the TLS cert.</td>
+            <td>Re-run the <a href="../Step%202%20-%20Prerequisites%20Validation/index.html">Step&nbsp;2 Quick smoke test</a> &mdash; the env-specific <code>dlpone.*</code> / <code>dlp-platform.*</code> host must be <code>[OK]</code>. SSL-bypass on the SWG.</td>
+          </tr>
+          <tr>
+            <td><code>[ERROR] EnvConfig: hydrate failed</code></td>
+            <td><code>discover.quilrai.dev</code> couldn&rsquo;t be reached, so the extension never learned which backplane to talk to.</td>
+            <td>Allowlist <code>discover.quilrai.dev</code> on the firewall and SSL-bypass it on the SWG. Re-load the extension.</td>
+          </tr>
+        </tbody>
+      </table></div>
+
+      <h3>Network &mdash; the API calls you should see</h3>
+      <p>In the same DevTools window, switch to the <strong>Network</strong> tab. The service worker continues making calls in the background &mdash; you don&rsquo;t need to click anything on the page. Filter by <code>/browser-extension/</code>, <code>/api/</code>, <code>/dlp/</code>, or <code>/playbook-service/</code> to see only the Quilr traffic.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Endpoint</th><th>When it fires</th><th>Healthy response</th></tr></thead>
+        <tbody>
+          <tr><td><code>GET&nbsp;/auth/auth/me</code></td>             <td>Persona creation / refresh</td><td>200 &middot; <code>{ emailaddress, token, tenant }</code></td></tr>
+          <tr><td><code>POST&nbsp;/browser-extension/browser/personas/heartbeat</code></td><td>Every&nbsp;2&nbsp;min</td><td>200 &middot; <code>{ success: true }</code></td></tr>
+          <tr><td><code>POST&nbsp;/browser-extension/browser/extension/fetch-user-details</code></td><td>Startup + per-app</td><td>200 &middot; <code>{ user_id, name, email }</code></td></tr>
+          <tr><td><code>GET&nbsp;/browser-extension/onboarding/org-domains</code></td><td>Bootstrap + every&nbsp;2&nbsp;min</td><td>200 &middot; <code>{ content: [domains] }</code></td></tr>
+          <tr><td><code>GET&nbsp;/playbook-service/controls/synctoui</code></td><td>Policy pull</td><td>200 &middot; <code>{ controls: [{ id, trigger_conditions }] }</code></td></tr>
+          <tr><td><code>POST&nbsp;/browser-extension/browser/interaction/log</code></td><td>Every DLP block / prompt</td><td>200 &middot; <code>{ success: true, id }</code></td></tr>
+          <tr><td><code>POST&nbsp;/browser-extension/browser/interaction/events</code></td><td>Batched event upload</td><td>200 &middot; <code>{ success: true }</code></td></tr>
+          <tr><td><code>GET&nbsp;/extension-api-service/extension/constants-config/v1</code></td><td>Startup + sync interval</td><td>200 &middot; <code>{ config: {&hellip;}, status: 200 }</code> &nbsp;(304 on no-change is also fine)</td></tr>
+          <tr><td><code>POST&nbsp;{DLP_URL}/dlp/v2/stream/detect</code></td><td>On every captured paste / prompt / upload</td><td>Streaming SSE chunked &middot; <code>{ sensitive_data: [&hellip;], verdict: &quot;allowed&quot; }</code></td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout note">
+        <span class="ico">&#x1F310;</span>
+        <div><span class="ct">Host varies by tenant environment</span>
+        The base host on the left of every endpoint comes from the env-config (Quilr Console env &rarr; <code>app.quilr.ai</code> / <code>platform.quilrai.com</code> / <code>secure.quilr.ai</code> / etc.). The DLP endpoint hits the env-specific <code>dlpone.*</code> or <code>dlp-platform.*</code> host. If the Network tab shows the wrong host, the extension hydrated the wrong env &mdash; check the <code>EnvConfig: hydrate</code> log line.</div>
+      </div>
+
+      <h3>Native-messaging port &mdash; the silent one</h3>
+      <p>The WebExtension&nbsp;&harr;&nbsp;native-agent channel is <strong>not</strong> HTTP &mdash; it&rsquo;s a Chrome native-messaging port and won&rsquo;t appear in the Network tab. The Console tab is the only place to confirm it:</p>
+      <ul>
+        <li>Port name: <code>com.quilr.sentinel.native</code></li>
+        <li>Healthy: a <code>ping</code> &rarr; <code>pong</code> handshake at startup, with the agent version echoed in <code>data</code>.</li>
+        <li>Broken: <code>chrome.runtime.lastError</code> set immediately, plus the <code>NativeAgentService: Failed to connect</code> error above.</li>
+      </ul>
+
+            <h2>Escalation</h2>
+      <p>Contact <a href="mailto:support@quilr.ai">support@quilr.ai</a> with screenshots of the policy pages, your
+      curl / PowerShell command outputs, and your OS, browser, and MDM platform. You can also use the &ldquo;Report a Bug&rdquo;
+      link in the extension popup.</p>
+
+      <div class="callout tip">
+        <span class="ico">🎉</span>
+        <div><span class="ct">Both tracks complete</span>
+        With the Endpoint Agent and Browser Extension deployed and validated, your fleet is covered across native apps and all
+        major browsers. Return to the <a href="../../index.html">Overview</a> any time.</div>
+      </div>
+
+      <div class="wizard-nav">
+        <a class="wbtn back" href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span>←</span><span class="wbt"><small>Back</small><b>Verify MDM Install</b></span></a>
+        <span class="wcount">Step 7 of 7</span>
+        <a class="wbtn next" href="../../index.html"><span class="wbt"><small>Finish</small><b>Back to Overview</b></span><span>✓</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../../assets/app.js"></script>
+</body>
+</html>

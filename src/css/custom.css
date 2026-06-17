@@ -1,0 +1,640 @@
+/**
+ * Quilr Endpoint Agent docs — theme ported from quilr-discover
+ * (frontend/app/globals.css). Dark-by-default, indigo accent, monospace
+ * typography, uppercase labels with letter-spacing.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* ─────────────────────── Tokens (dark = default) ─────────────────────── */
+
+:root,
+[data-theme='dark'] {
+  --bg-root: #06060e;
+  --bg-sidebar: #0c0b16;
+  --bg-main: #0a0a14;
+  --bg-card: #111024;
+  --bg-card-hover: #16142e;
+  --bg-input: #0e0d1a;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-light: rgba(255, 255, 255, 0.10);
+  --text-primary: #e8e6ff;
+  --text-secondary: #8b8aa0;
+  --text-muted: #55546a;
+  --indigo: #6366f1;
+  --indigo-light: #818cf8;
+  --indigo-dim: rgba(99, 102, 241, 0.12);
+  --green: #4ade80;
+  --green-dim: rgba(74, 222, 128, 0.12);
+  --red: #ef4444;
+  --red-dim: rgba(239, 68, 68, 0.12);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245, 158, 11, 0.12);
+  --cyan: #22d3ee;
+  --cyan-dim: rgba(34, 211, 238, 0.12);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.10);
+  --hover-overlay: rgba(255, 255, 255, 0.02);
+
+  --font-mono: 'JetBrains Mono', 'Consolas', 'Menlo', 'SF Mono', 'Liberation Mono', monospace;
+
+  /* Map onto Infima */
+  --ifm-color-primary: var(--indigo);
+  --ifm-color-primary-dark: #4e51d8;
+  --ifm-color-primary-darker: #444acc;
+  --ifm-color-primary-darkest: #383ea8;
+  --ifm-color-primary-light: var(--indigo-light);
+  --ifm-color-primary-lighter: #a3aff5;
+  --ifm-color-primary-lightest: #c4cdf9;
+  --ifm-color-primary-contrast-background: var(--indigo-dim);
+  --ifm-color-primary-contrast-foreground: var(--indigo-light);
+
+  --ifm-background-color: var(--bg-root);
+  --ifm-background-surface-color: var(--bg-card);
+  --ifm-navbar-background-color: rgba(12, 11, 22, 0.72);
+  --ifm-footer-background-color: #050509;
+
+  --ifm-font-family-base: var(--font-mono);
+  --ifm-font-family-monospace: var(--font-mono);
+  --ifm-code-font-size: 0.84rem;
+  --ifm-font-size-base: 13px;
+  --ifm-line-height-base: 1.55;
+
+  --ifm-color-content: var(--text-primary);
+  --ifm-color-content-secondary: var(--text-secondary);
+
+  --docusaurus-highlighted-code-line-bg: rgba(99, 102, 241, 0.16);
+
+  /* Sidebar (Infima menu) */
+  --ifm-menu-color: var(--text-secondary);
+  --ifm-menu-color-active: var(--indigo-light);
+  --ifm-menu-color-background-active: var(--indigo-dim);
+  --ifm-menu-color-background-hover: var(--indigo-dim);
+  --ifm-menu-link-padding-vertical: 0.55rem;
+  --ifm-menu-link-padding-horizontal: 0.75rem;
+
+  color-scheme: dark;
+}
+
+/* ─────────────────────── Light theme ─────────────────────── */
+
+[data-theme='light'] {
+  --bg-root: #f5f5f7;
+  --bg-sidebar: #ffffff;
+  --bg-main: #f9f9fb;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f3f3f8;
+  --bg-input: #f0f0f5;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-light: rgba(0, 0, 0, 0.14);
+  --text-primary: #1a1a2e;
+  --text-secondary: #5c5c72;
+  --text-muted: #8e8ea0;
+  --indigo: #4f46e5;
+  --indigo-light: #4f46e5;
+  --indigo-dim: rgba(99, 102, 241, 0.08);
+  --green: #16a34a;
+  --green-dim: rgba(22, 163, 74, 0.08);
+  --red: #dc2626;
+  --red-dim: rgba(220, 38, 38, 0.08);
+  --amber: #d97706;
+  --amber-dim: rgba(217, 119, 6, 0.08);
+  --cyan: #0891b2;
+  --cyan-dim: rgba(8, 145, 178, 0.08);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.15);
+  --hover-overlay: rgba(0, 0, 0, 0.03);
+
+  --ifm-color-primary: var(--indigo);
+  --ifm-color-primary-light: #6266ee;
+  --ifm-color-primary-lighter: #8285f1;
+  --ifm-color-primary-lightest: #b3b5f7;
+  --ifm-color-primary-dark: #423ad0;
+  --ifm-color-primary-darker: #3d36c4;
+  --ifm-color-primary-darkest: #322ca1;
+  --ifm-color-primary-contrast-background: var(--indigo-dim);
+  --ifm-color-primary-contrast-foreground: var(--indigo);
+
+  --ifm-background-color: var(--bg-root);
+  --ifm-background-surface-color: var(--bg-card);
+  --ifm-navbar-background-color: rgba(255, 255, 255, 0.72);
+  --ifm-footer-background-color: #0c0b16;
+
+  --ifm-color-content: var(--text-primary);
+  --ifm-color-content-secondary: var(--text-secondary);
+
+  --docusaurus-highlighted-code-line-bg: rgba(79, 70, 229, 0.08);
+
+  --ifm-menu-color: var(--text-secondary);
+  --ifm-menu-color-active: var(--indigo);
+  --ifm-menu-color-background-active: var(--indigo-dim);
+  --ifm-menu-color-background-hover: var(--indigo-dim);
+
+  color-scheme: light;
+}
+
+/* ─────────────────────── Globals ─────────────────────── */
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  background: var(--bg-root);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+a { color: var(--indigo-light); font-weight: 600; text-decoration: none; }
+a:hover { color: var(--indigo); text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 2px; }
+
+/* Headings — uppercase H2 like the Discover console */
+h1, h2, h3, h4 {
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  letter-spacing: -0.4px;
+}
+h1 { font-size: 22px; font-weight: 700; }
+h2 {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-top: 2.2rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+h3 { font-size: 13px; font-weight: 700; letter-spacing: 0.2px; }
+h4 { font-size: 12px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--text-secondary); }
+
+/* ─────────────────────── Navbar ─────────────────────── */
+
+.navbar {
+  background: var(--ifm-navbar-background-color);
+  backdrop-filter: saturate(180%) blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: none;
+}
+
+.navbar__logo img {
+  height: 28px;
+  width: auto;
+}
+
+.navbar__title { font-weight: 700; color: var(--text-primary); }
+.navbar__link, .navbar__brand { color: var(--text-secondary); font-weight: 600; }
+.navbar__link:hover { color: var(--text-primary); background: var(--indigo-dim); border-radius: 6px; }
+.navbar__link--active { color: var(--indigo-light); background: var(--indigo-dim); border-radius: 6px; }
+
+/* ─────────────────────── Sidebar ─────────────────────── */
+
+.theme-doc-sidebar-container {
+  background: var(--bg-sidebar) !important;
+  border-right: 1px solid var(--border);
+}
+
+.menu { font-family: var(--font-mono); font-size: 13px; padding: 12px 8px 24px !important; }
+
+/* Section labels — UPPERCASE small caps */
+.menu__link--sublist,
+.menu__list-item-collapsible .menu__link {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 1;
+  padding: 14px 12px 6px;
+}
+
+/* Nested sub-categories (Microsoft Intune, Jamf Pro, …) */
+.menu__list .menu__list-item-collapsible .menu__link,
+.menu__list .menu__list .menu__link--sublist {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  padding: 10px 12px 4px;
+}
+
+/* Doc links */
+.menu__link {
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 10px 12px;
+  margin: 1px 0;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.menu__link:hover {
+  background: var(--indigo-dim);
+  color: var(--text-primary);
+}
+
+.menu__link--active:not(.menu__link--sublist) {
+  background: var(--indigo-dim);
+  color: var(--indigo-light);
+  font-weight: 600;
+  position: relative;
+}
+
+.menu__link--active:not(.menu__link--sublist)::before {
+  content: '';
+  position: absolute;
+  left: 4px; top: 8px; bottom: 8px;
+  width: 2px; border-radius: 2px;
+  background: var(--indigo);
+}
+
+.menu__list .menu__list {
+  border-left: 1px solid var(--border);
+  padding-left: 6px; margin-top: 2px;
+}
+
+.menu__list .menu__list .menu__link {
+  font-size: 12px;
+  padding: 8px 12px;
+}
+
+/* ─────────────────────── Sidebar platform filter (Quilr) ─────────────────────── */
+
+.quilr-platform-filter {
+  padding: 12px 10px 10px;
+  margin: 0 0 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.quilr-platform-filter-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  color: var(--text-muted);
+  opacity: 0.9;
+  margin: 0 0 8px 4px;
+  text-transform: uppercase;
+}
+
+.quilr-platform-filter-buttons {
+  display: flex;
+  gap: 2px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.quilr-platform-filter-buttons button {
+  flex: 1;
+  font: 600 11px var(--font-mono);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 4px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.quilr-platform-filter-buttons button:hover {
+  background: var(--hover-overlay);
+  color: var(--text-primary);
+}
+
+.quilr-platform-filter-buttons button.active {
+  background: var(--indigo);
+  color: #ffffff;
+  box-shadow: 0 0 0 1px var(--indigo), 0 4px 12px -4px rgba(99, 102, 241, 0.45);
+}
+
+/* Hide rules — driven by data-platform-filter on <html> */
+html[data-platform-filter='windows'] .theme-doc-sidebar-menu li[data-platform-item='macos'] { display: none !important; }
+html[data-platform-filter='macos'] .theme-doc-sidebar-menu li[data-platform-item='windows'] { display: none !important; }
+
+/* ─────────────────────── Content / cards ─────────────────────── */
+
+.main-wrapper { background: var(--bg-main); }
+
+article {
+  max-width: none;
+}
+
+/* Make main content blocks feel like "cards" — soft border, deep bg */
+.markdown > p,
+.markdown > ul,
+.markdown > ol,
+.markdown > blockquote,
+.markdown > pre,
+.markdown > table,
+.markdown > div {
+  margin-bottom: 14px;
+}
+
+.markdown blockquote {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--indigo);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: var(--text-secondary);
+}
+
+/* ─────────────────────── Index page hero (subdued) ─────────────────────── */
+
+.docs-doc-id-index article > header {
+  position: relative;
+  margin: -1rem -1.5rem 1.6rem;
+  padding: 2.4rem 1.5rem 1.6rem;
+  background:
+    radial-gradient(900px 320px at 18% 0%, rgba(99, 102, 241, 0.18), transparent 70%),
+    radial-gradient(600px 240px at 86% 40%, rgba(34, 211, 238, 0.10), transparent 70%),
+    var(--bg-sidebar);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.docs-doc-id-index article > header h1 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+  color: var(--text-primary);
+}
+
+[data-theme='light'] .docs-doc-id-index article > header h1 {
+  color: var(--text-primary);
+}
+
+/* ─────────────────────── Code blocks ─────────────────────── */
+
+div[class*='codeBlockContainer'] {
+  background: var(--bg-input) !important;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: none !important;
+  overflow: hidden;
+}
+
+div[class*='codeBlockContainer'] pre,
+div[class*='codeBlockContainer'] code {
+  background: transparent !important;
+  font-family: var(--font-mono) !important;
+  font-size: 12.5px !important;
+  line-height: 1.6;
+}
+
+div[class*='codeBlockTitle'] {
+  background: var(--bg-card) !important;
+  border-bottom: 1px solid var(--border) !important;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.4px;
+}
+
+/* Inline code */
+code:not(pre code) {
+  background: var(--indigo-dim);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1px 6px;
+  color: var(--indigo-light);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+
+/* ─────────────────────── Admonitions ─────────────────────── */
+
+.admonition {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  border-left: 3px solid var(--indigo);
+  box-shadow: none;
+  margin-bottom: 1.2rem;
+}
+
+.admonition .admonition-heading {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-size: 11px;
+  color: var(--indigo-light);
+}
+
+.alert--success { border-left-color: var(--green); }
+.alert--success .admonition-heading { color: var(--green); }
+
+.alert--warning, .alert--secondary { border-left-color: var(--amber); }
+.alert--warning .admonition-heading,
+.alert--secondary .admonition-heading { color: var(--amber); }
+
+.alert--danger { border-left-color: var(--red); }
+.alert--danger .admonition-heading { color: var(--red); }
+
+.alert--info { border-left-color: var(--cyan); }
+.alert--info .admonition-heading { color: var(--cyan); }
+
+/* ─────────────────────── Tables ─────────────────────── */
+
+table {
+  display: table;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  font-size: 12px;
+  margin: 14px 0;
+}
+
+table th, table td {
+  padding: 10px 14px;
+  font-family: var(--font-mono);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+table th {
+  background: var(--bg-card);
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  text-align: left;
+}
+
+table td { color: var(--text-primary); }
+
+table tr:nth-child(2n) { background: transparent; }
+table tbody tr:hover { background: var(--hover-overlay); }
+table tbody tr:last-child td { border-bottom: none; }
+
+/* ─────────────────────── Tabs (homepage platform filter) ─────────────────────── */
+
+.tabs {
+  margin-top: 1rem;
+  border-bottom: 1px solid var(--border);
+  gap: 4px;
+}
+
+.tabs__item {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  padding: 10px 16px;
+  border-radius: 8px 8px 0 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.tabs__item:hover {
+  background: var(--indigo-dim);
+  color: var(--text-primary);
+  border-bottom-color: rgba(99, 102, 241, 0.3);
+}
+
+.tabs__item--active {
+  color: var(--indigo-light);
+  background: var(--indigo-dim);
+  border-bottom-color: var(--indigo);
+  box-shadow: none;
+}
+
+.tabs-container [role='tabpanel'] {
+  animation: quilr-tab-fade 180ms ease both;
+}
+@keyframes quilr-tab-fade {
+  from { opacity: 0; transform: translateY(2px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ─────────────────────── Table of contents (right rail) ─────────────────────── */
+
+.table-of-contents { font-size: 11px; font-family: var(--font-mono); }
+.table-of-contents__link {
+  color: var(--text-secondary);
+  transition: color 0.15s ease, padding-left 0.15s ease;
+}
+.table-of-contents__link:hover { color: var(--text-primary); padding-left: 4px; }
+.table-of-contents__link--active {
+  color: var(--indigo-light);
+  font-weight: 700;
+  position: relative;
+}
+.table-of-contents__link--active::before {
+  content: '';
+  position: absolute;
+  left: -10px; top: 50%;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--indigo);
+  transform: translateY(-50%);
+  box-shadow: 0 0 6px rgba(99, 102, 241, 0.7);
+}
+
+/* ─────────────────────── Pagination (prev/next) ─────────────────────── */
+
+.pagination-nav__link {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.pagination-nav__link:hover {
+  border-color: var(--indigo);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px -10px rgba(99, 102, 241, 0.4);
+}
+.pagination-nav__sublabel {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+.pagination-nav__label { color: var(--text-primary); font-weight: 700; font-size: 13px; }
+
+/* ─────────────────────── Search bar ─────────────────────── */
+
+input.navbar__search-input {
+  background: var(--bg-input) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px !important;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-primary);
+  padding-left: 2.1rem !important;
+}
+input.navbar__search-input::placeholder { color: var(--text-muted); }
+input.navbar__search-input:focus {
+  outline: none;
+  border-color: var(--indigo) !important;
+  box-shadow: 0 0 0 2px var(--indigo-dim);
+}
+.search-bar-key {
+  background: var(--indigo-dim) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--indigo-light) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 9.5px !important;
+  border-radius: 4px !important;
+  padding: 1px 5px !important;
+  letter-spacing: 0.4px;
+}
+.search-result-match {
+  background: var(--indigo-dim);
+  color: var(--indigo-light);
+}
+
+/* ─────────────────────── Footer ─────────────────────── */
+
+.footer {
+  background: var(--ifm-footer-background-color);
+  border-top: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+.footer__title {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.footer__link-item {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+.footer__link-item:hover { color: var(--indigo-light); }
+.footer__copyright { opacity: 0.55; font-size: 11px; font-family: var(--font-mono); }
+
+/* ─────────────────────── Scrollbar ─────────────────────── */
+
+* { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) transparent; }
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--border-light);
+  background-clip: content-box;
+}

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Step 4 · Validate Installation — Quilr Endpoint Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../assets/styles.css" />
+
+  <!-- sop-favicon v1 -->
+  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
+  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">Q</div>
+      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+    </div>
+    <div class="nav-group-title">Overview</div>
+    <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
+    <div class="nav-group-title">Endpoint Agent</div>
+    <ul class="nav">
+      <li><a href="../Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a class="active" href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a href="../Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="nav-group-title">Browser Extension</div>
+    <ul class="nav">
+      <li><a href="../../Browser%20Extension/Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../../Browser%20Extension/Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../../Browser%20Extension/Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../../Browser%20Extension/Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../../Browser%20Extension/Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../../Browser%20Extension/Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a href="../../Browser%20Extension/Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="sidebar-foot">
+      Source: <a href="https://installdocs.quilrai.dev/reference/validate-installation" target="_blank" rel="noopener">installdocs.quilrai.dev</a><br />
+      Support: <a href="mailto:support@quilr.ai">support@quilr.ai</a>
+    </div>
+  </aside>
+  <div class="scrim"></div>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-btn" aria-label="Open navigation">☰</button>
+      <nav class="crumbs">
+        <a href="../../index.html">SOP</a><span class="sep">/</span>
+        <a href="../../index.html">Endpoint Agent</a><span class="sep">/</span>
+        <span class="here">Step 4 · Validate Installation</span>
+      </nav>
+    </header>
+
+    <div class="content">
+      <nav class="wizard" aria-label="Endpoint Agent deployment steps">
+                <a class="wstep" href="../Step%201%20-%20Prerequisites/index.html"><span class="wdot">1</span><span class="wlabel">Prerequisites</span></a>
+        <a class="wstep" href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="wdot">2</span><span class="wlabel">Validation</span></a>
+        <a class="wstep" href="../Step%203%20-%20Manual%20Installation/index.html"><span class="wdot">3</span><span class="wlabel">Manual Install</span></a>
+        <a class="wstep current" href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="wdot">4</span><span class="wlabel">Verify Install</span></a>
+        <a class="wstep" href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="wdot">5</span><span class="wlabel">MDM Rollout</span></a>
+        <a class="wstep" href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="wdot">6</span><span class="wlabel">Verify MDM</span></a>
+        <a class="wstep" href="../Step%207%20-%20Troubleshooting/index.html"><span class="wdot">7</span><span class="wlabel">Troubleshoot</span></a>
+      </nav>
+
+      <span class="eyebrow">Endpoint Agent · Step 4 of 7</span>
+      <h1>Validate the Installation</h1>
+      <p class="lead">Confirm two things: the agent installed correctly, <em>and</em> it is actively intercepting traffic. Each
+      platform has five sequential checks — a failed check halts progression until you resolve it.</p>
+
+      <h2>Console-side validation &mdash; the fastest check</h2>
+      <p>If the agent successfully phoned home, the device shows up in the <strong>Quilr Console</strong> within seconds. Open <a data-env-link href="https://app.quilr.ai/en/settings/endpoint" target="_blank" rel="noopener"><strong>Settings &rarr; Endpoint</strong></a> in your tenant Console and switch to the <strong>Deployment Status</strong> tab. Type the device&rsquo;s hostname or the user&rsquo;s email in the search box.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Column</th><th>Healthy value</th><th>If it&rsquo;s wrong &hellip;</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Device</strong></td><td>Hostname matches the machine you installed on, with a UUID below</td><td>Missing &rarr; agent never reached <code>discover.quilrai.dev</code>. Check the Step&nbsp;6 allow-list &amp; AV exclusion.</td></tr>
+          <tr><td><strong>Email Address</strong></td><td>The signed-in user&rsquo;s email</td><td>Empty &rarr; email-discovery hasn&rsquo;t resolved a persona; sign the user into the Quilr Console once.</td></tr>
+          <tr><td><strong>Full Name</strong></td><td>Resolved from the IdP</td><td>Empty &rarr; same as Email; persona unresolved.</td></tr>
+          <tr><td><strong>OS</strong></td><td>Detected platform (e.g. <code>Windows 11 Pro</code> / <code>Mac&nbsp;OS&nbsp;X:26_5_1</code>)</td><td>Wrong build &rarr; the agent reported a different OS than expected; usually just stale telemetry, rerun after a reboot.</td></tr>
+          <tr><td><strong>Status</strong></td><td><code>Enabled</code></td><td><code>Disabled</code> &rarr; the agent service is stopped. Restart it (Windows: <code>Start-Service QuilrAIAgent</code>, macOS: <code>sudo launchctl kickstart system/ai.quilr.sentinel</code>).</td></tr>
+          <tr><td><strong>Version</strong></td><td>Matches &ldquo;Latest Endpoint Version&rdquo; banner top-right</td><td>Stale &rarr; redeploy or wait for the next auto-update.</td></tr>
+          <tr><td><strong>Installed On</strong></td><td>Today&rsquo;s date</td><td>Older &rarr; the new install didn&rsquo;t register a new device row; reinstall didn&rsquo;t replace the prior install.</td></tr>
+          <tr><td><strong>Last Seen</strong></td><td>&ldquo;a few minutes ago&rdquo; / &ldquo;just now&rdquo;</td><td>&gt; 1 hour &rarr; agent process stopped or device offline. Tail <code>agent.log</code> for the last heartbeat error.</td></tr>
+        </tbody>
+      </table></div>
+      <figure style="margin:12px 0 6px; padding:0;">
+        <img src="../../assets/console-ea-deployment-status.png"
+             alt="Quilr Console - Settings - Endpoint - Deployment Status tab. Three devices listed: GURMUKH-LAPTOP (Windows 11) and Gurmukhnishans-MacBook.local (Mac OS X:26_5_1) registered to gsingh@quilr.ai with status Enabled and version 1.0.48, and Gurmukh-Windows-Laptop with version 1.0.0, all showing 'Enabled' status with Last Seen times '10 hours ago', '1 day ago', '3 weeks ago'."
+             loading="lazy"
+             style="display:block; width:100%; max-width:1280px; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:10px; background:#0a0c12; box-shadow:0 6px 24px rgba(0,0,0,.35);" />
+        <figcaption style="margin-top:8px; font-size:12.5px; color:var(--ink-soft); text-align:center;">
+          Console &mdash; Settings &rarr; Endpoint &rarr; <em>Deployment Status</em>. The test device shows up with Status&nbsp;= <code>Enabled</code>, current version, and a fresh Last Seen.
+        </figcaption>
+      </figure>
+      <div class="callout tip" style="margin-top:14px;">
+        <span class="ico">&#x2705;</span>
+        <div><span class="ct">If the row looks like the screenshot above</span>
+        The agent is already on the backplane &mdash; the five on-device checks below are useful for understanding <em>how</em> it&rsquo;s intercepting, but the install itself is confirmed. If the row is missing or yellow / red, run the checks and Step&nbsp;6 to find the broken link.</div>
+      </div>
+
+      
+
+      <div class="callout note">
+        <span class="ico">🧭</span>
+        <div><span class="ct">Run checks in order</span>
+        Don&rsquo;t skip ahead. If Check 3 (CA chain) fails, the functional test cannot pass — fix the earlier check first.</div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab-btns">
+          <button class="tab-btn active" data-tab="mac"> macOS</button>
+          <button class="tab-btn" data-tab="win"> Windows</button>
+        </div>
+
+        <!-- ===================== macOS ===================== -->
+        <div class="tab-panel active" data-panel="mac">
+          <p>Run all commands in Terminal with <code>sudo</code> rights.</p>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">1</span><h3>Binaries installed</h3></div>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>ls -ld /Applications/QuilrAIProxy.app &amp;&amp; \
+ls -ld "/Library/Application Support/QuilrAI" &amp;&amp; \
+defaults read /Applications/QuilrAIProxy.app/Contents/Info.plist CFBundleShortVersionString</code></pre></div>
+            <div class="expect"><strong>Expected:</strong> both directories exist; a version string prints (e.g. <code>2026.05.08</code>).</div>
+            <p style="margin-top:14px;"><strong>If this check fails — inspect the pkg install log:</strong></p>
+            <table style="width:100%;border-collapse:collapse;font-size:.9em;margin:6px 0 10px;">
+              <thead><tr style="text-align:left;border-bottom:1px solid var(--line);"><th style="padding:6px 8px;">Log</th><th style="padding:6px 8px;">Path</th></tr></thead>
+              <tbody>
+                <tr><td style="padding:6px 8px;">Quilr installer trace</td><td style="padding:6px 8px;"><code>/Library/Application Support/Sentinel/logs/sentinel-endpoint.log</code></td></tr>
+                <tr><td style="padding:6px 8px;">macOS installer subsystem</td><td style="padding:6px 8px;"><code>/var/log/install.log</code> <span style="opacity:.7;">(filter with <code>grep -i quilr</code>)</span></td></tr>
+              </tbody>
+            </table>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash · sudo</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>sudo tail -n 200 /Library/Application\ Support/Sentinel/logs/sentinel-endpoint.log 2>/dev/null
+sudo grep -i 'quilr\|sentinel' /var/log/install.log | tail -n 100</code></pre></div>
+            <p style="font-size:.9em;color:var(--ink-soft);">Most pkg failures are <code>codesign</code> / notarization mismatches or insufficient disk space.</p>
+
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">2</span><h3>Daemons running</h3></div>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash · sudo</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>pgrep -lf 'quilrai|quilrai-proxy'
+sudo launchctl print system/ai.quilr.sentinel       | grep -E 'state =|last exit'
+sudo launchctl print system/ai.quilr.quilrai-proxy  | grep -E 'state =|last exit'</code></pre></div>
+            <div class="expect"><strong>Expected:</strong> at least two PIDs; <code>state = running</code> on both daemons; <code>last exit code = 0</code>.</div>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">3</span><h3>CA chain in System keychain</h3></div>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>COUNT=$(security find-certificate -a /Library/Keychains/System.keychain | grep -ci quilr)
+echo "Quilr certs in System keychain: $COUNT (expect: 2)"</code></pre></div>
+            <div class="expect"><strong>Expected:</strong> exactly <code>2</code> (root + intermediate).</div>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">4</span><h3>Network Extension activated</h3></div>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>systemextensionsctl list | grep -i quilr</code></pre></div>
+            <div class="expect"><strong>Expected:</strong> a line containing <code>[activated enabled]</code> — not <em>waiting</em> or absent.</div>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">5</span><h3>Full Disk Access granted via MDM</h3></div>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash · sudo</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>sudo sqlite3 "/Library/Application Support/com.apple.TCC/TCC.db" \
+"select client, allowed, auth_reason from access \
+where service='kTCCServiceSystemPolicyAllFiles' and client like '%quilr%';"</code></pre></div>
+            <div class="expect"><strong>Expected:</strong> at least one row with <code>allowed=1</code> and <code>auth_reason=4</code> (MDM grant).</div>
+          </div>
+        </div>
+
+        <!-- ===================== Windows ===================== -->
+        <div class="tab-panel" data-panel="win">
+          <p>Run all commands in PowerShell <strong>as Administrator</strong>.</p>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">1</span><h3>MSI installed</h3></div>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>Get-ChildItem `
+  HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*, `
+  HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* |
+Get-ItemProperty | Where-Object DisplayName -like '*Quilr*' |
+Select-Object DisplayName, DisplayVersion, Publisher, InstallDate
+
+Get-Item "$env:ProgramFiles\QuilrAI" | Select-Object FullName, LastWriteTime</code></pre></div>
+            <div class="expect"><strong>Expected:</strong> Quilr Endpoint Agent listed with a version and <code>Publisher = Quilr AI</code>; the install folder exists.</div>
+            <p style="margin-top:14px;"><strong>If this check fails — inspect the MSI install log:</strong></p>
+            <table style="width:100%;border-collapse:collapse;font-size:.9em;margin:6px 0 10px;">
+              <thead><tr style="text-align:left;border-bottom:1px solid var(--line);"><th style="padding:6px 8px;">When the MSI was run by</th><th style="padding:6px 8px;">Log path</th></tr></thead>
+              <tbody>
+                <tr><td style="padding:6px 8px;">Signed-in user (interactive install)</td><td style="padding:6px 8px;"><code>C:\Users\&lt;USER&gt;\AppData\Local\Temp\sentinel-msi-install.log</code></td></tr>
+                <tr><td style="padding:6px 8px;"><code>SYSTEM</code> (MDM-pushed — Intune Win32 / ManageEngine / GPO)</td><td style="padding:6px 8px;"><code>C:\Windows\Temp\sentinel-msi-install.log</code></td></tr>
+              </tbody>
+            </table>
+            <p>Probe both locations from a shell and tail whichever exists:</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>foreach ($p in @(
+  "$env:TEMP\sentinel-msi-install.log",
+  "C:\Windows\Temp\sentinel-msi-install.log",
+  "C:\Users\$env:USERNAME\AppData\Local\Temp\sentinel-msi-install.log"
+)) {
+  if (Test-Path $p) { "==> $p"; Get-Content $p -Tail 200; break }
+}</code></pre></div>
+            <p style="font-size:.9em;color:var(--ink-soft);">For the rollback equivalent, replace <code>sentinel-msi-install.log</code> with <code>sentinel-msi-uninstall.log</code>.</p>
+
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">2</span><h3>Windows service running</h3></div>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>Get-Service | Where-Object { $_.Name -match 'quilrai|quilr' } |
+Select-Object Name, Status, StartType</code></pre></div>
+            <div class="expect"><strong>Expected:</strong> <code>Status = Running</code> and <code>StartType = Automatic</code>.</div>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">3</span><h3>WinDivert driver registered</h3></div>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>sc query WinDivert</code></pre></div>
+            <div class="expect"><strong>Expected:</strong> <code>SERVICE_NAME: WinDivert</code> &middot; <code>STATE&nbsp;: 4&nbsp;&nbsp;RUNNING</code>. <em>"The specified service does not exist as an installed service"</em> = MSI did not register the driver &mdash; see Step&nbsp;6 &sect; Known issues.</div>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">4</span><h3>CA chain in Local Machine trust store</h3></div>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>certutil -store Root | Select-String -Pattern 'Quilr' -SimpleMatch
+certutil -store CA   | Select-String -Pattern 'Quilr' -SimpleMatch</code></pre></div>
+            <div class="expect"><strong>Expected:</strong> Quilr root in the <code>Root</code> store and Quilr intermediate in the <code>CA</code> (Intermediate) store.</div>
+          </div>
+        </div>
+
+          <h2 style="margin-top:24px;">Critical log locations (Windows)</h2>
+          <p style="color:var(--ink-soft); margin-top:-6px;">If any of the four checks above fails, the relevant log is here. Tail the matching file and search for <code>ERROR</code> / <code>FATAL</code> / the MSI return code first.</p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Component</th><th>Path</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td>Agent runtime (all services)</td><td><code>%PROGRAMDATA%\quilrai\logs\</code></td><td>Root directory for every sentinel-service trace (proxy, templating engine, broker)</td></tr>
+              <tr><td>Proxy daemon (runtime)</td><td><code>%PROGRAMDATA%\quilrai\logs\proxy.log.YYYY-MM-DD</code></td><td>DLP engine, TLS interception, <code>flow.matched</code> events &mdash; daily-rotating</td></tr>
+              <tr><td>Templating engine (runtime)</td><td><code>%PROGRAMDATA%\quilrai\logs\templating-engine.log.YYYY-MM-DD</code></td><td>DLP alert popups &mdash; daily-rotating</td></tr>
+              <tr><td>IPC broker (runtime)</td><td><code>%PROGRAMDATA%\quilrai\logs\agent.stderr.log</code> &nbsp;<span style="opacity:.7;">(also <code>agent.stdout.log</code>)</span></td><td>Lifecycle, init, heartbeat, inter-process broker traffic</td></tr>
+              <tr><td>MSI install &mdash; interactive (signed-in user)</td><td><code>%TEMP%\sentinel-msi-install.log</code></td><td>MSI verbose trace when the user double-clicked / msiexec'd</td></tr>
+              <tr><td>MSI install &mdash; SYSTEM (MDM-pushed)</td><td><code>C:\Windows\Temp\sentinel-msi-install.log</code></td><td>Same trace when Intune Win32 / ManageEngine / GPO ran the MSI as <code>LocalSystem</code></td></tr>
+              <tr><td>MSI uninstall / rollback</td><td><code>%TEMP%\sentinel-msi-uninstall.log</code> &nbsp;<span style="opacity:.7;">or</span>&nbsp; <code>C:\Windows\Temp\sentinel-msi-uninstall.log</code></td><td>Rollback / uninstall verbose trace</td></tr>
+              <tr><td>Intune Management Extension</td><td><code>%PROGRAMDATA%\Microsoft\IntuneManagementExtension\Logs\IntuneManagementExtension.log</code></td><td>Win32 download &middot; hash check &middot; install orchestration (Intune-only)</td></tr>
+              <tr><td>Windows Event Log &mdash; System</td><td><code>Get-WinEvent -LogName System | ? { $_.ProviderName -match 'WinDivert' } | Select -First 50</code></td><td>WinDivert kernel-driver load / registration failures (elevated)</td></tr>
+              <tr><td>Windows Event Log &mdash; Application</td><td><code>Get-WinEvent -LogName Application | ? { $_.ProviderName -match 'Quilr' } | Select -First 50</code></td><td>User-mode service crashes &middot; uncaught exceptions surfaced to WER</td></tr>
+            </tbody>
+          </table></div>
+          <p style="color:var(--ink-soft); font-size:.9em; margin-top:-6px;">Templating-engine / broker filenames mirror the macOS layout; if a file is missing on a given build, confirm the exact name with Quilr support before escalating.</p>
+
+          <h2 style="margin-top:24px;">Install folder layout (Windows)</h2>
+          <p style="color:var(--ink-soft); margin-top:-6px;">Reference tree of what a healthy install puts on disk. Use to spot missing binaries (failed MSI custom action) or rogue extras (tampering).</p>
+
+          <h3 style="margin-top:14px;"><code>%ProgramFiles%\QuilrAI\</code> &mdash; install root</h3>
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>tree /F</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>C:.
+│   bootstrap.exe
+│   cert.pem
+│   dlp_content_extractor.json
+│   email-discovery.exe
+│   h2_disable_hosts.txt
+│   ipc-light-broker.exe
+│   key.pem
+│   quilrai-diagnostics.exe
+│   quilrai-endpoint.exe
+│   quilrai-monitor-v2.exe
+│   quilrai-proxy.exe
+│   quilrai.exe
+│   root.pem
+│   template-engine.exe
+│   templating-engine.exe
+│   WinDivert.dll
+│   WinDivert.lib
+│   WinDivert64.sys
+│
+├───configs
+│       oauth_config.json
+│       redirector_config.toml
+│
+├───hooks
+│   │   quilrai-claude-hook-client.exe
+│   │   quilrai-codex-hook-client.exe
+│   │   quilrai-copilotcli-hook-client.exe
+│   │   quilrai-hook-client.exe
+│   │
+│   └───scripts
+│       │   claude_code.lua
+│       │   codex.lua
+│       │   copilot.lua
+│       │   cursor.lua
+│       │   kiro.lua
+│       │   lmstudio.lua
+│       │   manifest.json
+│       │   nemoclaw.lua
+│       │   ollama.lua
+│       │
+│       └───lib
+│               frontmatter.lua
+│               mcp.lua
+│               path.lua
+│               risk.lua
+│
+├───icons
+│       icon.ico
+│       icon.png
+│
+├───installer
+│       brand.json
+│       certs-bundle.zip
+│       install-launcher.exe
+│       quilrai-tray.exe
+│       uninstall-launcher.exe
+│       update-launcher.exe
+│       vc_redist.x64.exe
+│
+└───templates
+    │   alert.html
+    │   block.html
+    │   index.html
+    │   notification.html
+    │   prompt.html
+    │
+    └───app-discovery
+            alert.html
+            block.html
+            notification.html</code></pre></div>
+          <p style="font-size:.9em;color:var(--ink-soft);">Reproduce with: <code>tree /F /A "%ProgramFiles%\QuilrAI"</code></p>
+
+          <h3 style="margin-top:14px;"><code>%HOMEPATH%\.quilrai\</code> &mdash; per-user hooks &middot; scripts &middot; state</h3>
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>tree /F</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>C:.
+│   quilrai-claude-hook-client.exe
+│   quilrai-codex-hook-client.exe
+│   quilrai-copilotcli-hook-client.exe
+│   quilrai-hook-client.exe
+│
+├───logs
+│       monitor.log.2026-06-14
+│
+├───scripts
+│   │   claude_code.lua
+│   │   codex.lua
+│   │   copilot.lua
+│   │   cursor.lua
+│   │   kiro.lua
+│   │   lmstudio.lua
+│   │   manifest.json
+│   │   nemoclaw.lua
+│   │   ollama.lua
+│   │
+│   └───lib
+│           frontmatter.lua
+│           mcp.lua
+│           path.lua
+│           risk.lua
+│
+└───v2
+        snapshot.json
+        tenant-policy.json</code></pre></div>
+          <p style="font-size:.9em;color:var(--ink-soft);">Reproduce with: <code>tree /F /A "%HOMEPATH%\.quilrai"</code> &middot; <code>monitor.log.YYYY-MM-DD</code> is the per-user agent-monitor trace (daily-rotating). The <code>v2\</code> folder caches the tenant policy snapshot.</p>
+      </div>
+
+      <h2>Functional test — claude.ai interception</h2>
+      <p>This proves the agent is actively decrypting and matching AI traffic in real time.</p>
+      <div class="tabs">
+        <div class="tab-btns">
+          <button class="tab-btn active" data-tab="fmac"> macOS</button>
+          <button class="tab-btn" data-tab="fwin"> Windows</button>
+        </div>
+        <div class="tab-panel active" data-panel="fmac">
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash · sudo</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>sudo log stream --predicate 'subsystem == "ai.quilr.endpoint"' --info \
+| grep -iE 'matched|intercepted|claude'</code></pre></div>
+          <p>Then open <a href="https://claude.ai" target="_blank" rel="noopener">https://claude.ai</a> in <strong>Safari or Firefox</strong> and send a prompt.</p>
+          <div class="expect"><strong>Expected:</strong> a <code>flow.matched … claude.ai</code> line appears within ~2 seconds; no certificate warning; Claude responds normally.</div>
+        </div>
+        <div class="tab-panel" data-panel="fwin">
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>Get-Content "$env:PROGRAMDATA\quilrai\logs\proxy.log.*" -Tail 0 -Wait |
+Select-String -Pattern 'matched|claude' -SimpleMatch</code></pre></div>
+          <p>Open <a href="https://claude.ai" target="_blank" rel="noopener">https://claude.ai</a> in <strong>Firefox</strong> and send a prompt.</p>
+          <div class="expect"><strong>Expected:</strong> a <code>matched … claude.ai</code> line in the log within ~2 seconds.</div>
+        </div>
+      </div>
+
+      <h2>Certificate-chain verification</h2>
+      <p>Confirm the TLS issuer is rewritten to Quilr&rsquo;s CA — the definitive proof of interception.</p>
+      <div class="tabs">
+        <div class="tab-btns">
+          <button class="tab-btn active" data-tab="cmac"> macOS / Linux</button>
+          <button class="tab-btn" data-tab="cwin"> Windows (PS 7+)</button>
+        </div>
+        <div class="tab-panel active" data-panel="cmac">
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>openssl s_client -connect claude.ai:443 -servername claude.ai &lt;/dev/null 2&gt;/dev/null \
+| openssl x509 -noout -issuer</code></pre></div>
+        </div>
+        <div class="tab-panel" data-panel="cwin">
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell 7+</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>$tcp = New-Object Net.Sockets.TcpClient('claude.ai', 443)
+$ssl = New-Object Net.Security.SslStream($tcp.GetStream())
+$ssl.AuthenticateAsClient('claude.ai')
+$ssl.RemoteCertificate.Issuer</code></pre></div>
+        </div>
+      </div>
+      <div class="callout warn">
+        <span class="ico">🔎</span>
+        <div><span class="ct">How to read the result</span>
+        If the issuer shows a real CA (WE1, Let&rsquo;s Encrypt, DigiCert, Cloudflare), traffic is reaching the origin
+        un-intercepted — and if it shows your <em>SWG</em>, that host needs to be on the SWG&rsquo;s SSL-bypass list. When the
+        Quilr agent is working, a browser padlock → certificate details will show <strong>Issued By: Quilr CA</strong>.</div>
+      </div>
+
+      <h3>Browser padlock check</h3>
+      <ul>
+        <li><strong>Chrome / Edge:</strong> padlock → <em>Connection is secure</em> → <em>Certificate is valid</em> → Details</li>
+        <li><strong>Safari:</strong> padlock → <em>Show Certificate</em></li>
+        <li><strong>Firefox:</strong> padlock → arrow → <em>More information</em> → <em>View Certificate</em></li>
+      </ul>
+      <p>Leaf certificate <strong>Issued By = Quilr CA</strong> confirms active interception. If it shows Anthropic&rsquo;s real CA, the agent is not intercepting that browser&rsquo;s flow.</p>
+
+      <h2>Desktop-app DLP test &mdash; verify the agent intercepts native AI apps</h2>
+      <p>The proxy + WinDivert / Network Extension stack should intercept TLS traffic from <em>both</em> browsers and native desktop AI apps (Claude Desktop, ChatGPT Desktop, Cursor, GitHub Copilot, &hellip;). This test confirms the desktop side with a synthetic-PII payload and the Quilr <strong>Security Alert</strong> popup.</p>
+
+      <h3>1 &mdash; Confirm Guardrails are ON for the target apps</h3>
+      <p>Open <a data-env-link href="https://app.quilr.ai/en/settings/endpoint/detection-configurations" target="_blank" rel="noopener"><strong>Settings &rarr; Endpoint &rarr; Detection configurations</strong></a> in the Quilr Console. The header should read &ldquo;<code>X/X active</code>&rdquo; (all detection configs enabled). For every app row you intend to test, confirm each category (Chat / File Upload / Codex / &hellip;) shows the green <strong>GUARDRAILS ON</strong> pill.</p>
+      <figure style="margin:10px 0 6px; padding:0;">
+        <img src="../../assets/console-ea-guardrails.png"
+             alt="Quilr Console - Settings - Endpoint - Detection configurations tab. Header reads '27/27 active' next to a search box. Endpoint Applications section lists 12 apps including ChatGPT (4 types configured, NO DESKTOP APP MONITORING, BROWSER MONITORING AVAILABLE, 4/4 ACTIVE; categories Chat, File Upload, Chat (Anonymous), Codex; Chat row shows GUARDRAILS ON, 7 MONITOR / 11 NOT MONITORED, BROWSERS 13/13), Claude (3 types configured, DESKTOP APP MONITORED, BROWSER MONITORING AVAILABLE, 3/3 ACTIVE; categories Chat, Claude Code Desktop, File Upload Desktop; Chat shows GUARDRAILS ON / 7 JUSTIFY), Cursor (2 types, Chat + File Upload, GUARDRAILS ON / 7 MONITOR), GitHub Copilot (1 type configured). Each app row has 'Guardrails' and 'Monitored Browsers' buttons on the right."
+             loading="lazy"
+             style="display:block; width:100%; max-width:1280px; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:10px; background:#0a0c12; box-shadow:0 6px 24px rgba(0,0,0,.35);" />
+        <figcaption style="margin-top:8px; font-size:12.5px; color:var(--ink-soft); text-align:center;">
+          Console &mdash; Settings &rarr; Endpoint &rarr; <em>Detection configurations</em>. The endpoint agent intercepts only when Guardrails are ON for that app + category.
+        </figcaption>
+      </figure>
+      <div class="callout warn" style="margin-top:10px;">
+        <span class="ico">&#x23F1;</span>
+        <div><span class="ct">Wait ~90 seconds after toggling</span>
+        Detection-config changes propagate to the agent on the next policy sync. Wait at least <strong>90&nbsp;seconds</strong> after enabling a Guardrail before testing &mdash; otherwise the agent will still pass the prompt through.</div>
+      </div>
+      <div class="table-wrap" style="margin-top:10px;"><table>
+        <thead><tr><th>Pill / column</th><th>What it means for this test</th></tr></thead>
+        <tbody>
+          <tr><td><code>DESKTOP APP MONITORED</code></td><td>The agent will hook the native app&rsquo;s TLS traffic. Required for desktop-app testing &mdash; if absent, the agent only sees browser traffic.</td></tr>
+          <tr><td><code>BROWSER MONITORING AVAILABLE</code></td><td>The Browser Extension can monitor this app in a browser tab. Not required for the desktop-app test.</td></tr>
+          <tr><td><code>GUARDRAILS ON</code> (green)</td><td>DLP runs against this category. <code>GUARDRAILS OFF</code> &rarr; agent sees the traffic but never raises a popup.</td></tr>
+          <tr><td><code>X/X ACTIVE</code></td><td>Every detection type is enabled. <code>2/4 active</code> &rarr; only 2 of 4 categories on; check which is off.</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>2 &mdash; Submit synthetic PII through a native AI app</h3>
+      <p>Pick any app that shows <code>DESKTOP APP MONITORED</code> + <code>GUARDRAILS ON</code> in step&nbsp;1 (Claude Desktop is the easiest). Launch it on the pilot device, paste the same synthetic-PII block used on the Browser Extension side, and submit:</p>
+      <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>synthetic PII &mdash; test only</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>First and Last Name    SSN            Date of Birth
+Robert Aragon          489-36-8350    6/7/1981
+Ashley Borden          514-14-8905    7/8/1981
+Thomas Conley          690-05-5315    8/9/1981
+Susan Davis            421-37-1396    9/10/1981
+Christopher Diaz       458-02-6124    1/10/1975
+Rick Edwards           612-20-6833    2/11/1975
+Victor Faulkner        300-62-3266    3/12/1975
+Lisa Garrison          660-03-8360    4/13/1975
+Marjorie Green         213-46-8915    5/14/1975
+Mark Hall              449-48-3135    6/14/1975
+James Heard            559-81-1301    7/16/1975
+Albert Iorio           322-84-2281    8/17/1975
+Charles Jackson        646-44-9061    9/18/1975
+Teresa Kaminski        465-73-5022    10/19/1975
+Tim Lowe               044-34-6954    1/20/1991
+Monte Mceachern        477-12-8344    2/21/1991</code></pre></div>
+      <p>(Same publicly-circulated synthetic-PII test list from BE Step&nbsp;4 Test&nbsp;3; do not use real personal data.)</p>
+
+      <h3>3 &mdash; What you should see</h3>
+      <div class="expect"><strong>Expected:</strong> a native OS window titled <strong>&ldquo;Quilr | Security Alert&rdquo;</strong> appears <em>before</em> the prompt leaves the app, with title <strong>&ldquo;Potentially Sensitive Data Detected.&rdquo;</strong>, the <code>PERSONALLY IDENTIFIABLE INFORMATION (PII)</code> tag, the matched rows underlined in red, and a <strong>Reason for bypassing</strong> dropdown the user must pick before they can click <strong>Continue with Original</strong>. The popup is rendered by the templating-engine subprocess (see Step&nbsp;6 critical-logs &middot; <code>templating-engine.log</code>).</div>
+      <figure style="margin:12px 0 6px; padding:0; max-width:720px;">
+        <img src="../../assets/quilr-popup-ea-pii.png"
+             alt="Quilr Endpoint Agent native popup. Window title 'Quilr | Security Alert' (blue chrome). Body title 'Potentially Sensitive Data Detected.' in yellow, subtitle 'Please review content before submitting to external website.', tag 'PERSONALLY IDENTIFIABLE INFORMATION (PII)', 'Highlight Sensitive Data' button, the synthetic-PII payload table (Robert Aragon, Ashley Borden, Thomas Conley, ...) with the SSN columns and dates underlined in red. A 'Reason for bypassing:' dropdown labelled 'Select a justification...' sits below. Footer reads 'Stay safe, Quilr it!' and a green-outlined 'Continue with Original' button is in the bottom-right."
+             loading="lazy"
+             style="display:block; width:100%; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:10px; background:#0a0c12; box-shadow:0 6px 24px rgba(0,0,0,.35);" />
+        <figcaption style="margin-top:8px; font-size:12.5px; color:var(--ink-soft); text-align:center;">
+          What a successful EA desktop-app block looks like &mdash; native OS window, PII tag, red-underlined matches, and a mandatory <em>Reason for bypassing</em> dropdown before the user can override.
+        </figcaption>
+      </figure>
+      <div class="callout note" style="margin-top:10px;">
+        <span class="ico">&#x1F4DD;</span>
+        <div><span class="ct">Bypass requires a justification</span>
+        The EA popup&rsquo;s <strong>Continue with Original</strong> is gated behind a non-optional dropdown. The justification value is captured in the finding under <code>bypass_reason</code> &mdash; useful for audit. The BE popup is more lenient (free-form override); EA is stricter by design because the OS-level interception is harder to bypass than a browser tab.</div>
+      </div>
+
+      <h3>4 &mdash; Confirm a Finding was generated in the Console</h3>
+      <p>Open <a data-env-link href="https://app.quilr.ai/en/dashboard/findings" target="_blank" rel="noopener"><strong>Findings</strong></a>, switch to the <strong>Endpoint Agent Findings</strong> tab, and filter by the test user. A new finding should land within ~2 seconds with:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Field</th><th>Healthy value</th><th>If it&rsquo;s wrong &hellip;</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Source</strong></td><td><code>endpoint agent</code> (not <code>browser extension</code>)</td><td>Wrong source &rarr; the BE caught it first; close the AI site in the browser and retry on the desktop app.</td></tr>
+          <tr><td><strong>App</strong></td><td>The native app you used (e.g. <code>Claude Desktop</code>, <code>Cursor</code>, <code>GitHub Copilot</code>)</td><td>Listed as <em>unknown</em> &rarr; the app isn&rsquo;t in Detection configurations, or <code>DESKTOP APP MONITORED</code> is off.</td></tr>
+          <tr><td><strong>Event</strong></td><td><code>Prompt</code> (or <code>File Upload</code> if the app supports attaching files)</td><td>Different event &rarr; the agent classified it as a different category.</td></tr>
+          <tr><td><strong>bypass_reason</strong></td><td>Empty if the user closed the popup; the justification string if they clicked <em>Continue with Original</em></td><td>&mdash;</td></tr>
+          <tr><td><strong>Device Name</strong></td><td>The pilot device hostname (matches the row in <em>Deployment Status</em>)</td><td>Different hostname &rarr; a different device fired this; isolate.</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="table-wrap" style="margin-top:14px;"><table>
+        <thead><tr><th>If the popup didn&rsquo;t fire</th><th>Where to look</th></tr></thead>
+        <tbody>
+          <tr><td>Console shows <code>DESKTOP APP MONITORED</code> on this app but <code>GUARDRAILS</code> are off</td><td>Toggle on, wait 90&nbsp;s, retry.</td></tr>
+          <tr><td>Console shows <code>NO DESKTOP APP MONITORING</code> for this app</td><td>Pick a different app from the list (the screenshot in step&nbsp;1 shows which qualify), or have Quilr support enable desktop-app monitoring for the requested app.</td></tr>
+          <tr><td>Popup appears in a browser but not in the desktop app</td><td>The Browser Extension intercepted first. Close the AI site in every browser tab during the desktop-app test, OR uninstall the BE to isolate the EA path.</td></tr>
+          <tr><td>No popup anywhere; agent logs show <code>TLS handshake failed</code> against the AI host</td><td>The Quilr CA isn&rsquo;t trusted by the desktop app&rsquo;s embedded TLS stack (some Electron apps ship their own root store). See Step&nbsp;6 &sect; TLS handshake failure.</td></tr>
+          <tr><td>Popup fires but no Finding in Console</td><td>Tail <code>proxy.log</code> for <code>Forward failed</code> &mdash; the local intercept worked but the upload to the backplane choked. See Step&nbsp;6 &sect; Forward failed.</td></tr>
+        </tbody>
+      </table></div>
+
+            <div class="callout tip">
+        <span class="ico">✅</span>
+        <div><span class="ct">Exit criteria for Step 4</span>
+        All five platform checks green · functional <code>matched … claude.ai</code> event observed · padlock shows the Quilr
+        CA. The device is fully protected. For fleet rollout, continue to Step&nbsp;5.</div>
+      </div>
+
+      <div class="wizard-nav">
+        <a class="wbtn back" href="../Step%203%20-%20Manual%20Installation/index.html"><span>←</span><span class="wbt"><small>Back</small><b>Manual Installation</b></span></a>
+        <span class="wcount">Step 4 of 7</span>
+        <a class="wbtn next" href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="wbt"><small>Next</small><b>Installing using MDM</b></span><span>→</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../../assets/app.js"></script>
+</body>
+</html>

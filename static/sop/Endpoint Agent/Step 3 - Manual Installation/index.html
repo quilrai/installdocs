@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Step 3 · Manual Installation — Quilr Endpoint Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../assets/styles.css" />
+
+  <!-- sop-favicon v1 -->
+  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
+  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">Q</div>
+      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+    </div>
+    <div class="nav-group-title">Overview</div>
+    <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
+    <div class="nav-group-title">Endpoint Agent</div>
+    <ul class="nav">
+      <li><a href="../Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a class="active" href="../Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a href="../Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="nav-group-title">Browser Extension</div>
+    <ul class="nav">
+      <li><a href="../../Browser%20Extension/Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../../Browser%20Extension/Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../../Browser%20Extension/Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../../Browser%20Extension/Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../../Browser%20Extension/Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../../Browser%20Extension/Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a href="../../Browser%20Extension/Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="sidebar-foot">
+      Source: <a href="https://installdocs.quilrai.dev/deployment/macos-manual" target="_blank" rel="noopener">installdocs.quilrai.dev</a><br />
+      Support: <a href="mailto:support@quilr.ai">support@quilr.ai</a>
+    </div>
+  </aside>
+  <div class="scrim"></div>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-btn" aria-label="Open navigation">☰</button>
+      <nav class="crumbs">
+        <a href="../../index.html">SOP</a><span class="sep">/</span>
+        <a href="../../index.html">Endpoint Agent</a><span class="sep">/</span>
+        <span class="here">Step 3 · Manual Installation</span>
+      </nav>
+    </header>
+
+    <div class="content">
+      <nav class="wizard" aria-label="Endpoint Agent deployment steps">
+                <a class="wstep" href="../Step%201%20-%20Prerequisites/index.html"><span class="wdot">1</span><span class="wlabel">Prerequisites</span></a>
+        <a class="wstep" href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="wdot">2</span><span class="wlabel">Validation</span></a>
+        <a class="wstep current" href="../Step%203%20-%20Manual%20Installation/index.html"><span class="wdot">3</span><span class="wlabel">Manual Install</span></a>
+        <a class="wstep" href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="wdot">4</span><span class="wlabel">Verify Install</span></a>
+        <a class="wstep" href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="wdot">5</span><span class="wlabel">MDM Rollout</span></a>
+        <a class="wstep" href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="wdot">6</span><span class="wlabel">Verify MDM</span></a>
+        <a class="wstep" href="../Step%207%20-%20Troubleshooting/index.html"><span class="wdot">7</span><span class="wlabel">Troubleshoot</span></a>
+      </nav>
+
+      <span class="eyebrow">Endpoint Agent · Step 3 of 7</span>
+      <h1>Manual Installation</h1>
+      <p class="lead">Install on a single device by hand — ideal for a pilot machine, a technician build, or reproducing an
+      issue. The macOS flow is fully scripted below; Windows installs by running the MSI locally.</p>
+
+      <div class="callout warn">
+        <span class="ico">🔑</span>
+        <div><span class="ct">Local administrator rights required</span>
+        Manual installation must run as a <strong>local administrator</strong> — on macOS an admin account with <code>sudo</code>
+        rights, on Windows an elevated session (Run as administrator). The installer writes to the system trust store, installs a
+        system service/driver, and (macOS) loads a system extension, none of which are possible as a standard user.</div>
+      </div>
+
+      <div class="callout crit">
+        <span class="ico">🔐</span>
+        <div><span class="ct">Critical order: trust the CAs first</span>
+        Always import the Quilr root + intermediate CAs <strong>before</strong> installing the package, so the agent&rsquo;s
+        first TLS handshake with the Quilr control plane succeeds.</div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab-btns">
+          <button class="tab-btn active" data-tab="mac"> macOS · Terminal</button>
+          <button class="tab-btn" data-tab="win"> Windows · MSI</button>
+        </div>
+
+        <!-- ===================== macOS ===================== -->
+        <div class="tab-panel active" data-panel="mac">
+          <h3>Prerequisites for this device</h3>
+          <ul>
+            <li>Local administrator account with <code>sudo</code> rights</li>
+            <li>Physical / console access (Screen Sharing or a logged-in session)</li>
+            <li>macOS 13+ on the current release</li>
+            <li>Network access to the Quilr distribution host and control plane (proven in Step&nbsp;2)</li>
+            <li>The install bundle: <code>quilr-endpoint-agent-install-bundle.zip</code></li>
+          </ul>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">1</span><h3>Download &amp; stage the bundle</h3></div>
+            <div class="code">
+              <div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code><span class="c"># Download from the Quilr CDN</span>
+curl -fLO https://quilr-extensions.quilr.ai/endpoint-agent/prod/mac/installer/quilr-endpoint-agent-install-bundle.zip
+
+<span class="c"># Unzip to a working directory</span>
+unzip quilr-endpoint-agent-install-bundle.zip -d ~/Downloads/quilr/</code></pre>
+            </div>
+            <h4>Bundle contents</h4>
+            <ul>
+              <li><code>certs/quilr-root-ca.crt</code> — root CA</li>
+              <li><code>certs/quilr-ea-intermediate-ca.crt</code> — intermediate CA</li>
+              <li><code>quilr-endpoint-agent-installer.pkg</code></li>
+              <li><code>.mobileconfig</code> files — <em>MDM only; skip for manual install</em></li>
+            </ul>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">2</span><h3>Trust the CA certificates <span style="font-weight:600;color:var(--crit);">(do this first)</span></h3></div>
+            <p>Do this by hand in <strong>Keychain Access</strong> — no Terminal needed:</p>
+            <ol>
+              <li>Open <strong>Keychain Access</strong> (Applications → Utilities) and select the <strong>System</strong> keychain on the left.</li>
+              <li><strong>File → Import Items…</strong> and import <code>certs/quilr-root-ca.crt</code> into the <strong>System</strong> keychain; authenticate as administrator. Repeat for <code>certs/quilr-ea-intermediate-ca.crt</code>.</li>
+              <li>Double-click each imported <em>Quilr</em> certificate, expand <strong>Trust</strong>, and set <strong>&ldquo;When using this certificate&rdquo;</strong> to <strong>Always Trust</strong>. Close the window and authenticate to save.</li>
+            </ol>
+            <details class="fallback">
+              <summary>Prefer the command line? Show CLI equivalent</summary>
+              <div class="code">
+                <div class="code-head"><span class="label"><span class="dot"></span>bash · sudo</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>cd ~/Downloads/quilr/quilr-endpoint-agent-install-bundle
+
+<span class="c"># Add root CA</span>
+sudo security add-trusted-cert -d -r trustRoot \
+  -k /Library/Keychains/System.keychain certs/quilr-root-ca.crt
+
+<span class="c"># Add intermediate CA</span>
+sudo security add-trusted-cert -d -r trustAsRoot \
+  -k /Library/Keychains/System.keychain certs/quilr-ea-intermediate-ca.crt</code></pre>
+              </div>
+            </details>
+            <h4>Verify</h4>
+            <div class="code">
+              <div class="code-head"><span class="label"><span class="dot"></span>verify</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>security find-certificate -a /Library/Keychains/System.keychain | grep -i quilr | wc -l</code></pre>
+            </div>
+            <div class="expect"><strong>Expected:</strong> <code>2</code></div>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">3</span><h3>Install the agent package</h3></div>
+            <h4>Install — double-click the package</h4>
+            <ol>
+              <li>In Finder, <strong>double-click <code>quilr-endpoint-agent-installer.pkg</code></strong>.</li>
+              <li>Follow the macOS Installer wizard: <strong>Continue → Install</strong>, authenticating as an administrator.</li>
+              <li>If no tenant config is found, the installer <strong>prompts for your Tenant ID</strong> — enter the value from Quilr support and continue.</li>
+              <li>Wait for <strong>&ldquo;The installation was successful.&rdquo;</strong></li>
+            </ol>
+
+            <figure class="shot">
+              <div class="macinstaller">
+                <div class="mac-title">
+                  <span class="mac-lights"><span class="r"></span><span class="y"></span><span class="g"></span></span>
+                  <span class="t">Install QuilrAI Endpoint Agent</span>
+                </div>
+                <div class="mac-body" style="padding-top:24px;">
+                  <label class="mac-label">Quilr Tenant ID</label>
+                  <div class="mac-input"></div>
+                </div>
+                <div class="mac-foot">
+                  <button class="mac-btn primary" type="button">OK</button>
+                </div>
+              </div>
+              <figcaption>The macOS pkg prompts for the <strong>Quilr Tenant ID</strong> — type it in and click <strong>OK</strong>.</figcaption>
+            </figure>
+
+            <div class="callout note">
+              <span class="ico">ℹ️</span>
+              <div><span class="ct">Tenant ID</span>
+              The installer looks for <code>/tmp/quilr-endpoint-agent.json</code> first; if it is not there, it asks for the
+              Tenant ID on screen. So for a manual install you can simply double-click and type it when prompted.</div>
+            </div>
+            <details class="fallback">
+              <summary>Pre-seed the Tenant ID instead (skip the prompt)</summary>
+              <div class="code">
+                <div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code><span class="c"># Create before installing; the installer reads it and skips the on-screen prompt</span>
+printf '{"tenant_id":"%s","discover_skip":false}\n' "<span class="v">&lt;TENANT-ID&gt;</span>" \
+  &gt; /tmp/quilr-endpoint-agent.json</code></pre>
+              </div>
+            </details>
+            <details class="fallback">
+              <summary>Prefer the command line? Show CLI equivalent</summary>
+              <div class="code">
+                <div class="code-head"><span class="label"><span class="dot"></span>bash · sudo</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>sudo installer -pkg quilr-endpoint-agent-installer.pkg -target /</code></pre>
+              </div>
+            </details>
+            <h4>Verify installation</h4>
+            <div class="code">
+              <div class="code-head"><span class="label"><span class="dot"></span>verify</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>ls -d /Applications/QuilrAIProxy.app
+sudo launchctl list | grep -i quilrai
+pgrep -lf "quilrai|quilrai-proxy"</code></pre>
+            </div>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">4</span><h3>Approve the System Extension</h3></div>
+            <ol>
+              <li>Open <strong>System Settings → Privacy &amp; Security</strong></li>
+              <li>Find the &ldquo;System Extension Blocked&rdquo; message for <strong>QuilrAIProxy</strong></li>
+              <li>Click <strong>Allow</strong> and authenticate as administrator</li>
+              <li>When prompted &ldquo;…would like to filter network content,&rdquo; click <strong>Allow</strong></li>
+            </ol>
+            <div class="code">
+              <div class="code-head"><span class="label"><span class="dot"></span>verify</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>systemextensionsctl list | grep -i quilr</code></pre>
+            </div>
+            <div class="expect"><strong>Expected:</strong> <code>[activated enabled]</code></div>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">5</span><h3>Grant Full Disk Access</h3></div>
+            <ol>
+              <li>Open <strong>System Settings → Privacy &amp; Security → Full Disk Access</strong></li>
+              <li>Toggle <strong>QuilrAIProxy</strong> to <strong>on</strong> and authenticate</li>
+              <li>If prompted, allow the app to restart — or restart the daemon manually:</li>
+            </ol>
+            <div class="code">
+              <div class="code-head"><span class="label"><span class="dot"></span>bash · sudo</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>sudo launchctl bootout   system /Library/LaunchDaemons/com.sentinel.agent.plist
+sudo launchctl bootstrap system /Library/LaunchDaemons/com.sentinel.agent.plist</code></pre>
+            </div>
+            <div class="code">
+              <div class="code-head"><span class="label"><span class="dot"></span>verify</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>sqlite3 "/Library/Application Support/com.apple.TCC/TCC.db" \
+  "select client, allowed from access \
+   where service='kTCCServiceSystemPolicyAllFiles' and client like '%quilr%';"</code></pre>
+            </div>
+            <div class="expect"><strong>Expected:</strong> <code>allowed = 1</code></div>
+          </div>
+
+          <h3>Key identifiers</h3>
+          <div class="table-wrap">
+            <table>
+              <tbody>
+                <tr><td>Installed app</td><td><code>/Applications/QuilrAIProxy.app</code></td></tr>
+                <tr><td>LaunchDaemon</td><td><code>/Library/LaunchDaemons/com.sentinel.agent.plist</code> (label <code>com.sentinel.agent</code>)</td></tr>
+                <tr><td>Agent bundle ID</td><td><code>ai.quilr.agent.sentinel</code></td></tr>
+                <tr><td>Developer Team ID</td><td><code>W8FHSH4RM5</code></td></tr>
+                <tr><td>Runtime logs</td><td><code>/Library/Logs/quilrai/</code></td></tr>
+                <tr><td>Install &amp; upload logs</td><td><code>/Library/Application Support/QuilrAI/logs/</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Uninstall (preferred)</h3>
+          <div class="code">
+            <div class="code-head"><span class="label"><span class="dot"></span>bash · sudo</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>sudo "/Library/Application Support/QuilrAI/quilrai-endpoint-uninstaller"</code></pre>
+          </div>
+        </div>
+
+        <!-- ===================== Windows ===================== -->
+        <div class="tab-panel" data-panel="win">
+          <h3>Prerequisites for this device</h3>
+          <ul>
+            <li><strong>Local administrator</strong> rights — run PowerShell / the MSI elevated (Run as administrator)</li>
+            <li>Windows 10 (version 1809) or later / Windows 11, 64-bit</li>
+            <li>Network access to the Quilr distribution host and control plane (proven in Step&nbsp;2)</li>
+            <li><code>%ProgramFiles%\QuilrAI\</code> excluded in AV / EDR (see Step&nbsp;1)</li>
+            <li>The install bundle: <code>quilr-endpoint-agent-win-install-bundle.zip</code></li>
+          </ul>
+
+          <div class="callout note">
+            <span class="ico">ℹ️</span>
+            <div>On Windows the MSI installs the service, the WinDivert driver, <em>and</em> writes both Quilr CAs into the Local
+            Machine trust stores automatically. A manual install is just <strong>double-clicking the MSI</strong> and entering your
+            Tenant ID in the setup wizard — no command line needed.</div>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">1</span><h3>Download &amp; extract the bundle</h3></div>
+            <ol>
+              <li>In a browser, download <code>quilr-endpoint-agent-win-install-bundle.zip</code> from the Windows bundle URL (see Step&nbsp;1).</li>
+              <li>In File Explorer, right-click the ZIP → <strong>Extract All…</strong> → extract to e.g. <code>C:\Staging\Quilr</code>.</li>
+            </ol>
+            <p>Bundle contents: <code>certs\quilr-root-ca.crt</code>, <code>certs\quilr-ea-intermediate-ca.crt</code>, and <code>quilr-endpoint-agent.msi</code>.</p>
+            <details class="fallback">
+              <summary>Prefer the command line? Show CLI equivalent</summary>
+              <div class="code">
+                <div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>$url = 'https://quilr-extensions.quilr.ai/endpoint-agent/prod/windows/installer/quilr-endpoint-agent-win-install-bundle.zip'
+Invoke-WebRequest $url -OutFile $env:TEMP\quilr-win.zip
+Expand-Archive $env:TEMP\quilr-win.zip -DestinationPath C:\Staging\Quilr -Force</code></pre>
+              </div>
+            </details>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">2</span><h3>Install — double-click the MSI &amp; enter your Tenant ID</h3></div>
+            <ol>
+              <li>In File Explorer, <strong>double-click <code>quilr-endpoint-agent.msi</code></strong> and approve the UAC prompt (local admin required).</li>
+              <li>On the <strong>Quilr Tenant Configuration</strong> screen, type your <strong>Tenant ID</strong> into the <em>Tenant ID (required)</em> field, then click <strong>Next</strong>.</li>
+              <li>Complete the wizard — <strong>Install → Finish</strong>. The service, WinDivert driver, and both Quilr CAs are installed automatically.</li>
+            </ol>
+
+            <figure class="shot">
+              <div class="winstaller">
+                <div class="wi-title"><span class="wi-ico"></span>QuilrAI Endpoint Agent Setup<span class="wi-x">×</span></div>
+                <div class="wi-head">
+                  <div>
+                    <div class="wi-h1">Quilr Tenant Configuration</div>
+                    <div class="wi-sub">Enter your Quilr Tenant ID to bind this device to your organisation.</div>
+                  </div>
+                  <div class="wi-logo" aria-hidden="true"></div>
+                </div>
+                <div class="wi-rule"></div>
+                <div class="wi-body">
+                  <label class="wi-label">Tenant ID&nbsp;&nbsp;(required):</label>
+                  <div class="wi-input"></div>
+                  <p class="wi-help">Your Tenant ID is provided by your IT administrator or in the Quilr admin console. It is
+                  required; without it, the agent cannot authenticate this device to your organisation.</p>
+                </div>
+                <div class="wi-foot">
+                  <button class="wi-btn" type="button" disabled>Back</button>
+                  <button class="wi-btn wi-primary" type="button">Next</button>
+                  <button class="wi-btn" type="button">Cancel</button>
+                </div>
+              </div>
+              <figcaption>The <strong>Quilr Tenant Configuration</strong> screen during MSI setup — type your Tenant ID and click <strong>Next</strong>.</figcaption>
+            </figure>
+
+            <div class="callout crit">
+              <span class="ico">⛔</span>
+              <div><span class="ct">Tenant ID is mandatory</span>
+              Setup will not proceed past this screen without it — without a tenant the agent cannot authenticate the device to
+              your organisation. Get the value from your IT admin or the Quilr admin console.</div>
+            </div>
+            <details class="fallback">
+              <summary>Prefer the command line / silent install? Show CLI equivalent</summary>
+              <div class="code">
+                <div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>msiexec /i "C:\Staging\Quilr\quilr-endpoint-agent.msi" /qn /norestart TENANTID=<span class="v">&lt;TENANT-ID&gt;</span></code></pre>
+              </div>
+            </details>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">3</span><h3>Verify the install</h3></div>
+            <div class="code">
+              <div class="code-head"><span class="label"><span class="dot"></span>verify</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>Get-Service | Where-Object { $_.Name -match 'quilrai|quilr' } | Select Name, Status, StartType
+certutil -store Root | findstr /i quilr
+certutil -store CA   | findstr /i quilr
+netsh wfp show state | findstr /i quilr</code></pre>
+            </div>
+            <div class="expect"><strong>Expected:</strong> the Quilr service is <code>Running</code> / <code>Automatic</code>, both CAs appear, and WFP shows Quilr filters.</div>
+          </div>
+
+          <div class="callout warn">
+            <span class="ico">🌐</span>
+            <div><span class="ct">Browser coverage</span>
+            The endpoint agent <strong>excludes Microsoft Edge and Google Chrome</strong>. Use the Quilr <strong>Browser
+            Extension</strong> track to cover those. Firefox and native apps are covered by the agent.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <span class="ico">✅</span>
+        <div><span class="ct">Exit criteria for Step 3</span>
+        CAs trusted · package installed with tenant ID · (macOS) System Extension <code>[activated enabled]</code> and Full
+        Disk Access <code>allowed=1</code> · agent process/service running. Now confirm interception in Step&nbsp;4.</div>
+      </div>
+
+      <div class="wizard-nav">
+        <a class="wbtn back" href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span>←</span><span class="wbt"><small>Back</small><b>Prerequisites Validation</b></span></a>
+        <span class="wcount">Step 3 of 7</span>
+        <a class="wbtn next" href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="wbt"><small>Next</small><b>Validate Manual Install</b></span><span>→</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quilr Deployment SOP — Standard Operating Guide</title>
+<meta name="description" content="Step-by-step standard operating procedure for deploying the Quilr Endpoint Agent and Browser Extension." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/styles.css" />
+
+  <!-- sop-favicon v1 -->
+  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
+  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+</head>
+<body>
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">Q</div>
+      <div>
+        <div class="brand-name">Quilr&nbsp;AI</div>
+        <div class="brand-sub">Deployment SOP</div>
+      </div>
+    </div>
+
+    <div class="nav-group-title">Overview</div>
+    <ul class="nav">
+      <li><a class="active" href="index.html">Start here</a></li>
+    </ul>
+
+    <div class="nav-group-title">Endpoint Agent</div>
+    <ul class="nav">
+      <li><a href="Endpoint%20Agent/Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="Endpoint%20Agent/Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="Endpoint%20Agent/Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="Endpoint%20Agent/Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="Endpoint%20Agent/Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="Endpoint%20Agent/Step%207%20-%20Troubleshooting/index.html"><span class="step-num">6</span> Troubleshooting</a></li>
+    </ul>
+
+    <div class="nav-group-title">Browser Extension</div>
+    <ul class="nav">
+      <li><a href="Browser%20Extension/Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="Browser%20Extension/Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="Browser%20Extension/Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="Browser%20Extension/Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="Browser%20Extension/Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="Browser%20Extension/Step%207%20-%20Troubleshooting/index.html"><span class="step-num">6</span> Troubleshooting</a></li>
+    </ul>
+
+    <div class="sidebar-foot">
+      Source documentation:<br />
+      <a href="https://installdocs.quilrai.dev" target="_blank" rel="noopener">installdocs.quilrai.dev</a><br />
+      Support: <a href="mailto:support@quilr.ai">support@quilr.ai</a>
+    </div>
+  </aside>
+
+  <div class="scrim"></div>
+
+  <!-- Main -->
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-btn" aria-label="Open navigation">☰</button>
+      <nav class="crumbs"><span class="here">Standard Operating Procedure</span></nav>
+    </header>
+
+    <div class="content">
+      <span class="eyebrow">● Operator Guide</span>
+      <div class="hero">
+        <h1>Quilr Endpoint Deployment &mdash; Standard Operating Procedure</h1>
+        <p class="lead">A sequential, operator-facing runbook for deploying, validating, and troubleshooting Quilr&rsquo;s
+        endpoint security components across macOS and Windows fleets. <strong>Select a track below</strong> to launch its
+        step-by-step wizard &mdash; each step gates the next, with Back / Next controls throughout.</p>
+      </div>
+
+      <div class="meta-row">
+        <span class="chip"><span class="k">Platforms</span> macOS 12+ &middot; Windows 10/11</span>
+        <span class="chip"><span class="k">MDM</span> Intune &middot; Jamf &middot; Kandji &middot; ManageEngine</span>
+        <span class="chip"><span class="k">Audience</span> Endpoint / IT operators</span>
+      </div>
+
+      <h2>Step 1 — choose your deployment track</h2>
+      <div class="card-grid">
+        <a class="track-card" href="Endpoint%20Agent/Step%201%20-%20Prerequisites/index.html">
+          <div class="tc-ico" style="background:var(--brand-soft);color:var(--brand-700);">🛡️</div>
+          <h3>Endpoint Agent</h3>
+          <p>System-level agent with a network/content filter (macOS) and WinDivert driver (Windows). Intercepts AI traffic for native apps and non-Chromium browsers.</p>
+          <span class="tc-go">Launch wizard · Step 1 →</span>
+        </a>
+        <a class="track-card" href="Browser%20Extension/Step%201%20-%20Prerequisites/index.html">
+          <div class="tc-ico" style="background:#f1ecff;color:#7c3aed;">🧩</div>
+          <h3>Browser Extension</h3>
+          <p>WebExtension plus a native-messaging agent for Chrome, Edge, and Safari. Covers the Chromium browsers the endpoint agent excludes.</p>
+          <span class="tc-go">Launch wizard · Step 1 →</span>
+        </a>
+      </div>
+
+      <h2>Endpoint Agent — the six steps</h2>
+      <ol class="steplist">
+        <li><span class="sn">1</span><div><a href="Endpoint%20Agent/Step%201%20-%20Prerequisites/index.html">Prerequisites</a><div class="sd">Tenant environment, supported OS, MDM admin access, network allow-list, and the install bundle.</div></div></li>
+        <li><span class="sn">2</span><div><a href="Endpoint%20Agent/Step%202%20-%20Prerequisites%20Validation/index.html">Prerequisites Validation</a><div class="sd">Confirm every Quilr backplane host is reachable on TCP/443 and bypassed from SSL inspection.</div></div></li>
+        <li><span class="sn">3</span><div><a href="Endpoint%20Agent/Step%203%20-%20Manual%20Installation/index.html">Manual Installation</a><div class="sd">Single-device install via Terminal/CLI — trust CAs, install the package, approve extensions.</div></div></li>
+        <li><span class="sn">4</span><div><a href="Endpoint%20Agent/Step%204%20-%20Validation%20Manual%20Installation/index.html">Validate Manual Install</a><div class="sd">Five per-platform checks plus a live claude.ai interception test and cert-chain verification.</div></div></li>
+        <li><span class="sn">5</span><div><a href="Endpoint%20Agent/Step%205%20-%20Installing%20using%20MDM/index.html">Installing using MDM</a><div class="sd">Fleet rollout via Intune, Jamf Pro, Kandji, or ManageEngine Endpoint Central.</div></div></li>
+        <li><span class="sn">6</span><div><a href="Endpoint%20Agent/Step%207%20-%20Troubleshooting/index.html">Troubleshooting</a><div class="sd">30-second triage, log paths, common failures, and the escalation diagnostic bundle.</div></div></li>
+      </ol>
+
+      <div class="callout note">
+        <span class="ico">ℹ️</span>
+        <div><span class="ct">Golden rule of sequencing</span>
+        Always establish trust before traffic: deploy the <strong>CA certificates first</strong>, then configuration
+        profiles, then the agent package. The agent&rsquo;s leaf certificate must chain to a Quilr root already present in
+        the system trust store before the service makes its first outbound connection.</div>
+      </div>
+
+      <p style="color:var(--ink-faint);font-size:13px;margin-top:34px;">
+        Content mirrors the official Quilr documentation at
+        <a href="https://installdocs.quilrai.dev" target="_blank" rel="noopener">installdocs.quilrai.dev</a>.
+        Always confirm tenant-specific values (tenant ID, environment hosts, MSI product code) with Quilr support before rollout.
+      </p>
+    </div>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

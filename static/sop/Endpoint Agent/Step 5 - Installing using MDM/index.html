@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Step 5 · Installing using MDM — Quilr Endpoint Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../assets/styles.css" />
+
+  <!-- sop-favicon v1 -->
+  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
+  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">Q</div>
+      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+    </div>
+    <div class="nav-group-title">Overview</div>
+    <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
+    <div class="nav-group-title">Endpoint Agent</div>
+    <ul class="nav">
+      <li><a href="../Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a class="active" href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a href="../Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="nav-group-title">Browser Extension</div>
+    <ul class="nav">
+      <li><a href="../../Browser%20Extension/Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../../Browser%20Extension/Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../../Browser%20Extension/Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../../Browser%20Extension/Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../../Browser%20Extension/Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../../Browser%20Extension/Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a href="../../Browser%20Extension/Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="sidebar-foot">
+      Source: <a href="https://installdocs.quilrai.dev" target="_blank" rel="noopener">installdocs.quilrai.dev</a><br />
+      Support: <a href="mailto:support@quilr.ai">support@quilr.ai</a>
+    </div>
+  </aside>
+  <div class="scrim"></div>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-btn" aria-label="Open navigation">☰</button>
+      <nav class="crumbs">
+        <a href="../../index.html">SOP</a><span class="sep">/</span>
+        <a href="../../index.html">Endpoint Agent</a><span class="sep">/</span>
+        <span class="here">Step 5 · Installing using MDM</span>
+      </nav>
+    </header>
+
+    <div class="content">
+      <nav class="wizard" aria-label="Endpoint Agent deployment steps">
+                <a class="wstep" href="../Step%201%20-%20Prerequisites/index.html"><span class="wdot">1</span><span class="wlabel">Prerequisites</span></a>
+        <a class="wstep" href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="wdot">2</span><span class="wlabel">Validation</span></a>
+        <a class="wstep" href="../Step%203%20-%20Manual%20Installation/index.html"><span class="wdot">3</span><span class="wlabel">Manual Install</span></a>
+        <a class="wstep" href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="wdot">4</span><span class="wlabel">Verify Install</span></a>
+        <a class="wstep current" href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="wdot">5</span><span class="wlabel">MDM Rollout</span></a>
+        <a class="wstep" href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="wdot">6</span><span class="wlabel">Verify MDM</span></a>
+        <a class="wstep" href="../Step%207%20-%20Troubleshooting/index.html"><span class="wdot">7</span><span class="wlabel">Troubleshoot</span></a>
+      </nav>
+
+      <span class="eyebrow">Endpoint Agent · Step 5 of 7</span>
+      <h1>Installing using MDM</h1>
+      <p class="lead">Roll out to the fleet through your management platform. Pick your MDM below. Every path follows the same
+      golden sequence: <strong>CA certificates → configuration profiles → installer package</strong>, all scoped to the
+      <code>Quilr-Pilot</code> group first, then promoted to production.</p>
+
+      <div class="callout crit">
+        <span class="ico">🔐</span>
+        <div><span class="ct">Sequencing is not optional</span>
+        Deploy the CA trust chain and (on macOS) the PPPC + Network Extension profiles <strong>before</strong> the package, so
+        the agent inherits a populated trust store and pre-approved permissions on first launch.</div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab-btns">
+          <button class="tab-btn active" data-tab="intune-win"> Intune · Windows</button>
+          <button class="tab-btn" data-tab="intune-mac"> Intune · macOS</button>
+          <button class="tab-btn" data-tab="jamf"> Jamf Pro</button>
+          <button class="tab-btn" data-tab="kandji"> Kandji</button>
+          <button class="tab-btn" data-tab="me"> ManageEngine</button>
+        </div>
+
+        <!-- ============ INTUNE WINDOWS ============ -->
+        <div class="tab-panel active" data-panel="intune-win">
+          <h3>Microsoft Intune — Windows (MSI as Win32 app)</h3>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">1</span><h3>Stage &amp; package the MSI</h3></div>
+            <p>Download <code>quilr-endpoint-agent-win-install-bundle.zip</code> (contains both <code>.crt</code> files and <code>quilr-endpoint-agent.msi</code>), then wrap with the Win32 Content Prep Tool:</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>cmd</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>IntuneWinAppUtil.exe -c C:\Staging\Quilr -s quilr-endpoint-agent.msi -o C:\Staging\Out</code></pre></div>
+            <p>This produces <code>quilr-endpoint-agent.intunewin</code>.</p>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">2</span><h3>Deploy CA certificates (optional)</h3></div>
+            <p>The MSI installs the CAs automatically — create these profiles only for pre-deployment trust or central rotation. <strong>Devices → Configuration → Create policy</strong>, platform <em>Windows 10 and later</em>, profile type <em>Trusted certificate</em>:</p>
+            <ul>
+              <li>&ldquo;Quilr Root CA&rdquo; → upload <code>quilr-root-ca.crt</code> → store <em>Computer certificate store – Root</em></li>
+              <li>&ldquo;Quilr Intermediate CA&rdquo; → upload <code>quilr-ea-intermediate-ca.crt</code> → store <em>Computer certificate store – Intermediate</em></li>
+            </ul>
+            <p>Assign both to the pilot group.</p>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">3</span><h3>Deploy the MSI as a Win32 app</h3></div>
+            <p><strong>Apps → All apps → Add → Windows app (Win32)</strong>, upload the <code>.intunewin</code>. Name &ldquo;Quilr Endpoint Agent,&rdquo; publisher &ldquo;Quilr AI.&rdquo;</p>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Field</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Install</td><td><code>msiexec /i "quilr-endpoint-agent.msi" /qn /norestart TENANTID=&lt;TENANT-ID&gt;</code></td></tr>
+                <tr><td>Uninstall</td><td><code>msiexec /x "{QUILR-MSI-PRODUCT-CODE}" /qn /norestart</code></td></tr>
+                <tr><td>Install behavior</td><td>System</td></tr>
+                <tr><td>Device restart</td><td>No specific action</td></tr>
+              </tbody>
+            </table></div>
+            <div class="callout crit"><span class="ico">⛔</span><div><span class="ct">Replace &lt;TENANT-ID&gt;</span> The MSI fails to enroll without the tenant ID from Quilr support.</div></div>
+            <p><strong>Requirements:</strong> architecture x64, minimum OS Windows 10 1809 (or your baseline). <strong>Detection rule:</strong> use the MSI detection type and allow auto-population of the product code. <strong>Assignment:</strong> Required → add <code>WIN-Quilr-Pilot</code> → Review + Create.</p>
+            <p>Devices sync within 8 hours, or manually via <strong>Settings → Accounts → Access work or school → Sync</strong>.</p>
+          </div>
+
+          <div class="callout warn"><span class="ico">🌐</span><div><span class="ct">Edge &amp; Chrome are excluded</span> The endpoint agent excludes <code>msedge.exe</code> and <code>chrome.exe</code> — cover those with the Quilr browser extension. Test interception in Firefox or a native app.</div></div>
+
+          <h4>Rollback</h4>
+          <ol><li>Change the MSI assignment from Required to <strong>Uninstall</strong></li><li>Unassign both CA certificate profiles</li><li>Verify <code>certutil -store Root|CA | findstr /i quilr</code> and the service query all return nothing</li></ol>
+        </div>
+
+        <!-- ============ INTUNE MACOS ============ -->
+        <div class="tab-panel" data-panel="intune-mac">
+          <h3>Microsoft Intune — macOS (PKG + profiles)</h3>
+          <p>Strict order: CA certificates → custom configuration profiles → PKG app.</p>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">1</span><h3>CA certificates</h3></div>
+            <p>Create two <strong>Trusted Certificate</strong> profiles, each scoped to <code>MAC-Quilr-Pilot</code>:</p>
+            <ul><li>Root CA → <code>quilr-root-ca.crt</code></li><li>Intermediate CA → <code>quilr-ea-intermediate-ca.crt</code></li></ul>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">2</span><h3>Custom configuration profiles (Device channel)</h3></div>
+            <div class="table-wrap"><table>
+              <thead><tr><th>File</th><th>Profile name</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td><code>quilr-endpoint-agent_FullDiskAccess.mobileconfig</code></td><td>Quilr Endpoint Agent — Full Disk Access (PPPC)</td><td>Grants file-system &amp; app-management access</td></tr>
+                <tr><td><code>quilr-endpoint-agent-nw-extension.mobileconfig</code></td><td>Quilr Endpoint Agent — Network Extension</td><td>Activates system extension &amp; content filter</td></tr>
+              </tbody>
+            </table></div>
+            <p>The PPPC profile pre-approves <code>kTCCServiceSystemPolicyAllFiles</code> and <code>kTCCServiceAppManagement</code> with no user prompt.</p>
+            <div class="callout warn"><span class="ico">⚠️</span><div><span class="ct">Pick Device channel from the start</span> The deployment channel cannot be changed after the profile is created.</div></div>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">3</span><h3>PKG app with pre-install script</h3></div>
+            <p><strong>Apps → Add → macOS app (PKG)</strong>, upload <code>quilr-endpoint-agent-installer.pkg</code>. In the <em>Pre-install script</em> section, inject the tenant config:</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash · pre-install</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>#!/bin/bash
+TENANT="<span class="v">&lt;TENANT-ID&gt;</span>"
+printf '{"tenant_id":"%s","discover_skip":false}\n' "$TENANT" &gt; /tmp/quilr-endpoint-agent.json
+exit 0</code></pre></div>
+            <p>Assign to the same device group; confirm under <strong>Apps → Device install status</strong>.</p>
+          </div>
+
+          <div class="callout note"><span class="ico">ℹ️</span><div><span class="ct">Deployment order summary</span> 1) Root CA → 2) Intermediate CA → 3) both <code>.mobileconfig</code> (Device channel) → 4) PKG app with pre-install script. Intune&rsquo;s macOS PKG app has no uninstall intent — roll back by deploying a shell-script uninstaller, then unassigning the app, profiles, and certs.</div></div>
+        </div>
+
+        <!-- ============ JAMF ============ -->
+        <div class="tab-panel" data-panel="jamf">
+          <h3>Jamf Pro — macOS</h3>
+          <p>Four-part sequence: certificates → profiles → package + policy.</p>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">1</span><h3>CA certificates (deploy first)</h3></div>
+            <ol>
+              <li><strong>Computers → Configuration Profiles → New</strong></li>
+              <li>Name &ldquo;Quilr CA — Trust Chain,&rdquo; category Certificates, level <em>Computer Level</em></li>
+              <li>Add two Certificate payloads — upload root and intermediate</li>
+              <li>Disable &ldquo;Allow export from keychain&rdquo; for the root</li>
+              <li>Scope to your target group and save</li>
+            </ol>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>verify</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>security find-certificate -a /Library/Keychains/System.keychain | grep -i quilr</code></pre></div>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">2</span><h3>Configuration profiles (deploy second)</h3></div>
+            <p>Upload each <code>.mobileconfig</code> as a <strong>separate</strong> profile (Upload, Install Automatically, Computer Level), scoped to the same group:</p>
+            <ul>
+              <li><code>quilr-endpoint-agent_FullDiskAccess.mobileconfig</code> → &ldquo;Quilr Endpoint Agent — PPPC&rdquo; (grants <code>SystemPolicyAllFiles</code> + <code>SystemPolicyAppBundles</code> to <code>/Applications/QuilrAIProxy.app</code>)</li>
+              <li><code>quilr-endpoint-agent-nw-extension.mobileconfig</code> → &ldquo;Quilr Endpoint Agent — Network Extension&rdquo;</li>
+            </ul>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>verify</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>profiles list | grep -i quilr   <span class="c"># expect 3 entries total</span></code></pre></div>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">3</span><h3>Package + install policy (deploy third)</h3></div>
+            <h4>Pre-install script</h4>
+            <p><strong>Settings → Computer Management → Scripts → New</strong>, name &ldquo;Quilr — Write tenant config (pre-install)&rdquo;:</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>#!/bin/bash
+TENANT="<span class="v">&lt;TENANT-ID&gt;</span>"
+printf '{"tenant_id":"%s","discover_skip":false}\n' "$TENANT" &gt; /tmp/quilr-endpoint-agent.json
+exit 0</code></pre></div>
+            <h4>Package &amp; policy</h4>
+            <ol>
+              <li><strong>Settings → Computer Management → Packages → New</strong> → upload <code>quilr-endpoint-agent-installer.pkg</code> (category &ldquo;Endpoint Security,&rdquo; priority 10)</li>
+              <li><strong>Computers → Policies → New</strong> → &ldquo;Install Quilr Endpoint Agent&rdquo;</li>
+              <li>Triggers: <em>Recurring Check-in</em> + <em>Enrollment Complete</em>; frequency <em>Once per computer</em></li>
+              <li>Packages tab: add installer, action = Install; attach the pre-install script with Priority = <em>Before</em></li>
+              <li>Scope to the same group; save</li>
+            </ol>
+          </div>
+          <div class="callout note"><span class="ico">↩️</span><div><span class="ct">Rollback</span> Unscope in reverse: policy → profiles → certificate profile. Run <code>tccutil reset SystemPolicyAllFiles</code> and remove <code>/Applications/QuilrAIProxy.app</code> via a cleanup policy if desired.</div></div>
+        </div>
+
+        <!-- ============ KANDJI ============ -->
+        <div class="tab-panel" data-panel="kandji">
+          <h3>Kandji — macOS</h3>
+          <p>Five library items, assigned to a Blueprint (e.g. &ldquo;macOS — Quilr Pilot&rdquo;), in strict order.</p>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">1</span><h3>Certificates (deploy first)</h3></div>
+            <p><strong>Library → Add Library Item → Certificate</strong> ×2: &ldquo;Quilr Root CA&rdquo; (<code>quilr-root-ca.crt</code>) and &ldquo;Quilr Intermediate CA&rdquo; (<code>quilr-ea-intermediate-ca.crt</code>). Disable &ldquo;Allow export from keychain.&rdquo; Confirm both show <em>Status: Installed</em> before proceeding.</p>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">2</span><h3>Custom profiles (deploy second)</h3></div>
+            <p><strong>Library → Add Library Item → Custom Profile</strong> ×2 using the PPPC and Network Extension <code>.mobileconfig</code> files. The PPPC profile grants <code>kTCCServiceSystemPolicyAllFiles</code> and <code>kTCCServiceAppManagement</code> (macOS 14+). Wait until both show &ldquo;Installed.&rdquo;</p>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">3</span><h3>Custom App with Audit &amp; Enforce (deploy last)</h3></div>
+            <p><strong>Library → Add Library Item → Custom App</strong>, name &ldquo;Quilr Endpoint Agent,&rdquo; upload the PKG. Paste the pre-install script:</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash · pre-install</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>#!/bin/bash
+TENANT="<span class="v">&lt;TENANT-ID&gt;</span>"   <span class="c"># from Quilr support</span>
+printf '{"tenant_id":"%s","discover_skip":false}\n' "$TENANT" \
+  &gt; /tmp/quilr-endpoint-agent.json
+exit 0</code></pre></div>
+            <h4>Audit script (exit 0 = healthy)</h4>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash · audit</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>#!/bin/bash
+APP="/Applications/QuilrAIProxy.app"
+PLIST="/Library/LaunchDaemons/ai.quilr.sentinel.plist"
+EXPECTED_VERSION="2026.05.08"
+
+[ -d "$APP" ]   || { echo "missing: $APP"; exit 1; }
+[ -f "$PLIST" ] || { echo "missing: $PLIST"; exit 1; }
+INSTALLED=$(defaults read "$APP/Contents/Info.plist" CFBundleShortVersionString 2&gt;/dev/null)
+[ "$INSTALLED" = "$EXPECTED_VERSION" ] || { echo "version drift"; exit 1; }
+launchctl print system/ai.quilr.sentinel &gt;/dev/null 2&gt;&amp;1 || { echo "daemon not loaded"; exit 1; }
+exit 0</code></pre></div>
+            <h4>Post-install script (optional)</h4>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash · post-install</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>#!/bin/bash
+sleep 2
+launchctl print system/ai.quilr.sentinel &gt;/dev/null 2&gt;&amp;1 || {
+  echo "post-install: daemon not loaded — kickstarting"
+  sudo launchctl kickstart -k system/ai.quilr.sentinel
+}
+exit 0</code></pre></div>
+            <p>Assign the Custom App to your Blueprint; monitor per-device progress under <strong>Library Item → Status</strong>.</p>
+          </div>
+        </div>
+
+        <!-- ============ MANAGEENGINE ============ -->
+        <div class="tab-panel" data-panel="me">
+          <h3>ManageEngine Endpoint Central — Windows (MSI)</h3>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">1</span><h3>Stage the bundle</h3></div>
+            <p>Download <code>quilr-endpoint-agent-win-install-bundle.zip</code> and copy the files to a location Endpoint Central can reach — a UNC share (e.g. <code>\\EPC-SERVER\SoftwareRepository\Quilr\</code>) or the admin workstation for HTTP upload.</p>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">2</span><h3>Add the MSI to the software repository</h3></div>
+            <p><strong>Software Deployment → Package Creation → Packages → Add Package → Windows.</strong> Name &ldquo;Quilr Endpoint Agent,&rdquo; type &ldquo;MSI/MSP.&rdquo; Locate the installable from the shared folder or local computer.</p>
+            <div class="callout crit"><span class="ico">⛔</span><div><span class="ct">MSI/MSP Properties (install)</span> Enter <code>TENANTID=&lt;TENANT-ID&gt;</code>. Without it the agent installs but cannot phone home — it sits idle. Leave MST File Name blank unless Quilr provides a transform. Architecture: 64-bit.</div></div>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">3</span><h3>Deploy CA certificates (optional)</h3></div>
+            <p>The MSI writes the CAs automatically. To pre-stage them: <strong>Configurations → Add Configuration → Computer → Custom Script</strong>, name &ldquo;Quilr CA Trust,&rdquo; associate both <code>.crt</code> files:</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>batch</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>certutil -addstore -f Root "%~dp0quilr-root-ca.crt"
+certutil -addstore -f CA   "%~dp0quilr-ea-intermediate-ca.crt"</code></pre></div>
+            <p>Target <code>WIN-Quilr-Pilot</code> and deploy.</p>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">4</span><h3>Install MSI/EXE Software configuration</h3></div>
+            <p><strong>Configurations → Add Configuration → Computer → Install MSI/EXE Software</strong>, name &ldquo;Quilr Endpoint Agent — Install.&rdquo;</p>
+            <ul>
+              <li>Package Type: MSI · MSI Package Name: &ldquo;Quilr Endpoint Agent&rdquo;</li>
+              <li>Operation Type: <strong>Install Completely</strong> · Install as: <strong>System User</strong></li>
+              <li>Allow user interaction: <strong>No</strong> (silent)</li>
+              <li>Installation Option: &ldquo;During or After Startup&rdquo; · Reboot Policy: &ldquo;Do not reboot&rdquo;</li>
+              <li>Target: <code>WIN-Quilr-Pilot</code> → Deploy</li>
+            </ul>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">5</span><h3>Force-install the browser extension (Edge &amp; Chrome)</h3></div>
+            <p>Because the agent excludes <code>msedge.exe</code> and <code>chrome.exe</code>, deploy the extension via Registry configurations. Obtain the exact extension IDs/URLs from Quilr support.</p>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Browser</th><th>Registry key &amp; value</th></tr></thead>
+              <tbody>
+                <tr><td>Edge</td><td><code>HKLM\SOFTWARE\Policies\Microsoft\Edge\ExtensionInstallForcelist</code> → value <code>1</code> (REG_SZ) = <code>&lt;edge-ext-id&gt;;https://edge.microsoft.com/extensionwebstorebase/v1/crx</code></td></tr>
+                <tr><td>Chrome</td><td><code>HKLM\SOFTWARE\Policies\Google\Chrome\ExtensionInstallForcelist</code> → value <code>1</code> (REG_SZ) = <code>&lt;chrome-ext-id&gt;;https://clients2.google.com/service/update2/crx</code></td></tr>
+              </tbody>
+            </table></div>
+            <p>Verify in <code>edge://extensions</code> / <code>chrome://extensions</code>: extension present, enabled, &ldquo;Installed by your organization.&rdquo;</p>
+          </div>
+          <div class="callout note"><span class="ico">↩️</span><div><span class="ct">Rollback</span> Edit the Install MSI config → Operation Type <strong>Remove</strong> → redeploy; then suspend the Edge/Chrome Registry and CA Trust configurations.</div></div>
+        </div>
+      </div>
+
+      <h2>Validate after MDM rollout</h2>
+      <p>Whichever platform you used, repeat the validation on a pilot device &mdash; install vector changed, runtime expectations didn&rsquo;t. The full check-list (Console-side validation + on-device badges + functional tests) lives in <a href="../Step%206%20-%20Verify%20MDM%20Install/index.html">Step&nbsp;6 &middot; Verify MDM Install</a>. Promote pilot &rarr; production only after every check is green.</p>
+
+      <div class="callout tip">
+        <span class="ico">✅</span>
+        <div><span class="ct">Exit criteria for Step 5</span>
+        All objects scoped to the pilot group and reporting success · a pilot device passes every Step&nbsp;4 check · assignment
+        promoted to production. If anything misbehaves, go to Step&nbsp;6.</div>
+      </div>
+
+      <div class="wizard-nav">
+        <a class="wbtn back" href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span>←</span><span class="wbt"><small>Back</small><b>Validate Manual Install</b></span></a>
+        <span class="wcount">Step 5 of 7</span>
+        <a class="wbtn next" href="../Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="wbt"><small>Next</small><b>Verify MDM Install</b></span><span>→</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+---
+title: Quilr Endpoint Agent
+sidebar_label: Overview
+slug: /
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Quilr Endpoint Agent — Documentation
+
+Operator-facing deployment, configuration, and troubleshooting guides for the **Quilr Endpoint Agent** (Windows + macOS) and the **Quilr Browser Extension**. Use the tabs below to filter by platform, or use the sidebar.
+
+:::info Ask an AI
+
+Want a quick summary, or to ask cross-doc questions? These deep-links open a fresh chat with our [`/llms.txt`](/llms.txt) index pre-loaded — the AI can then pull in any specific page from that index on demand:
+
+- 💬 [**Ask ChatGPT**](https://chatgpt.com/?q=Please%20read%20https%3A%2F%2Finstalldocs.quilrai.dev%2Fllms.txt%20%E2%80%94%20this%20is%20the%20index%20for%20the%20Quilr%20Endpoint%20Agent%20%2B%20Quilr%20Browser%20Extension%20documentation.%20Summarize%20what%20it%20covers%2C%20then%20answer%20my%20follow-up%20questions%20by%20pulling%20in%20linked%20pages%20from%20that%20index%20as%20needed.) — summarize and Q&A
+- 💬 [**Ask Claude**](https://claude.ai/new?q=Please%20read%20https%3A%2F%2Finstalldocs.quilrai.dev%2Fllms.txt%20%E2%80%94%20this%20is%20the%20index%20for%20the%20Quilr%20Endpoint%20Agent%20%2B%20Quilr%20Browser%20Extension%20documentation.%20Summarize%20what%20it%20covers%2C%20then%20answer%20my%20follow-up%20questions%20by%20pulling%20in%20linked%20pages%20from%20that%20index%20as%20needed.) — summarize and Q&A
+- 🔎 [**Ask Perplexity**](https://www.perplexity.ai/?q=Read%20https%3A%2F%2Finstalldocs.quilrai.dev%2Fllms.txt%20%E2%80%94%20the%20Quilr%20Endpoint%20Agent%20%2B%20Browser%20Extension%20docs%20index%20%E2%80%94%20and%20summarize%20it%2C%20then%20answer%20my%20questions%20by%20pulling%20in%20linked%20pages.) — search-style answers
+
+Or paste the URL `https://installdocs.quilrai.dev/llms.txt` into any AI tool that can fetch URLs.
+
+:::
+
+:::tip Where to start
+- **Rolling out Windows endpoints?** Pick the *Windows* tab — *Microsoft Intune — Windows (MSI)* or *ManageEngine Endpoint Central — Windows (MSI)*.
+- **Rolling out Macs?** Pick the *macOS* tab — *Intune — macOS*, *Jamf Pro*, *Kandji*, or *macOS Manual Install*.
+- **Just need the browser extension?** See *Browser Extension* below.
+- **Already deployed?** See *Validate Installation*, *Troubleshooting*, and the *URL Exception Lists* under **Reference**.
+:::
+
+## Deployment Guides
+
+<Tabs groupId="platform" queryString="platform">
+  <TabItem value="all" label="All Platforms" default>
+
+| Guide | Platform | Notes |
+|---|---|---|
+| [Microsoft Intune — Windows (MSI)](/deployment/intune-windows) | Windows / MSI | MDM via Microsoft Intune. CA trust + Win32 app + WinDivert driver. |
+| [Microsoft Intune — macOS (pkg)](/deployment/intune-macos) | macOS / pkg | MDM via Microsoft Intune. CA trust + Configuration Profiles + pkg. |
+| [Jamf Pro — macOS](/deployment/jamf) | macOS / pkg | MDM via Jamf Pro. Configuration Profiles + Policy. |
+| [Kandji — macOS](/deployment/kandji) | macOS / pkg | MDM via Kandji. Library Items + Custom Apps. |
+| [ManageEngine Endpoint Central — Windows (MSI)](/deployment/manageengine-msi) | Windows / MSI | On-prem MDM via ManageEngine Endpoint Central. |
+| [macOS Manual Install](/deployment/macos-manual) | macOS / pkg | Manual install for technicians / no-MDM pilots. |
+
+  </TabItem>
+  <TabItem value="macos" label="macOS">
+
+| Guide | Variant | Notes |
+|---|---|---|
+| [Microsoft Intune — macOS (pkg)](/deployment/intune-macos) | macOS / pkg | MDM via Microsoft Intune. CA trust + Configuration Profiles + pkg. |
+| [Jamf Pro — macOS](/deployment/jamf) | macOS / pkg | MDM via Jamf Pro. Configuration Profiles + Policy. |
+| [Kandji — macOS](/deployment/kandji) | macOS / pkg | MDM via Kandji. Library Items + Custom Apps. |
+| [macOS Manual Install](/deployment/macos-manual) | macOS / pkg | Manual install for technicians / no-MDM pilots. |
+
+  </TabItem>
+  <TabItem value="windows" label="Windows">
+
+| Guide | Variant | Notes |
+|---|---|---|
+| [Microsoft Intune — Windows (MSI)](/deployment/intune-windows) | Windows / MSI | MDM via Microsoft Intune. CA trust + Win32 app + WinDivert driver. |
+| [ManageEngine Endpoint Central — Windows (MSI)](/deployment/manageengine-msi) | Windows / MSI | On-prem MDM via ManageEngine Endpoint Central. |
+
+  </TabItem>
+</Tabs>
+
+## Browser Extension
+
+Install the Quilr browser extension into Edge / Chrome (and Safari on macOS) for the browsers the endpoint agent intentionally excludes from its interception scope.
+
+<Tabs groupId="platform" queryString="platform">
+  <TabItem value="all" label="All Platforms" default>
+
+| Guide | Variant | Notes |
+|---|---|---|
+| [Quilr Browser Extension — macOS](/extension/macos) | macOS / pkg + mobileconfig | Tenant pkg + File-Access mobileconfig via your MDM |
+| [Quilr Browser Extension — Windows](/extension/windows) | Windows / MSI | `Quilr.msi` with `TENANT=<TENANT-ID>`, or `ExtensionInstallForcelist` |
+
+  </TabItem>
+  <TabItem value="macos" label="macOS">
+
+| Guide | Variant | Notes |
+|---|---|---|
+| [Quilr Browser Extension — macOS](/extension/macos) | macOS / pkg + mobileconfig | Tenant pkg + File-Access mobileconfig via your MDM |
+
+  </TabItem>
+  <TabItem value="windows" label="Windows">
+
+| Guide | Variant | Notes |
+|---|---|---|
+| [Quilr Browser Extension — Windows](/extension/windows) | Windows / MSI | `Quilr.msi` with `TENANT=<TENANT-ID>`, or `ExtensionInstallForcelist` |
+
+  </TabItem>
+</Tabs>
+
+## Reference
+
+| Guide | What it covers |
+|---|---|
+| [Validate Installation](/reference/validate-installation) | Post-install validation steps for Windows + macOS. MDM-agnostic. |
+| [Troubleshooting](/reference/troubleshooting) | Diagnostics, log paths, common failure modes, and the diag-bundle script. |
+| [URL Exception List — AI Apps](/reference/url-exceptions-ai) | Monitored AI hosts (ChatGPT, Claude, Gemini, etc.) — for SWG SSL-bypass. |
+| [URL Exception List — Non-AI Apps](/reference/url-exceptions-nonai) | Non-AI hosts (auth/CDNs) — for SWG SSL-bypass. |
