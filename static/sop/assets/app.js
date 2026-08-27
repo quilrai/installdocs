@@ -18,7 +18,7 @@
   var ENV_ALIASES = { us: "uspoc", usa: "usprod", japan: "jppoc", india: "indprod" };
 
   /* ---------- Which OS each tab panel belongs to ---------- */
-  var WIN_PANELS = ["win", "fwin", "cwin", "wman", "intune-win", "me"];
+  var WIN_PANELS = ["win", "fwin", "cwin", "wman", "intune-win", "me", "sccm"];
   var MAC_PANELS = ["mac", "fmac", "cmac", "mman", "intune-mac", "jamf", "kandji"];
   function panelOS(key) {
     if (WIN_PANELS.indexOf(key) !== -1) return "win";

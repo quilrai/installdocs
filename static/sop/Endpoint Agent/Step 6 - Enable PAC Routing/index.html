@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Step 6 · Enable PAC Routing — Quilr Endpoint Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../assets/styles.css" />
+
+  <!-- sop-favicon v1 -->
+  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
+  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">Q</div>
+      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+    </div>
+    <div class="nav-group-title">Overview</div>
+    <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
+    <div class="nav-group-title">Endpoint Agent</div>
+    <ul class="nav">
+      <li><a href="../Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a class="active" href="../Step%206%20-%20Enable%20PAC%20Routing/index.html"><span class="step-num">6</span> Enable PAC Routing</a></li>
+      <li><a href="../Step%207%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">7</span> Verify MDM Install</a></li>
+      <li><a href="../Step%208%20-%20Troubleshooting/index.html"><span class="step-num">8</span> Troubleshooting</a></li>
+    </ul>
+    <div class="nav-group-title">Browser Extension</div>
+    <ul class="nav">
+      <li><a href="../../Browser%20Extension/Step%201%20-%20Prerequisites/index.html"><span class="step-num">1</span> Prerequisites</a></li>
+      <li><a href="../../Browser%20Extension/Step%202%20-%20Prerequisites%20Validation/index.html"><span class="step-num">2</span> Prerequisites Validation</a></li>
+      <li><a href="../../Browser%20Extension/Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
+      <li><a href="../../Browser%20Extension/Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
+      <li><a href="../../Browser%20Extension/Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
+      <li><a href="../../Browser%20Extension/Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
+      <li><a href="../../Browser%20Extension/Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+    </ul>
+    <div class="sidebar-foot">
+      Source: <a href="https://installdocs.quilrai.dev" target="_blank" rel="noopener">installdocs.quilrai.dev</a><br />
+      Support: <a href="mailto:support@quilr.ai">support@quilr.ai</a>
+    </div>
+  </aside>
+  <div class="scrim"></div>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-btn" aria-label="Open navigation">☰</button>
+      <nav class="crumbs">
+        <a href="../../index.html">SOP</a><span class="sep">/</span>
+        <a href="../../index.html">Endpoint Agent</a><span class="sep">/</span>
+        <span class="here">Step 6 · Enable PAC Routing</span>
+      </nav>
+    </header>
+
+    <div class="content">
+      <nav class="wizard" aria-label="Endpoint Agent deployment steps">
+        <a class="wstep" href="../Step%201%20-%20Prerequisites/index.html"><span class="wdot">1</span><span class="wlabel">Prerequisites</span></a>
+        <a class="wstep" href="../Step%202%20-%20Prerequisites%20Validation/index.html"><span class="wdot">2</span><span class="wlabel">Validation</span></a>
+        <a class="wstep" href="../Step%203%20-%20Manual%20Installation/index.html"><span class="wdot">3</span><span class="wlabel">Manual Install</span></a>
+        <a class="wstep" href="../Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="wdot">4</span><span class="wlabel">Verify Install</span></a>
+        <a class="wstep" href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span class="wdot">5</span><span class="wlabel">MDM Rollout</span></a>
+        <a class="wstep current" href="../Step%206%20-%20Enable%20PAC%20Routing/index.html"><span class="wdot">6</span><span class="wlabel">PAC Routing</span></a>
+        <a class="wstep" href="../Step%207%20-%20Verify%20MDM%20Install/index.html"><span class="wdot">7</span><span class="wlabel">Verify MDM</span></a>
+        <a class="wstep" href="../Step%208%20-%20Troubleshooting/index.html"><span class="wdot">8</span><span class="wlabel">Troubleshoot</span></a>
+      </nav>
+
+      <span class="eyebrow">Endpoint Agent · Step 6 of 8</span>
+      <h1>Enable PAC Routing</h1>
+      <p class="lead">To let the Quilr agent inspect AI-app traffic through its proxy path, route the monitored AI &amp;
+      collaboration hosts to the agent&rsquo;s <strong>local proxy listening on <code>127.0.0.1:24080</code></strong>. Quilr ships a
+      ready Proxy Auto-Config (PAC) file that does exactly this &mdash; <strong>contact Quilr support for the PAC file for your AI apps.</strong></p>
+
+      <div class="callout crit">
+        <span class="ico">&#x1F4E9;</span>
+        <div><span class="ct">Get the PAC file from Quilr support</span>
+        Email <a href="mailto:support@quilr.ai">support@quilr.ai</a> and request the <strong>AI-apps PAC file</strong> for your tenant.
+        It is a standard <code>application/x-ns-proxy-autoconfig</code> document with a single <code>FindProxyForURL(url,&nbsp;host)</code>
+        that sends monitored AI hosts to <code>PROXY 127.0.0.1:24080</code> and everything else <code>DIRECT</code>.</div>
+      </div>
+
+      <div class="callout note">
+        <span class="ico">&#x2139;&#xFE0F;</span>
+        <div><span class="ct">When is this needed?</span>
+        The agent&rsquo;s on-device interception (WinDivert driver on Windows, Network Extension on macOS) captures AI traffic
+        without any system proxy. Use PAC routing when your deployment intercepts via the local proxy instead of &mdash; or alongside
+        &mdash; an existing SWG. If you already run a PAC-based web filter, <em>merge</em> Quilr&rsquo;s rule rather than replacing your file
+        (see <a href="../Step%201%20-%20Prerequisites/index.html">Step&nbsp;1 &middot; Coexisting with an existing PAC</a>). If unsure which model applies, ask Quilr support.</div>
+      </div>
+
+      <h2>1 &middot; What the PAC does</h2>
+      <p>The support-provided PAC matches the monitored AI &amp; collaboration hosts and returns the local proxy for them,
+      leaving all other traffic <code>DIRECT</code>:</p>
+      <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>FindProxyForURL &mdash; AI apps</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>function FindProxyForURL(url, host) {
+    var quilrHosts = [
+        "chatgpt.com", "*.oaiusercontent.com",
+        "claude.ai", "api.anthropic.com",
+        "gemini.google.com", "*.deepseek.com",
+        "*.slack.com", "teams.microsoft.com"
+        /* full list supplied by Quilr support */
+    ];
+    for (var i = 0; i &lt; quilrHosts.length; i++) {
+        if (shExpMatch(host, quilrHosts[i])) {
+            return "PROXY 127.0.0.1:24080; DIRECT";
+        }
+    }
+    return "DIRECT";
+}</code></pre></div>
+      <div class="callout warn"><span class="ico">&#x26A0;&#xFE0F;</span><div><span class="ct">Keep the host list authoritative</span>
+      Use the list inside the PAC file Quilr support sends &mdash; it is kept in sync with the monitored-apps set. The snippet above is
+      illustrative and trimmed.</div></div>
+
+      <h2>2 &middot; Point the device at the PAC</h2>
+      <p>Host the PAC file where managed devices can reach it (an internal HTTPS URL, or the hosted URL Quilr support provides),
+      then set the OS proxy <em>auto-configuration</em> setting to that URL. Push it through your MDM the same way you deployed the
+      agent in <a href="../Step%205%20-%20Installing%20using%20MDM/index.html">Step&nbsp;5</a>.</p>
+      <div class="tabs">
+        <div class="tab-btns">
+          <button class="tab-btn active" data-tab="win"> Windows</button>
+          <button class="tab-btn" data-tab="mac"> macOS</button>
+          <button class="tab-btn" data-tab="manual"> Manual (single device)</button>
+        </div>
+        <div class="tab-panel active" data-panel="win">
+          <p><strong>Intune &rarr; Devices &rarr; Configuration &rarr; Settings Catalog</strong>, search <em>Proxy</em>, enable
+          <strong>Configure proxy server settings</strong>:</p>
+          <ul>
+            <li>Proxy server type: <strong>Automatic proxy configuration</strong></li>
+            <li>Setup script address: <code>&lt;your PAC URL&gt;</code></li>
+          </ul>
+          <p>Or per-browser via Edge/Chrome <code>ProxySettings</code> policy: <code>ProxyMode = "pac_script"</code>,
+          <code>ProxyPacUrl = &lt;your PAC URL&gt;</code>.</p>
+        </div>
+        <div class="tab-panel" data-panel="mac">
+          <p>Deploy a Custom Configuration Profile (Device channel) with a <code>com.apple.proxy.AutoConfig.url</code> payload:</p>
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>mobileconfig payload</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>&lt;key&gt;PayloadType&lt;/key&gt;            &lt;string&gt;com.apple.proxy.AutoConfig.url&lt;/string&gt;
+&lt;key&gt;ProxyAutoConfigEnable&lt;/key&gt;  &lt;true/&gt;
+&lt;key&gt;ProxyAutoConfigURLString&lt;/key&gt; &lt;string&gt;&lt;your PAC URL&gt;&lt;/string&gt;</code></pre></div>
+        </div>
+        <div class="tab-panel" data-panel="manual">
+          <ul>
+            <li><strong>Windows</strong> &mdash; Settings &rarr; Network &amp; internet &rarr; Proxy &rarr; <em>Use setup script</em>, paste the PAC URL.</li>
+            <li><strong>macOS</strong> &mdash; System Settings &rarr; Network &rarr; &lt;interface&gt; &rarr; Details &rarr; Proxies &rarr; <em>Automatic Proxy Configuration</em>, paste the PAC URL.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2>3 &middot; Confirm the route</h2>
+      <p>After the PAC applies, a monitored AI host should resolve through the local proxy. Reload the agent&rsquo;s policy or reboot,
+      then open an AI site &mdash; the proxy on <code>127.0.0.1:24080</code> handles the TLS and a <code>flow.matched</code> event appears in
+      the agent log (see the checks in <a href="../Step%207%20-%20Verify%20MDM%20Install/index.html">Step&nbsp;7 &middot; Verify MDM Install</a>).</p>
+      <div class="callout warn"><span class="ico">&#x1F50E;</span><div><span class="ct">Pair with SSL-bypass</span>
+      If an upstream SWG sits in front of these hosts, add the monitored AI hosts to its <em>Do Not Decrypt</em> list so it does not
+      re-sign the certificate &mdash; otherwise the agent&rsquo;s pinning fails regardless of PAC routing.</div></div>
+
+      <div class="callout tip">
+        <span class="ico">&#x2705;</span>
+        <div><span class="ct">Exit criteria for Step 6</span>
+        PAC file obtained from Quilr support &middot; PAC URL pushed to the pilot device&rsquo;s proxy auto-config setting &middot; a monitored AI
+        host routes through <code>127.0.0.1:24080</code>. Then continue to Step&nbsp;7 to verify the rollout.</div>
+      </div>
+
+      <div class="wizard-nav">
+        <a class="wbtn back" href="../Step%205%20-%20Installing%20using%20MDM/index.html"><span>&larr;</span><span class="wbt"><small>Back</small><b>MDM Rollout</b></span></a>
+        <span class="wcount">Step 6 of 8</span>
+        <a class="wbtn next" href="../Step%207%20-%20Verify%20MDM%20Install/index.html"><span class="wbt"><small>Next</small><b>Verify MDM Install</b></span><span>&rarr;</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../../assets/app.js"></script>
+</body>
+</html>

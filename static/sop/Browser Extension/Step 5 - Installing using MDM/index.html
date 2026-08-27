@@ -39,8 +39,9 @@
       <li><a href="../../Endpoint%20Agent/Step%203%20-%20Manual%20Installation/index.html"><span class="step-num">3</span> Manual Installation</a></li>
       <li><a href="../../Endpoint%20Agent/Step%204%20-%20Validation%20Manual%20Installation/index.html"><span class="step-num">4</span> Validate Manual Install</a></li>
       <li><a href="../../Endpoint%20Agent/Step%205%20-%20Installing%20using%20MDM/index.html"><span class="step-num">5</span> Installing using MDM</a></li>
-      <li><a href="../../Endpoint%20Agent/Step%206%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">6</span> Verify MDM Install</a></li>
-      <li><a href="../../Endpoint%20Agent/Step%207%20-%20Troubleshooting/index.html"><span class="step-num">7</span> Troubleshooting</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%206%20-%20Enable%20PAC%20Routing/index.html"><span class="step-num">6</span> Enable PAC Routing</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%207%20-%20Verify%20MDM%20Install/index.html"><span class="step-num">7</span> Verify MDM Install</a></li>
+      <li><a href="../../Endpoint%20Agent/Step%208%20-%20Troubleshooting/index.html"><span class="step-num">8</span> Troubleshooting</a></li>
     </ul>
     <div class="sidebar-foot">
       Source: <a href="https://installdocs.quilrai.dev" target="_blank" rel="noopener">installdocs.quilrai.dev</a><br />
@@ -88,6 +89,7 @@
           <button class="tab-btn" data-tab="jamf"> Jamf Pro</button>
           <button class="tab-btn" data-tab="kandji"> Kandji</button>
           <button class="tab-btn" data-tab="me"> ManageEngine</button>
+          <button class="tab-btn" data-tab="sccm"> SCCM</button>
         </div>
 
         <!-- INTUNE WINDOWS -->
@@ -214,6 +216,34 @@ foreach ($key in @('HKLM:\SOFTWARE\Policies\Microsoft\Edge','HKLM:\SOFTWARE\Poli
   if (-not (Test-Path $key)) { New-Item -Path $key -Force | Out-Null }
   Set-ItemProperty -Path $key -Name 'ExtensionSettings' -Value $JSON -Type String
 }</code></pre></div>
+          </div>
+        </div>
+
+        <!-- SCCM -->
+        <div class="tab-panel" data-panel="sccm">
+          <h3>Microsoft Configuration Manager (SCCM) — Windows</h3>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">1</span><h3>Stage the MSI source</h3></div>
+            <p>Download <code>https://quilr-extensions.quilr.ai/Quilr.msi</code> and place it on a UNC source share the site server can read, e.g. <code>\\sccm\Sources\Apps\QuilrExtension\Quilr.msi</code>.</p>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">2</span><h3>Create the Application (MSI deployment type)</h3></div>
+            <p><strong>Software Library → Application Management → Applications → Create Application.</strong> Choose type <strong>Windows Installer (*.msi)</strong> and point it at <code>Quilr.msi</code>. Name &ldquo;Quilr Browser Extension,&rdquo; publisher &ldquo;Quilr AI.&rdquo; On the generated deployment type, override the install command line:</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>cmd</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>msiexec /i "Quilr.msi" TENANT=&lt;TENANT-ID&gt; /qn /norestart</code></pre></div>
+            <div class="callout crit"><span class="ico">⛔</span><div><span class="ct">Parameter is TENANT</span> Same MSI and property as the Intune · Windows tab — mandatory, obtain from <a href="mailto:support@quilr.ai">support@quilr.ai</a>. Without it the extension installs but stays idle.</div></div>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">3</span><h3>Detection, install behavior &amp; distribute</h3></div>
+            <p>Keep the auto-generated <strong>MSI product-code</strong> detection rule. Set installation behavior <em>Install for system</em> and logon requirement <em>Whether or not a user is logged on</em>. <strong>Distribute Content</strong> to your distribution points.</p>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">4</span><h3>Deploy to a device collection</h3></div>
+            <p><strong>Deploy</strong> the application to the <code>WIN-Quilr-Extension</code> device collection with purpose <strong>Required</strong> and schedule <em>As soon as possible</em>; clients install on the next machine-policy cycle.</p>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">5</span><h3>Optional · enforce via browser policy</h3></div>
+            <p>SCCM only ships the MSI. To force-install / pin the extension, deliver the <code>ExtensionInstallForcelist</code> / <code>ExtensionSettings</code> policy for extension ID <code>piajhjohgigijkddhdpgbjdcfhmammbk</code> via <strong>Active Directory Group Policy</strong> (Administrative Templates → Edge / Chrome) — the same JSON shown in the Intune · Windows and ManageEngine tabs. AD-managed fleets usually push this through GPO already.</p>
           </div>
         </div>
       </div>
