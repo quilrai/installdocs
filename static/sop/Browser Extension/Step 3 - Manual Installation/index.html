@@ -90,6 +90,18 @@
       </div>
 
 
+      <h2>Choose the browsers to configure</h2>
+      <p>During the Windows MSI setup, the <strong>Quilr Tenant Configuration</strong> screen collects the tenant id and lets you choose which browsers receive the Quilr extension and native messaging host. Select the browsers in use on the device, then continue.</p>
+      <figure style="margin:12px 0 6px; padding:0; max-width:620px;">
+        <img src="../../assets/installer-tenant-browser-selection.png"
+             alt="QuilrAI Browser Agent Setup wizard, Quilr Tenant Configuration screen. A Tenant ID text field, a checked 'Pin Quilr extension to the browser toolbar' option, and under 'Install the Quilr extension and native messaging host for:' five checked browsers: Google Chrome, Microsoft Edge, Brave, Mozilla Firefox, and Prisma Access Browser (native messaging host, current user). Footer note: the tenant id determines which Quilr policy and extension manifest are applied; silent installs use BROWSERS=chrome,edge,brave,firefox,prisma. Back, Next and Cancel buttons."
+             loading="lazy"
+             style="display:block; width:100%; max-width:620px; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:10px; background:#0a0c12; box-shadow:0 6px 24px rgba(0,0,0,.35);" />
+        <figcaption style="margin-top:8px; font-size:12.5px; color:var(--ink-soft); text-align:center;">
+          Quilr Tenant Configuration &mdash; enter the tenant id and select the browsers to configure. For silent installs pass <code>BROWSERS=chrome,edge,brave,firefox,prisma</code> (include only the tokens you need).
+        </figcaption>
+      </figure>
+
       <h2>Extension identity</h2>
       <p>The Quilr browser extension is identified by a fixed ID. After the MSI / pkg installs it, jump straight to its row in the extensions page using the direct deep-links below.</p>
       <div class="table-wrap">
