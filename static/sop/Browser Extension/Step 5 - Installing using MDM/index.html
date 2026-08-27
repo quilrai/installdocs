@@ -138,7 +138,7 @@
           <div class="part">
             <div class="part-head"><span class="part-badge">1</span><h3>Gather three artifacts</h3></div>
             <ul>
-              <li>Tenant pkg: <code>https://quilr-extensions.quilr.ai/&lt;TENANT-ID&gt;/browser-util/quilr-installer-mac.pkg</code></li>
+              <li>Tenant pkg: <code>https://quilr-extensions.quilr.ai/installer/mac/quilrai-browser-extension.pkg</code></li>
               <li>Tenant <code>.mobileconfig</code> from the Quilr console (Settings → Browser Extension → Deployment → MDM → macOS / Intune)</li>
               <li>File-Access <code>.mobileconfig</code>: <code>https://quilr-extensions.quilr.ai/browser-agent/prod/mac/quilr_browser_util_Files_Access.mobileconfig</code></li>
             </ul>
@@ -193,7 +193,7 @@
           <h3>ManageEngine Endpoint Central — Windows</h3>
           <div class="part">
             <div class="part-head"><span class="part-badge">1</span><h3>Download the MSI</h3></div>
-            <p>Retrieve <code>https://quilr-extensions.quilr.ai/Quilr.msi</code> and place it on the Endpoint Central server or upload it directly.</p>
+            <p>Retrieve <code>https://quilr-extensions.quilr.ai/installer/windows/Quilr.msi</code> and place it on the Endpoint Central server or upload it directly.</p>
           </div>
           <div class="part">
             <div class="part-head"><span class="part-badge">2</span><h3>Add the package</h3></div>
@@ -224,7 +224,7 @@ foreach ($key in @('HKLM:\SOFTWARE\Policies\Microsoft\Edge','HKLM:\SOFTWARE\Poli
           <h3>Microsoft Configuration Manager (SCCM) — Windows</h3>
           <div class="part">
             <div class="part-head"><span class="part-badge">1</span><h3>Stage the MSI source</h3></div>
-            <p>Download <code>https://quilr-extensions.quilr.ai/Quilr.msi</code> and place it on a UNC source share the site server can read, e.g. <code>\\sccm\Sources\Apps\QuilrExtension\Quilr.msi</code>.</p>
+            <p>Download <code>https://quilr-extensions.quilr.ai/installer/windows/Quilr.msi</code> and place it on a UNC source share the site server can read, e.g. <code>\\sccm\Sources\Apps\QuilrExtension\Quilr.msi</code>.</p>
           </div>
           <div class="part">
             <div class="part-head"><span class="part-badge">2</span><h3>Create the Application (MSI deployment type)</h3></div>

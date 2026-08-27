@@ -154,7 +154,7 @@
               <table>
                 <thead><tr><th>#</th><th>Artifact</th><th>Source</th><th>Tenant-specific?</th></tr></thead>
                 <tbody>
-                  <tr><td>1.1</td><td>Tenant pkg &mdash; <code>quilr-installer-mac.pkg</code></td><td><code>https://quilr-extensions.quilr.ai/&lt;TENANT-ID&gt;/browser-util/quilr-installer-mac.pkg</code></td><td>yes</td></tr>
+                  <tr><td>1.1</td><td>Tenant pkg &mdash; <code>quilr-installer-mac.pkg</code></td><td><code>https://quilr-extensions.quilr.ai/installer/mac/quilrai-browser-extension.pkg</code></td><td>yes</td></tr>
                   <tr><td>1.2</td><td><strong>Extension</strong> <code>.mobileconfig</code></td><td>Quilr Console &rarr; <a data-env-link href="https://app.quilr.ai/en/settings/browser-extension/deployment" target="_blank" rel="noopener"><code>/en/settings/browser-extension/deployment</code></a></td><td>yes</td></tr>
                   <tr><td>1.3</td><td><strong>File-Access</strong> <code>.mobileconfig</code> &mdash; <em>optional</em></td><td><code>https://quilr-extensions.quilr.ai/browser-agent/prod/mac/quilr_browser_util_Files_Access.mobileconfig</code></td><td>no &mdash; shared &amp; optional (MDM only)</td></tr>
                 </tbody>
@@ -164,7 +164,7 @@
             <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
 <pre><code>TENANT_ID="<span class="v">&lt;TENANT-ID&gt;</span>"
 curl -fsSL -o ~/Downloads/quilr-installer-mac.pkg \
-  "https://quilr-extensions.quilr.ai/${TENANT_ID}/browser-util/quilr-installer-mac.pkg"</code></pre></div>
+  "https://quilr-extensions.quilr.ai/installer/mac/quilrai-browser-extension.pkg"</code></pre></div>
             <h4>1.2 — Extension config profile (from Quilr Console)</h4>
             <p>Jump to <a data-env-link href="https://app.quilr.ai/en/settings/browser-extension/deployment" target="_blank" rel="noopener"><strong>Settings &rarr; Browser Extension &rarr; Deployment</strong></a> in your tenant Console. Under <strong>MDM</strong>, select <strong>macOS</strong> and <strong>&ldquo;Manual / no MDM&rdquo;</strong>, then download the <code>.mobileconfig</code> to <code>~/Downloads/</code>. This profile carries the tenant-specific Chrome / Edge / Brave force-install policy.</p>
             <h4>1.3 — File-Access config profile (MDM only &mdash; <em>optional</em> on unmanaged Macs)</h4>
@@ -206,7 +206,7 @@ curl -fsSL -o ~/Downloads/quilr-installer-mac.pkg \
           <div class="part">
             <div class="part-head"><span class="part-badge">1</span><h3>Download the MSI</h3></div>
             <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
-<pre><code>Invoke-WebRequest 'https://quilr-extensions.quilr.ai/Quilr.msi' -OutFile $env:TEMP\Quilr.msi</code></pre></div>
+<pre><code>Invoke-WebRequest 'https://quilr-extensions.quilr.ai/installer/windows/Quilr.msi' -OutFile $env:TEMP\Quilr.msi</code></pre></div>
           </div>
           <div class="part">
             <div class="part-head"><span class="part-badge">2</span><h3>Install with your tenant ID</h3></div>
