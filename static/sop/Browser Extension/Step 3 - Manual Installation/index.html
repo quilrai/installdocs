@@ -213,6 +213,9 @@ curl -fsSL -o ~/Downloads/quilr-installer-mac.pkg \
             <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
 <pre><code>msiexec /i "$env:TEMP\Quilr.msi" TENANT=<span class="v">&lt;TENANT-ID&gt;</span> /qn /norestart</code></pre></div>
             <div class="callout crit"><span class="ico">⛔</span><div><span class="ct">Note the parameter name</span> For the extension MSI the property is <code>TENANT</code> (not <code>TENANTID</code> — that one is for the endpoint agent). Without it, the extension installs but stays idle.</div></div>
+            <div class="callout note"><span class="ico">&#x1F9E9;</span><div><span class="ct">Optional &middot; choose browsers with <code>BROWSERS</code></span> By default the MSI configures every supported browser. To limit the install, add the <code>BROWSERS</code> property &mdash; a comma-separated list drawn from <code>chrome</code>, <code>edge</code>, <code>brave</code>, <code>firefox</code>, <code>prisma</code> (include only the browsers in use on the device). This is the same set shown in the installer&rsquo;s Configuration screen above.</div></div>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin) &middot; select browsers</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>msiexec /i "$env:TEMP\Quilr.msi" TENANT=<span class="v">&lt;TENANT-ID&gt;</span> BROWSERS=chrome,edge,brave,firefox,prisma /qn /norestart</code></pre></div>
           </div>
           <div class="part">
             <div class="part-head"><span class="part-badge">3</span><h3>Confirm</h3></div>
