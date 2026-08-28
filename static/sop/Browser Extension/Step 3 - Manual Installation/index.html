@@ -217,7 +217,38 @@
 <pre><code>msiexec /i "$env:TEMP\Quilr.msi" TENANT=<span class="v">&lt;TENANT-ID&gt;</span> BROWSERS=chrome,edge,brave,firefox,prisma /qn /norestart</code></pre></div>
           </div>
           <div class="part">
-            <div class="part-head"><span class="part-badge">3</span><h3>Confirm</h3></div>
+            <div class="part-head"><span class="part-badge">3</span><h3>MSI property reference (optional)</h3></div>
+            <p><code>TENANT</code> is the only required property. Everything else has a sensible default and is only needed for
+            special network paths (proxy, pinned update URLs), scoping which browsers get configured, or overriding the
+            managed-storage environment. All values are persisted under
+            <code>HKLM\SOFTWARE\Quilr\Install</code> so the updater and log-uploader reuse them on subsequent runs.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Property</th><th>Values / example</th><th>What it does</th></tr></thead>
+                <tbody>
+                  <tr><td><code>TENANT</code></td><td>GUID, e.g. <code>TENANT=2fc6fb7e-be22-47b7-b9cb-71471eec5627</code></td><td><strong>Required.</strong> Tenant ID — flows into managed storage (<code>PLASMO_PUBLIC_TENANTID</code>), extension URLs, the native-messaging-host manifest, and logs. Interactive (non-silent) installs prompt for it.</td></tr>
+                  <tr><td><code>PINNED</code></td><td><code>true</code> (default) / <code>false</code></td><td>Pin the extension to the browser toolbar. <code>false</code> omits the pin fields. Not persisted across upgrades.</td></tr>
+                  <tr><td><code>ENVIRONMENT</code></td><td><code>USA-POC</code> (default), <code>USA-Prod</code>, <code>India-POC</code>, <code>India-Prod</code>, <code>MEA-POC</code></td><td>Backend environment label; persisted as <code>&hellip;\Install\Environment</code>.</td></tr>
+                  <tr><td><code>PROXY</code></td><td><code>host:port</code>, or <code>none</code>/<code>direct</code>, or <code>system</code>/<code>auto</code></td><td>Egress proxy for the updater / log-uploader&rsquo;s own calls; persisted as <code>&hellip;\Install\Proxy</code>.</td></tr>
+                  <tr><td><code>EMAIL</code></td><td><code>user@corp.com</code></td><td>Persona email &rarr; <code>quilr_persona_email</code> in managed storage; persisted as <code>&hellip;\Install\PersonaEmail</code>.</td></tr>
+                  <tr><td><code>BROWSERS</code></td><td><code>chrome,edge,brave,firefox,prisma</code> or <code>all</code> (default)</td><td>Which browsers get configured. Persisted as <code>&hellip;\Install\Browsers</code>.</td></tr>
+                  <tr><td><code>SKIPDISCOVERY</code></td><td><code>1</code> / <code>0</code></td><td><code>1</code> = the updater never calls the discovery service; environment comes from <code>EXTENSIONENV</code> only. Persisted as <code>&hellip;\Install\SkipDiscovery</code>.</td></tr>
+                  <tr><td><code>EXTENSIONENV</code></td><td><code>"K=V;K=V"</code> (one quoted, <code>;</code>-separated list)</td><td>Managed-storage environment keys (Chrome/Edge policy + Firefox JSON). Merged over discovery values, or the sole source when <code>SKIPDISCOVERY=1</code>. Persisted as <code>&hellip;\Install\ExtensionEnv</code>.</td></tr>
+                  <tr><td><code>UPDATEURL</code></td><td>manifest URL</td><td>Pins the Chromium <code>update_url</code> (default <code>&hellip;/&lt;TENANT&gt;/manifest.xml</code>). Persisted as <code>&hellip;\Install\UpdateUrl</code>.</td></tr>
+                  <tr><td><code>FIREFOXINSTALLURL</code></td><td><code>.xpi</code> URL</td><td>Pins the Firefox <code>install_url</code> (default <code>&hellip;/firefox/&lt;TENANT&gt;/&hellip;.xpi</code>). Persisted as <code>&hellip;\Install\FirefoxInstallUrl</code>.</td></tr>
+                  <tr><td><code>SKIPEXTENSIONSETTINGS</code></td><td><code>1</code> / <code>0</code></td><td><code>1</code> = don&rsquo;t write the <code>ExtensionSettings</code> registry entry (allow/force lists are still written) — use when another tool owns <code>ExtensionSettings</code>. Persisted as <code>&hellip;\Install\SkipExtensionSettings</code>.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h4>Examples</h4>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin) — behind a corporate proxy, Chrome &amp; Edge only</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>msiexec /i "$env:TEMP\Quilr.msi" TENANT=<span class="v">&lt;TENANT-ID&gt;</span> PROXY=proxy.corp.local:8080 BROWSERS=chrome,edge /qn /norestart</code></pre></div>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin) — air-gapped from discovery, environment supplied inline</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>msiexec /i "$env:TEMP\Quilr.msi" TENANT=<span class="v">&lt;TENANT-ID&gt;</span> SKIPDISCOVERY=1 EXTENSIONENV="PLASMO_PUBLIC_API=https://api.quilr.ai;PLASMO_PUBLIC_REGION=us" /qn /norestart</code></pre></div>
+            <div class="callout note"><span class="ico">💡</span><div><span class="ct">Extension-management conflicts</span> If Chrome/Edge extensions are already centrally managed (Intune, GPO, Chrome Browser Cloud Management), pass <code>SKIPEXTENSIONSETTINGS=1</code> so the installer doesn&rsquo;t overwrite your existing <code>ExtensionSettings</code> policy, and add the Quilr entry to your own policy instead (see Step&nbsp;5 for the JSON).</div></div>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">4</span><h3>Confirm</h3></div>
             <p>The MSI installs the native messaging agent and force-installs the WebExtension via browser policy. Open
             <code>edge://extensions</code> / <code>chrome://extensions</code> — Quilr should appear, enabled and &ldquo;Installed by
             your organization.&rdquo; Full validation is in Step&nbsp;4.</p>

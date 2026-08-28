@@ -79,7 +79,6 @@
 
       <div class="meta-row">
         <span class="chip"><span class="k">Browsers</span> Chrome · Edge · Firefox · Safari (macOS)</span>
-        <span class="chip"><span class="k">Extension ID</span> piajhjohgigijkddhdpgbjdcfhmammbk</span>
         <span class="chip"><span class="k">Gate</span> Do not proceed until complete</span>
       </div>
 
@@ -106,7 +105,7 @@
 
       <h2>2 · What you need</h2>
       <ul>
-        <li>Target device must be <strong>enrolled in MDM (Intune, Jamf, Kandji, ManageEngine&hellip;) or domain-joined to Active Directory</strong>. The Quilr extension is distributed <strong>off-store</strong> (not in the Chrome Web Store / Edge Add-ons), so Chrome and Edge block it from loading unless an <code>ExtensionInstallForcelist</code> / <code>ExtensionSettings</code> policy whitelists the Quilr extension ID (<code>piajhjohgigijkddhdpgbjdcfhmammbk</code>) &mdash; and that policy can only be pushed to a centrally managed device.</li>
+        <li>Target device must be <strong>enrolled in MDM (Intune, Jamf, Kandji, ManageEngine&hellip;) or domain-joined to Active Directory</strong>. The Quilr extension is distributed <strong>off-store</strong> (not in the Chrome Web Store / Edge Add-ons), so Chrome and Edge block it from loading unless an <code>ExtensionInstallForcelist</code> / <code>ExtensionSettings</code> policy whitelists the Quilr extension &mdash; and that policy can only be pushed to a centrally managed device. The installer writes this policy for you; the extension ID and browser deep-links are listed in <a href="../Step%203%20-%20Manual%20Installation/index.html">Step&nbsp;3</a>.</li>
         <li><strong>Tenant ID</strong> from <a href="mailto:support@quilr.ai">support@quilr.ai</a> — used as <code>TENANT=&lt;TENANT-ID&gt;</code> (MSI) and as a URL path segment (macOS pkg).</li>
         <li>Access to the Quilr console at <code>https://app.quilr.ai/</code> → Settings → Browser Extension → Deployment.</li>
         <li>Admin rights on the target device and your MDM platform.</li>
@@ -128,7 +127,6 @@
       <div class="table-wrap">
         <table>
           <tbody>
-            <tr><td>Extension ID</td><td><code>piajhjohgigijkddhdpgbjdcfhmammbk</code></td></tr>
             <tr><td>Update manifest</td><td><code>https://quilr-extensions.quilr.ai/&lt;TENANT-ID&gt;/manifest.xml</code></td></tr>
             <tr data-os="mac"><td>macOS pkg URL</td><td><code>https://quilr-extensions.quilr.ai/installer/mac/quilrai-browser-extension.pkg</code></td></tr>
             <tr data-os="mac"><td>File-Access mobileconfig</td><td><code>https://quilr-extensions.quilr.ai/browser-agent/prod/mac/quilr_browser_util_Files_Access.mobileconfig</code></td></tr>

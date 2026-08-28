@@ -112,6 +112,7 @@
               </tbody>
             </table></div>
             <div class="callout crit"><span class="ico">⛔</span><div><span class="ct">Parameter is TENANT</span> Mandatory — obtain from <a href="mailto:support@quilr.ai">support@quilr.ai</a>.</div></div>
+            <div class="callout note"><span class="ico">🧩</span><div><span class="ct">Optional MSI properties</span> The same command line accepts <code>PROXY</code>, <code>BROWSERS</code>, <code>EMAIL</code>, <code>ENVIRONMENT</code>, <code>PINNED</code>, <code>SKIPDISCOVERY</code>, <code>EXTENSIONENV</code>, <code>UPDATEURL</code>, <code>FIREFOXINSTALLURL</code>, and <code>SKIPEXTENSIONSETTINGS</code> — e.g. append <code>PROXY=proxy.corp.local:8080 BROWSERS=chrome,edge</code>. Full reference: <a href="../Step%203%20-%20Manual%20Installation/index.html">Step&nbsp;3 · MSI property reference</a>. If you manage <code>ExtensionSettings</code> via Intune already (step&nbsp;4 below), add <code>SKIPEXTENSIONSETTINGS=1</code> so the installer doesn&rsquo;t fight your policy.</div></div>
           </div>
           <div class="part">
             <div class="part-head"><span class="part-badge">3</span><h3>Detection rule &amp; assignment</h3></div>
@@ -199,8 +200,8 @@
             <div class="part-head"><span class="part-badge">2</span><h3>Add the package</h3></div>
             <p><strong>Software Deployment → Add Package → Add Windows Package.</strong> Name &ldquo;Quilr Browser Extension,&rdquo; category Security, browse to <code>Quilr.msi</code>. In MSI/MSP Properties enter:</p>
             <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>MSI properties</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
-<pre><code>TENANTID=<span class="v">&lt;TENANT-ID&gt;</span></code></pre></div>
-            <div class="callout warn"><span class="ico">⚠️</span><div><span class="ct">Confirm the property name</span> The ManageEngine guide specifies <code>TENANTID</code>, while the Intune guide uses <code>TENANT</code> for the same MSI. If the extension stays idle after install, re-check this value with <a href="mailto:support@quilr.ai">support@quilr.ai</a>. Without it, the extension installs but stays idle until reinstalled.</div></div>
+<pre><code>TENANT=<span class="v">&lt;TENANT-ID&gt;</span></code></pre></div>
+            <div class="callout crit"><span class="ico">⛔</span><div><span class="ct">Parameter is TENANT</span> Same MSI and property as every other Windows deployment path (<code>TENANTID</code> belongs to the endpoint agent, not this MSI). Without it the extension installs but stays idle until reinstalled. Optional properties (<code>PROXY</code>, <code>BROWSERS</code>, <code>SKIPEXTENSIONSETTINGS</code>, &hellip;) go in the same MSI/MSP Properties field — see the <a href="../Step%203%20-%20Manual%20Installation/index.html">Step&nbsp;3 MSI property reference</a>.</div></div>
           </div>
           <div class="part">
             <div class="part-head"><span class="part-badge">3</span><h3>Install configuration</h3></div>
