@@ -130,6 +130,14 @@
     "update_url": "https://quilr-extensions.quilr.ai/<span class="v">&lt;TENANT-ID&gt;</span>/manifest.xml"
   }
 }</code></pre></div>
+            <p style="margin-top:14px;"><strong>Firefox</strong> has no Settings Catalog entry for <code>ExtensionSettings</code> &mdash; ingest the <a href="https://github.com/mozilla/policy-templates" target="_blank" rel="noopener">Mozilla ADMX templates</a>, or push the registry values with a Platform Script / Remediation:</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (system)</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>$ff = 'HKLM:\SOFTWARE\Policies\Mozilla\Firefox\ExtensionSettings\firefox-extension@quilr.ai'
+New-Item -Path $ff -Force | Out-Null
+Set-ItemProperty $ff -Name installation_mode -Value 'force_installed' -Type String
+Set-ItemProperty $ff -Name install_url -Value 'https://quilr-extensions.quilr.ai/firefox/prod/firefox-mv2-prod.xpi' -Type String
+Set-ItemProperty $ff -Name updates_disabled -Value 0 -Type DWord</code></pre></div>
+            <div class="callout warn"><span class="ico">⚠️</span><div><span class="ct">Firefox layout is different</span> Firefox is not Chromium: it expects a <strong>subkey per add-on</strong> with each property as its own registry value &mdash; a single JSON blob under <code>&hellip;\ExtensionSettings</code> is silently ignored and the add-on never installs. There is also no <code>update_url</code> field; the update endpoint is baked into the signed <code>.xpi</code>, so only <code>install_url</code> is needed.</div></div>
           </div>
         </div>
 
@@ -216,7 +224,16 @@
 foreach ($key in @('HKLM:\SOFTWARE\Policies\Microsoft\Edge','HKLM:\SOFTWARE\Policies\Google\Chrome')) {
   if (-not (Test-Path $key)) { New-Item -Path $key -Force | Out-Null }
   Set-ItemProperty -Path $key -Name 'ExtensionSettings' -Value $JSON -Type String
-}</code></pre></div>
+}
+
+<span class="c"># Firefox uses a different layout: a subkey per add-on with one value per</span>
+<span class="c"># property (a single JSON blob is silently ignored). No update_url field —</span>
+<span class="c"># the update endpoint is baked into the signed .xpi.</span>
+$ff = 'HKLM:\SOFTWARE\Policies\Mozilla\Firefox\ExtensionSettings\firefox-extension@quilr.ai'
+New-Item -Path $ff -Force | Out-Null
+Set-ItemProperty $ff -Name installation_mode -Value 'force_installed' -Type String
+Set-ItemProperty $ff -Name install_url -Value 'https://quilr-extensions.quilr.ai/firefox/prod/firefox-mv2-prod.xpi' -Type String
+Set-ItemProperty $ff -Name updates_disabled -Value 0 -Type DWord</code></pre></div>
           </div>
         </div>
 
@@ -245,6 +262,7 @@ foreach ($key in @('HKLM:\SOFTWARE\Policies\Microsoft\Edge','HKLM:\SOFTWARE\Poli
           <div class="part">
             <div class="part-head"><span class="part-badge">5</span><h3>Optional · enforce via browser policy</h3></div>
             <p>SCCM only ships the MSI. To force-install / pin the extension, deliver the <code>ExtensionInstallForcelist</code> / <code>ExtensionSettings</code> policy for extension ID <code>piajhjohgigijkddhdpgbjdcfhmammbk</code> via <strong>Active Directory Group Policy</strong> (Administrative Templates → Edge / Chrome) — the same JSON shown in the Intune · Windows and ManageEngine tabs. AD-managed fleets usually push this through GPO already.</p>
+            <p>For <strong>Firefox</strong>, load the <a href="https://github.com/mozilla/policy-templates" target="_blank" rel="noopener">Mozilla ADMX templates</a> into your GPO central store (Administrative Templates → Mozilla → Firefox → Extensions) and force-install add-on ID <code>firefox-extension@quilr.ai</code> from <code>https://quilr-extensions.quilr.ai/firefox/prod/firefox-mv2-prod.xpi</code> — or push the registry values shown in the ManageEngine tab (subkey per add-on; a single JSON blob is ignored by Firefox).</p>
           </div>
         </div>
       </div>
