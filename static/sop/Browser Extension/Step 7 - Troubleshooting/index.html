@@ -153,10 +153,26 @@ curl -fsSL "https://quilr-extensions.quilr.ai/${TENANT_ID}/manifest.xml" | head 
 
       <h2>Step 3 · .crx package validation</h2>
       <p>The manifest&rsquo;s <code>codebase</code> points to <code>https://quilr-extensions.quilr.ai/&lt;TENANT-ID&gt;/vanguard.crx</code>. HEAD it:</p>
-      <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+      <div class="tabs">
+        <div class="tab-btns">
+          <button class="tab-btn active" data-tab="wcrx">Windows · PowerShell</button>
+          <button class="tab-btn" data-tab="mcrx">macOS · Terminal</button>
+        </div>
+        <div class="tab-panel active" data-panel="wcrx">
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>$tid = '<span class="v">&lt;TENANT-ID&gt;</span>'
+$r = Invoke-WebRequest -Method Head "https://quilr-extensions.quilr.ai/$tid/vanguard.crx" -UseBasicParsing
+$r | Select-Object StatusCode,
+  @{n='Content-Type';  e={$_.Headers['Content-Type']}},
+  @{n='Content-Length';e={$_.Headers['Content-Length']}}</code></pre></div>
+        </div>
+        <div class="tab-panel" data-panel="mcrx">
+          <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
 <pre><code>TENANT_ID="<span class="v">&lt;TENANT-ID&gt;</span>"
 curl -sI "https://quilr-extensions.quilr.ai/${TENANT_ID}/vanguard.crx" \
   | grep -iE 'HTTP/|content-type|content-length'</code></pre></div>
+        </div>
+      </div>
       <div class="expect"><strong>Expected:</strong> HTTP 200 · <code>Content-Type: application/x-chrome-extension</code> · non-zero <code>Content-Length</code>.</div>
       <div class="callout note"><span class="ico">ℹ️</span><div>A corporate SWG may strip the Chrome-extension content-type — confirm it isn&rsquo;t being restricted.</div></div>
 
