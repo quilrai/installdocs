@@ -84,6 +84,7 @@
       </div>
 
       <h2>Step 1 · Browser policy verification</h2>
+      <h3>Chromium browsers &mdash; Chrome / Edge / Brave</h3>
       <p>Visit <code>chrome://policy</code>, <code>edge://policy</code>, or <code>brave://policy</code> and search for &ldquo;Quilr&rdquo; or the extension ID
       <code>piajhjohgigijkddhdpgbjdcfhmammbk</code>. You should see:</p>
       <ul>
@@ -122,6 +123,36 @@
         </table>
       </div>
 
+      <h3>Firefox &mdash; <code>about:policies</code></h3>
+      <p>Firefox has no <code>chrome://policy</code> page and uses its own add-on ID. Visit <code>about:policies</code> &mdash; under <strong>Active</strong>, an <code>ExtensionSettings</code> policy must list the Quilr add-on ID <code>firefox-extension@quilr.ai</code> with <code>installation_mode: force_installed</code> and the install URL <code>https://quilr-extensions.quilr.ai/firefox/prod/firefox-mv2-prod.xpi</code>. Then confirm the add-on itself is enabled under <code>about:addons</code>.</p>
+      <p>On Windows the policy is delivered via the registry &mdash; verify it directly:</p>
+      <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>Get-ItemProperty 'HKLM:\SOFTWARE\Policies\Mozilla\Firefox\ExtensionSettings\firefox-extension@quilr.ai' |
+  Select-Object installation_mode, install_url</code></pre></div>
+      <div class="expect"><strong>Expected:</strong> <code>installation_mode = force_installed</code> and the <code>install_url</code> pointing at the signed <code>.xpi</code>.</div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>What you see</th><th>What it means</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>about:policies</code> says &ldquo;The Enterprise Policies service is inactive&rdquo; / no <code>ExtensionSettings</code> row</td>
+            <td>The Firefox policy was never written. On Windows the MSI only configures Firefox when it is in the browser selection (<code>BROWSERS=</code> included <code>firefox</code> or <code>all</code>); on macOS the Quilr Firefox configuration profile isn&rsquo;t installed.</td>
+            <td>Windows: re-run the MSI with <code>BROWSERS=all</code> (or include <code>firefox</code>). macOS: push the Quilr Firefox <code>.mobileconfig</code> via MDM and check <strong>System Settings &rarr; General &rarr; Device Management</strong>.</td>
+          </tr>
+          <tr>
+            <td>Policy row present but the add-on is missing in <code>about:addons</code></td>
+            <td>Firefox accepted the policy but couldn&rsquo;t download the <code>.xpi</code>.</td>
+            <td>Check the install URL is reachable (HTTP <code>200</code>) from the device and not SSL-intercepted, then restart Firefox: <code>curl -sI https://quilr-extensions.quilr.ai/firefox/prod/firefox-mv2-prod.xpi</code></td>
+          </tr>
+        </tbody>
+      </table></div>
+
+      <h3>Safari (macOS) &mdash; no policy page</h3>
+      <p>Safari has no policy surface like <code>chrome://policy</code> / <code>about:policies</code> &mdash; the Quilr Safari extension is delivered by the pkg as an app extension and governed by configuration profiles. Verify in this order:</p>
+      <ul>
+        <li><strong>Safari &rarr; Settings &rarr; Extensions</strong> &mdash; Quilr is listed and <strong>enabled</strong>, with access allowed for the monitored sites (or &ldquo;All Websites&rdquo;).</li>
+        <li><strong>System Settings &rarr; General &rarr; Device Management</strong> &mdash; the Quilr configuration profiles delivered by your MDM are present. From Terminal: <code>profiles list | grep -i quilr</code></li>
+        <li>If Quilr doesn&rsquo;t appear in Safari&rsquo;s extension list at all, the pkg didn&rsquo;t install (or was removed) &mdash; re-run the pkg from <a href="../Step%203%20-%20Manual%20Installation/index.html">Step&nbsp;3</a>, then quit and reopen Safari.</li>
+      </ul>
 
       <h2>Step 2 · Manifest reachability</h2>
       <div class="tabs">
