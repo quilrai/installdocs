@@ -14,6 +14,10 @@ server {
     root /usr/share/nginx/html;
     index index.html;
 
+    # Behind the Caddy TLS proxy nginx only sees http — emit relative
+    # Location headers so redirects stay on the client's original scheme
+    absolute_redirect off;
+
     gzip on;
     gzip_types text/plain text/css text/javascript application/javascript application/json image/svg+xml;
     gzip_min_length 1024;
