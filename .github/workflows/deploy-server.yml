@@ -1,0 +1,53 @@
+name: Deploy to docs server
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'static/sop/**'
+      - 'Dockerfile'
+      - 'docker-compose.yml'
+      - '.dockerignore'
+      - '.github/workflows/deploy-server.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-server
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Pull and rebuild on server
+        # The server's login shell is fish, so pipe the script into bash
+        run: |
+          ssh -o BatchMode=yes "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" bash -s <<'EOF'
+          set -euo pipefail
+          cd /home/ubuntu/quilr-docs-site
+          git pull --ff-only
+          git log --oneline -1
+          docker compose up -d --build
+          docker image prune -f
+          for i in $(seq 1 12); do
+            status=$(docker inspect -f '{{.State.Health.Status}}' quilr-docs)
+            echo "health: $status"
+            [ "$status" = healthy ] && exit 0
+            sleep 5
+          done
+          echo "quilr-docs did not become healthy" >&2
+          exit 1
+          EOF
