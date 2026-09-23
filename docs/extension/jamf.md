@@ -10,9 +10,9 @@ Deploy the Quilr browser extension to a macOS fleet via Jamf Pro. The patterns m
 
 Same as the Quilr Endpoint Agent rollout — see [Prerequisites](/prerequisites) for the complete checklist (Jamf admin, User-Approved MDM enrollment, signed packages, network egress, etc.). Browser-extension-specific extras:
 
-- **Tenant ID** from **Quilr support** (`support@quilr.ai`) — pre-baked into the tenant artefacts you download from the Quilr console.
+- **Tenant ID** from **Quilr support** (`support@quilr.ai`) — written into `/tmp/quilr-be-install.json` before the pkg runs. Do **not** set `skip_discovery`.
 - Access to the **Quilr platform** at `https://app.quilr.ai/` (Settings → Browser Extension → Deployment).
-- Reachability for `quilr-extensions.quilr.ai` (serves the public File-Access mobileconfig).
+- Egress to `discover.quilrai.dev` and `quilr-extensions.quilr.ai`.
 
 ---
 
@@ -61,13 +61,34 @@ For each profile:
 2. Upload `quilr-installer-mac.pkg` to your distribution point.
 3. **Display name**: *Quilr Browser Extension*. **Category**: *Endpoint Security*.
 
-### Step C. Build the install Policy
+### Step C. Preinstall script (tenant JSON)
+
+Attach a policy **script that runs before the package**. Use `tenant_id` (not `PLASMO_PUBLIC_TENANTID`). Do not set `skip_discovery`. Dual write covers `/tmp` cleanup.
+
+```bash
+#!/bin/bash
+set -euo pipefail
+mkdir -p /tmp /Users/Shared
+cat > /tmp/quilr-be-install.json <<'EOF'
+{
+  "tenant_id": "<TENANT-ID>",
+  "browsers": "chrome,edge,firefox,safari"
+}
+EOF
+cp /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json
+chmod 644 /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json
+```
+
+For existing Chrome/Edge customers upgrading only Firefox/Safari, set `"browsers": "firefox,safari"`.
+
+### Step D. Build the install Policy
 
 1. **Computers → Policies → New → Display name**: *Install Quilr Browser Extension*.
 2. **General → Trigger**: *Recurring check-in*. **Frequency**: *Once per computer*.
 3. **Packages → Add** → select the pkg from §B.
-4. **Scope**: same group as the Configuration Profiles.
-5. **Save**.
+4. **Scripts**: the script from Step C, **before** the package.
+5. **Scope**: same group as the Configuration Profiles.
+6. **Save**.
 
 > **Order of operations:** Configuration Profiles install via MDM and almost always land before the policy runs. To be strict, scope the policy ~5 minutes after both profiles report *Installed*.
 

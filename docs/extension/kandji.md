@@ -10,9 +10,9 @@ Deploy the Quilr browser extension to a macOS fleet via Kandji. Same Library-Ite
 
 Same as the Quilr Endpoint Agent rollout — see [Prerequisites](/prerequisites) for the complete checklist (Kandji tenant, User-Approved MDM, signed packages, network egress, …). Browser-extension-specific extras:
 
-- **Tenant ID** from **Quilr support** (`support@quilr.ai`) — pre-baked into the tenant artefacts you download from the Quilr console.
+- **Tenant ID** from **Quilr support** (`support@quilr.ai`) — written into `/tmp/quilr-be-install.json` in the Custom App **Pre-install script**. Do **not** set `skip_discovery`.
 - Access to the **Quilr platform** at `https://app.quilr.ai/` (Settings → Browser Extension → Deployment).
-- Reachability for `quilr-extensions.quilr.ai` (serves the public File-Access mobileconfig).
+- Egress to `discover.quilrai.dev` and `quilr-extensions.quilr.ai`.
 
 > **Note on Blueprints vs Assignment Maps.** Classic Blueprints were [deprecated by Kandji on **2025-04-09**](https://support.kandji.io/kb/migrating-from-classic-blueprints-to-assignment-maps); the current model is *Blueprints with Assignment Maps*. The simple "add to Blueprint" wording in this guide maps to the equivalent Assignment Map node in the modern UI.
 
@@ -56,8 +56,26 @@ For each profile:
 1. **Library → Add Library Item → search "Custom App" → Add**.
 2. **Name**: *Quilr Browser Extension*. Upload `quilr-installer-mac.pkg`.
 3. **Run on**: *macOS*.
-4. *(Recommended)* Configure **Audit & Enforce** — a small audit script that checks the extension bundle is on disk and the policy registry entries are present, exits `0` when healthy, non-zero when Kandji should reinstall. Ask Quilr support for the canonical audit snippet.
-5. **Assignment**: target Blueprint. **Save**.
+4. **Pre-install script** — first line must be `#!/bin/bash`. Use `tenant_id` (not `PLASMO_PUBLIC_TENANTID`). Do not set `skip_discovery`. Dual write covers `/tmp` cleanup.
+
+```bash
+#!/bin/bash
+set -euo pipefail
+mkdir -p /tmp /Users/Shared
+cat > /tmp/quilr-be-install.json <<'EOF'
+{
+  "tenant_id": "<TENANT-ID>",
+  "browsers": "chrome,edge,firefox,safari"
+}
+EOF
+cp /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json
+chmod 644 /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json
+```
+
+For existing Chrome/Edge customers upgrading only Firefox/Safari, set `"browsers": "firefox,safari"`.
+
+5. *(Recommended)* Configure **Audit & Enforce** — a small audit script that checks the extension bundle is on disk and the policy registry entries are present, exits `0` when healthy, non-zero when Kandji should reinstall. Ask Quilr support for the canonical audit snippet.
+6. **Assignment**: target Blueprint. **Save**.
 
 > **Order of operations:** Custom Profiles install faster than Custom Apps, so even when all three Library Items save together the profiles almost always land before the pkg downloads. To be strict, hold the Custom App unassigned for ~5 minutes after the two profiles report *Installed*.
 

@@ -10,9 +10,9 @@ Deploy the Quilr browser extension to a macOS fleet via Microsoft Intune. The ex
 
 Same as the Quilr Endpoint Agent rollout — see [Prerequisites](/prerequisites) for the complete checklist (Intune admin, Apple MDM push certificate, ADE / Company-Portal enrollment, signed packages, network egress, …). Browser-extension-specific extras:
 
-- **Tenant ID** from **Quilr support** (`support@quilr.ai`) — used in the macOS pkg URL and pre-baked into the tenant `.mobileconfig`.
+- **Tenant ID** from **Quilr support** (`support@quilr.ai`) — written into `/tmp/quilr-be-install.json` at install time (see Pre-install script). Do **not** set `skip_discovery`; the pkg fetches the rest from Discovery.
 - Access to the **Quilr platform** at `https://app.quilr.ai/` (Settings → Browser Extension → Deployment) to fetch the tenant `.mobileconfig`.
-- Reachability for `quilr-extensions.quilr.ai` (serves the pkg + the public File-Access mobileconfig).
+- Egress to `discover.quilrai.dev` (tenant config) and `quilr-extensions.quilr.ai` (pkg, payloads, File-Access mobileconfig).
 
 ---
 
@@ -71,7 +71,26 @@ For each profile:
 1. **Apps → All apps → Add → App type: macOS app (PKG)** *(unmanaged PKG)*.
 2. Upload `quilr-installer-mac.pkg`.
 3. **Name**: *Quilr Browser Extension*. **Publisher**: *Quilr AI*.
-4. **Assignments → Required → MAC-Quilr-Extension**. **Review + create**.
+4. **Pre-install script** (Program tab) — paste the script below. Intune requires the **first line** to be `#!/bin/bash` with nothing above it (`The script must start with "#!"` if it does not). Intune already runs as root — do not use `sudo`.
+5. **Assignments → Required → MAC-Quilr-Extension**. **Review + create**.
+
+The macOS pkg is tenant-agnostic. Discovery supplies extension URLs and env after it reads `tenant_id`. Use `tenant_id`, not `PLASMO_PUBLIC_TENANTID`. Omit `skip_discovery`. If `browsers` is omitted, the pkg treats the selection as all browsers (Chrome, Edge, Firefox, Safari), so Discovery must include Firefox and Safari keys unless you narrow `browsers`. Dual write covers `/tmp` cleanup.
+
+```bash
+#!/bin/bash
+set -euo pipefail
+mkdir -p /tmp /Users/Shared
+cat > /tmp/quilr-be-install.json <<'EOF'
+{
+  "tenant_id": "<TENANT-ID>",
+  "browsers": "chrome,edge,firefox,safari"
+}
+EOF
+cp /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json
+chmod 644 /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json
+```
+
+Replace `<TENANT-ID>` with the identifier from Quilr support. For existing Chrome/Edge customers upgrading only Firefox/Safari, set `"browsers": "firefox,safari"`.
 
 > **Order of operations:** the two **profiles first**, the **pkg last**. Same rationale as the agent — when the pkg's postinstall runs, every permission is already granted, so no user prompt appears.
 

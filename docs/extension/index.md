@@ -14,6 +14,8 @@ This section mirrors the *Endpoint Agent* section — pick your MDM, get vendor-
 > The Quilr browser extension is not a stand-alone WebExtension — it talks to a small **browser native messaging agent** on the device (installed by `Quilr.msi` on Windows or `quilr-installer-mac.pkg` on macOS) over Chrome/Edge's [Native Messaging API](https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging). Without the native agent the extension is a no-op — no prompt capture, no upload extraction, no events shipped.
 >
 > So **every rollout must ship the pkg / MSI**. The native-agent installer also takes care of getting the WebExtension into Edge / Chrome — you do *not* need a second MDM step for that.
+
+The **macOS pkg is tenant-agnostic at install time**. Tenant comes from install JSON (`tenant_id` in `/tmp/quilr-be-install.json` or `/Users/Shared/quilr-be-install.json`), environment, or Discovery — not from baking the GUID into the pkg. Windows MSI still uses `TENANT=` as documented in the Windows guides.
 >
 > **MDM browser policy (`ExtensionSettings` / `ExtensionInstallForcelist`) is only relevant if your organization already centrally manages browser extensions via MDM** and wants to enforce / lock the Quilr extension through the same channel (toolbar-pinned, user can't disable or remove it). If you don't manage extensions via MDM today, skip the policy sections — the MSI / pkg alone is sufficient.
 
@@ -39,7 +41,7 @@ This section mirrors the *Endpoint Agent* section — pick your MDM, get vendor-
 
 | Field | Value |
 |---|---|
-| **Tenant ID** | Obtain from **Quilr support** (`support@quilr.ai`). Used as `TENANT=<TENANT-ID>` (Windows MSI) and as a path segment in the tenant-specific macOS pkg URL. |
+| **Tenant ID** | Obtain from **Quilr support** (`support@quilr.ai`). Windows MSI: `TENANT=<TENANT-ID>`. macOS pkg: `tenant_id` in `/tmp/quilr-be-install.json` (see the macOS MDM guides). |
 | Extension ID (Edge / Chrome) | `piajhjohgigijkddhdpgbjdcfhmammbk` |
 | Update manifest URL | `https://quilr-extensions.quilr.ai/<TENANT-ID>/manifest.xml` |
 | Windows installer (MSI) | [`https://quilr-extensions.quilr.ai/Quilr.msi`](https://quilr-extensions.quilr.ai/Quilr.msi) |

@@ -10,9 +10,9 @@ Install the Quilr browser extension on a single Mac without MDM — useful for p
 
 Same as the Quilr Endpoint Agent rollout — see [Prerequisites](/prerequisites) for the complete checklist. Browser-extension-specific extras:
 
-- **Tenant ID** from **Quilr support** (`support@quilr.ai`) — used in the macOS pkg URL.
+- **Tenant ID** from **Quilr support** (`support@quilr.ai`) — written into `/tmp/quilr-be-install.json` immediately before `installer`. Do **not** set `skip_discovery`.
 - Access to the **Quilr platform** at `https://app.quilr.ai/` (Settings → Browser Extension → Deployment) to fetch the tenant `.mobileconfig`.
-- Reachability for `quilr-extensions.quilr.ai` (serves the pkg + the public File-Access mobileconfig).
+- Egress to `discover.quilrai.dev` and `quilr-extensions.quilr.ai`.
 - Admin (sudo) rights on the target Mac.
 
 ---
@@ -55,11 +55,25 @@ sudo profiles install \
 
 You will be prompted to **approve** each profile in **System Settings → Privacy & Security → Profiles** (or *General → Device Management* on macOS 12 and earlier). Approve both before continuing.
 
-### Step B. Install the pkg (second)
+### Step B. Write tenant JSON, then install the pkg
+
+CLI/MDM must not rely on the installer GUI pane. Write tenant JSON to `/tmp` and `/Users/Shared` immediately before `installer`. Double-click still uses the installer pane.
 
 ```bash
+sudo mkdir -p /tmp /Users/Shared
+sudo tee /tmp/quilr-be-install.json >/dev/null <<'EOF'
+{
+  "tenant_id": "<TENANT-ID>",
+  "browsers": "chrome,edge,firefox,safari"
+}
+EOF
+sudo cp /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json
+sudo chmod 644 /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json
+
 sudo installer -pkg ~/Downloads/quilr-installer-mac.pkg -target /
 ```
+
+Use `tenant_id` (not `PLASMO_PUBLIC_TENANTID`). Do not set `skip_discovery`. For Firefox/Safari-only on an existing Chrome/Edge machine, set `"browsers": "firefox,safari"`.
 
 > **Why this order:** with the two profiles already approved, the pkg's postinstall finds Full Disk Access pre-granted, so no user prompt appears.
 
