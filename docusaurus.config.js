@@ -96,9 +96,12 @@ const config = {
             label: 'Browser Extension',
           },
           {
-            href: '/sop/',
-            label: 'Deployment SOP',
+            // Native <a> so React Router does not treat /sop as a docs route
+            // (href: '/sop/' 404s in `docusaurus start`). Point at index.html so
+            // the static file is served locally and under SITE_BASE_URL on Pages.
+            type: 'html',
             position: 'left',
+            value: `<a class="navbar__link" href="${(process.env.SITE_BASE_URL || '/').replace(/\/?$/, '/')}sop/index.html">Deployment SOP</a>`,
           },
           {
             type: 'search',

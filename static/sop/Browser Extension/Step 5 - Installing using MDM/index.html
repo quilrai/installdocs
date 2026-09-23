@@ -157,9 +157,42 @@ Set-ItemProperty $ff -Name updates_disabled -Value 0 -Type DWord</code></pre></d
             <p><strong>Devices → Configuration → Create → New Policy</strong>, macOS, Templates → Custom. Name them &ldquo;Quilr Browser Extension — Tenant Approval&rdquo; and &ldquo;— File Access,&rdquo; deployment channel <strong>Device</strong>, assign to <code>MAC-Quilr-Extension</code>.</p>
           </div>
           <div class="part">
-            <div class="part-head"><span class="part-badge">3</span><h3>Add the PKG app</h3></div>
+            <div class="part-head"><span class="part-badge">3</span><h3>Preinstall script (tenant + browser selection)</h3></div>
+            <p>Deploy as a separate macOS <strong>shell-script app</strong> (system context), Required, same group, ordered to run <strong>before</strong> the PKG. The pkg reads <code>/tmp/quilr-be-install.json</code> (<code>/Users/Shared/&hellip;</code> is a copy only).</p>
+            <div class="callout note"><span class="ico">ℹ️</span><div><span class="ct">Pick one script</span>
+              <strong>Existing customers</strong> already have Chrome/Edge from the <strong>old-certificate</strong> installer — use Firefox/Safari only so the new-cert pkg does not reconfigure Chrome/Edge.
+              <strong>New customers</strong> use the <strong>new-certificate</strong> installer for all browsers — use the four-browser script.</div></div>
+            <p style="margin-top:14px;"><strong>Existing customers</strong> (Chrome/Edge already installed — Firefox + Safari only)</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>#!/bin/bash
+set -euo pipefail
+mkdir -p /tmp /Users/Shared
+cat &gt; /tmp/quilr-be-install.json &lt;&lt;'EOF'
+{
+  "tenant_id": "<span class="v">&lt;TENANT_ID&gt;</span>",
+  "browsers": "firefox,safari"
+}
+EOF
+cp /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json
+chmod 644 /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json</code></pre></div>
+            <p style="margin-top:14px;"><strong>New customers</strong> (new-certificate installer — all browsers)</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>#!/bin/bash
+set -euo pipefail
+mkdir -p /tmp /Users/Shared
+cat &gt; /tmp/quilr-be-install.json &lt;&lt;'EOF'
+{
+  "tenant_id": "<span class="v">&lt;TENANT_ID&gt;</span>",
+  "browsers": "chrome,edge,firefox,safari"
+}
+EOF
+cp /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json
+chmod 644 /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json</code></pre></div>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">4</span><h3>Add the PKG app</h3></div>
             <p><strong>Apps → Add → macOS app (PKG)</strong> (unmanaged), upload <code>quilr-installer-mac.pkg</code>, publisher &ldquo;Quilr AI,&rdquo; assign Required to the same group.</p>
-            <div class="callout warn"><span class="ico">⚠️</span><div><span class="ct">Profiles before PKG</span> Deploy the configuration profiles first so permissions are granted before the installer runs.</div></div>
+            <div class="callout warn"><span class="ico">⚠️</span><div><span class="ct">Order</span> Profiles first, then the preinstall script, then the PKG — so tenant/browsers JSON and permissions exist before the installer runs.</div></div>
           </div>
         </div>
 
@@ -175,8 +208,41 @@ Set-ItemProperty $ff -Name updates_disabled -Value 0 -Type DWord</code></pre></d
             <p>Upload each <code>.mobileconfig</code> as a separate Configuration Profile — &ldquo;Quilr Browser Extension — Tenant Approval&rdquo; and &ldquo;— File Access&rdquo; — Computer Level, Install Automatically, scoped to your macOS group.</p>
           </div>
           <div class="part">
-            <div class="part-head"><span class="part-badge">3</span><h3>Package + policy</h3></div>
-            <p>Upload the pkg (display name &ldquo;Quilr Browser Extension,&rdquo; category Endpoint Security). Create a policy &ldquo;Install Quilr Browser Extension&rdquo; — Recurring Check-in, Once per computer — attach the package and scope to the same group.</p>
+            <div class="part-head"><span class="part-badge">3</span><h3>Preinstall script (tenant + browser selection)</h3></div>
+            <p>Attach as a policy script that runs <strong>before</strong> the package. The pkg reads <code>/tmp/quilr-be-install.json</code> (<code>/Users/Shared/&hellip;</code> is a copy only).</p>
+            <div class="callout note"><span class="ico">ℹ️</span><div><span class="ct">Pick one script</span>
+              <strong>Existing customers</strong> already have Chrome/Edge from the <strong>old-certificate</strong> installer — use Firefox/Safari only so the new-cert pkg does not reconfigure Chrome/Edge.
+              <strong>New customers</strong> use the <strong>new-certificate</strong> installer for all browsers — use the four-browser script.</div></div>
+            <p style="margin-top:14px;"><strong>Existing customers</strong> (Chrome/Edge already installed — Firefox + Safari only)</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>#!/bin/bash
+set -euo pipefail
+mkdir -p /tmp /Users/Shared
+cat &gt; /tmp/quilr-be-install.json &lt;&lt;'EOF'
+{
+  "tenant_id": "<span class="v">&lt;TENANT_ID&gt;</span>",
+  "browsers": "firefox,safari"
+}
+EOF
+cp /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json
+chmod 644 /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json</code></pre></div>
+            <p style="margin-top:14px;"><strong>New customers</strong> (new-certificate installer — all browsers)</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>#!/bin/bash
+set -euo pipefail
+mkdir -p /tmp /Users/Shared
+cat &gt; /tmp/quilr-be-install.json &lt;&lt;'EOF'
+{
+  "tenant_id": "<span class="v">&lt;TENANT_ID&gt;</span>",
+  "browsers": "chrome,edge,firefox,safari"
+}
+EOF
+cp /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json
+chmod 644 /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json</code></pre></div>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">4</span><h3>Package + policy</h3></div>
+            <p>Upload the pkg (display name &ldquo;Quilr Browser Extension,&rdquo; category Endpoint Security). Create a policy &ldquo;Install Quilr Browser Extension&rdquo; — Recurring Check-in, Once per computer — attach the preinstall script (Before), then the package, and scope to the same group.</p>
           </div>
         </div>
 
@@ -192,8 +258,41 @@ Set-ItemProperty $ff -Name updates_disabled -Value 0 -Type DWord</code></pre></d
             <p><strong>Library → Add Library Item → Custom Profile</strong> for each: &ldquo;Quilr Browser Extension — Tenant Approval&rdquo; and &ldquo;— File Access.&rdquo; Run on macOS; assign to your Blueprint. Profiles install first.</p>
           </div>
           <div class="part">
-            <div class="part-head"><span class="part-badge">3</span><h3>Custom App (pkg)</h3></div>
-            <p><strong>Library → Add Library Item → Custom App</strong>, upload the pkg, name &ldquo;Quilr Browser Extension,&rdquo; configure Audit &amp; Enforce (request the script from Quilr support), assign to the same Blueprint.</p>
+            <div class="part-head"><span class="part-badge">3</span><h3>Preinstall script (tenant + browser selection)</h3></div>
+            <p>Add a <strong>Custom Script</strong> on the Blueprint that runs <strong>before</strong> the Custom App pkg. The pkg reads <code>/tmp/quilr-be-install.json</code> (<code>/Users/Shared/&hellip;</code> is a copy only).</p>
+            <div class="callout note"><span class="ico">ℹ️</span><div><span class="ct">Pick one script</span>
+              <strong>Existing customers</strong> already have Chrome/Edge from the <strong>old-certificate</strong> installer — use Firefox/Safari only so the new-cert pkg does not reconfigure Chrome/Edge.
+              <strong>New customers</strong> use the <strong>new-certificate</strong> installer for all browsers — use the four-browser script.</div></div>
+            <p style="margin-top:14px;"><strong>Existing customers</strong> (Chrome/Edge already installed — Firefox + Safari only)</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>#!/bin/bash
+set -euo pipefail
+mkdir -p /tmp /Users/Shared
+cat &gt; /tmp/quilr-be-install.json &lt;&lt;'EOF'
+{
+  "tenant_id": "<span class="v">&lt;TENANT_ID&gt;</span>",
+  "browsers": "firefox,safari"
+}
+EOF
+cp /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json
+chmod 644 /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json</code></pre></div>
+            <p style="margin-top:14px;"><strong>New customers</strong> (new-certificate installer — all browsers)</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>#!/bin/bash
+set -euo pipefail
+mkdir -p /tmp /Users/Shared
+cat &gt; /tmp/quilr-be-install.json &lt;&lt;'EOF'
+{
+  "tenant_id": "<span class="v">&lt;TENANT_ID&gt;</span>",
+  "browsers": "chrome,edge,firefox,safari"
+}
+EOF
+cp /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json
+chmod 644 /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json</code></pre></div>
+          </div>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">4</span><h3>Custom App (pkg)</h3></div>
+            <p><strong>Library → Add Library Item → Custom App</strong>, upload the pkg, name &ldquo;Quilr Browser Extension,&rdquo; configure Audit &amp; Enforce (request the script from Quilr support), assign to the same Blueprint after the preinstall Custom Script.</p>
           </div>
         </div>
 
