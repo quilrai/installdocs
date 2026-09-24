@@ -96,6 +96,13 @@
         <div class="tab-panel active" data-panel="intune-win">
           <h3>Microsoft Intune — Windows</h3>
           <div class="part">
+            <div class="part-head"><span class="part-badge">i</span><h3>Discovery-offline configuration</h3></div>
+            <p>Use these properties only when endpoints cannot contact Quilr Discovery. Every environment key shown below must be present. Ask <a href="mailto:support@quilr.ai">support@quilr.ai</a> for each value because the URLs depend on where the tenant is onboarded. Keep <code>EXTENSIONENV</code> as one quoted, semicolon-separated value.</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>MSI properties · append to the Intune install command</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>TENANT=<span class="v">&lt;TENANT-ID&gt;</span> SKIPDISCOVERY=1 FIREFOXINSTALLURL="<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>" EXTENSIONENV="PLASMO_PUBLIC_BFF_ENDPOINT=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;PLASMO_PUBLIC_OAUTH_URL=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;PLASMO_PUBLIC_OAUTH_LOGIN_URL=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;PLASMO_PUBLIC_DLP_END_POINT=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;PLASMO_PUBLIC_UPDATE_URL=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;BASE_URL=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>"</code></pre></div>
+            <div class="callout warn"><span class="ico">⚠️</span><div><span class="ct">Discovery-offline, not fully air-gapped</span> These settings prevent Discovery calls, but the supplied service and artifact URLs must still be reachable.</div></div>
+          </div>
+          <div class="part">
             <div class="part-head"><span class="part-badge">1</span><h3>Wrap the MSI</h3></div>
             <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>cmd</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
 <pre><code>IntuneWinAppUtil.exe -c C:\Staging\QuilrExtension -s Quilr.msi -o C:\Staging\Out</code></pre></div>
@@ -144,6 +151,32 @@ Set-ItemProperty $ff -Name updates_disabled -Value 0 -Type DWord</code></pre></d
         <!-- INTUNE MACOS -->
         <div class="tab-panel" data-panel="intune-mac">
           <h3>Microsoft Intune — macOS</h3>
+          <div class="part">
+            <div class="part-head"><span class="part-badge">i</span><h3>Discovery-offline preinstall script</h3></div>
+            <p>Use this instead of the tenant-only preinstall script below when Macs cannot contact Quilr Discovery. Every environment key shown must be present. Ask <a href="mailto:support@quilr.ai">support@quilr.ai</a> for each value because the URLs depend on where the tenant is onboarded. Change <code>browsers</code> to <code>firefox,safari</code> when an existing-customer rollout must leave Chrome/Edge untouched.</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash · system context · before pkg</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>#!/bin/bash
+set -euo pipefail
+umask 077
+cat &gt; /tmp/quilr-be-install.json &lt;&lt;'EOF'
+{
+  "tenant_id": "<span class="v">&lt;TENANT-ID&gt;</span>",
+  "skip_discovery": "1",
+  "PLASMO_PUBLIC_TENANTID": "<span class="v">&lt;TENANT-ID&gt;</span>",
+  "PLASMO_PUBLIC_BFF_ENDPOINT": "<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>",
+  "PLASMO_PUBLIC_OAUTH_URL": "<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>",
+  "PLASMO_PUBLIC_OAUTH_LOGIN_URL": "<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>",
+  "PLASMO_PUBLIC_DLP_END_POINT": "<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>",
+  "PLASMO_PUBLIC_UPDATE_URL": "<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>",
+  "BASE_URL": "<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>",
+  "browsers": "chrome,edge,firefox,safari"
+}
+EOF
+chown root:wheel /tmp/quilr-be-install.json
+chmod 600 /tmp/quilr-be-install.json
+exit 0</code></pre></div>
+            <div class="callout warn"><span class="ico">⚠️</span><div><span class="ct">Discovery-offline, not fully air-gapped</span> This prevents Discovery calls, but the supplied service and artifact URLs must still be reachable.</div></div>
+          </div>
           <div class="part">
             <div class="part-head"><span class="part-badge">1</span><h3>Gather three artifacts</h3></div>
             <ul>

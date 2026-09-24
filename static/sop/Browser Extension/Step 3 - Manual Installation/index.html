@@ -191,7 +191,30 @@
           </div>
 
           <div class="part">
-            <div class="part-head"><span class="part-badge">3</span><h3>Install the package second</h3></div>
+            <div class="part-head"><span class="part-badge">3</span><h3>Optional · configure a Discovery-offline install</h3></div>
+            <p>Use this only when the Mac cannot contact Quilr Discovery. The pre-install JSON must contain every key shown below. Obtain each environment-specific value from <a href="mailto:support@quilr.ai">support@quilr.ai</a>; the correct URLs depend on where the tenant is onboarded.</p>
+            <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash · run before the pkg</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+<pre><code>sudo tee /tmp/quilr-be-install.json &gt;/dev/null &lt;&lt;'EOF'
+{
+  "tenant_id": "<span class="v">&lt;TENANT-ID&gt;</span>",
+  "skip_discovery": "1",
+  "PLASMO_PUBLIC_TENANTID": "<span class="v">&lt;TENANT-ID&gt;</span>",
+  "PLASMO_PUBLIC_BFF_ENDPOINT": "<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>",
+  "PLASMO_PUBLIC_OAUTH_URL": "<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>",
+  "PLASMO_PUBLIC_OAUTH_LOGIN_URL": "<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>",
+  "PLASMO_PUBLIC_DLP_END_POINT": "<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>",
+  "PLASMO_PUBLIC_UPDATE_URL": "<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>",
+  "BASE_URL": "<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>",
+  "browsers": "chrome,edge,firefox,safari"
+}
+EOF
+sudo chown root:wheel /tmp/quilr-be-install.json
+sudo chmod 600 /tmp/quilr-be-install.json</code></pre></div>
+            <div class="callout warn"><span class="ico">⚠️</span><div><span class="ct">Discovery-offline, not fully air-gapped</span> Setting <code>skip_discovery</code> to <code>1</code> prevents Discovery calls, but the BFF, OAuth, DLP, update, and browser-extension artifact URLs supplied by Quilr Support must still be reachable.</div></div>
+          </div>
+
+          <div class="part">
+            <div class="part-head"><span class="part-badge">4</span><h3>Install the package</h3></div>
             <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash · sudo</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
 <pre><code>sudo installer -pkg ~/Downloads/quilr-installer-mac.pkg -target /</code></pre></div>
             <p>The native agent installs and registers the WebExtension into your browsers automatically. Validate in Step&nbsp;4.</p>
@@ -244,7 +267,11 @@
             <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin) — behind a corporate proxy, Chrome &amp; Edge only</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
 <pre><code>msiexec /i "$env:TEMP\Quilr.msi" TENANT=<span class="v">&lt;TENANT-ID&gt;</span> PROXY=proxy.corp.local:8080 BROWSERS=chrome,edge /qn /norestart</code></pre></div>
             <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell (admin) — air-gapped from discovery, environment supplied inline</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
-<pre><code>msiexec /i "$env:TEMP\Quilr.msi" TENANT=<span class="v">&lt;TENANT-ID&gt;</span> SKIPDISCOVERY=1 EXTENSIONENV="PLASMO_PUBLIC_API=https://api.quilr.ai;PLASMO_PUBLIC_REGION=us" /qn /norestart</code></pre></div>
+<pre><code>msiexec /i "$env:TEMP\Quilr.msi" /qn /norestart `
+  TENANT=<span class="v">&lt;TENANT-ID&gt;</span> SKIPDISCOVERY=1 `
+  FIREFOXINSTALLURL="<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>" `
+  EXTENSIONENV="PLASMO_PUBLIC_BFF_ENDPOINT=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;PLASMO_PUBLIC_OAUTH_URL=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;PLASMO_PUBLIC_OAUTH_LOGIN_URL=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;PLASMO_PUBLIC_DLP_END_POINT=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;PLASMO_PUBLIC_UPDATE_URL=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;BASE_URL=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>"</code></pre></div>
+            <div class="callout warn"><span class="ico">⚠️</span><div><span class="ct">All environment keys are required</span> Keep every key shown in <code>EXTENSIONENV</code> and obtain each value, including <code>FIREFOXINSTALLURL</code>, from <a href="mailto:support@quilr.ai">support@quilr.ai</a>. Values vary according to where the tenant is onboarded. This skips Discovery only; the supplied service and artifact URLs must remain reachable.</div></div>
             <div class="callout note"><span class="ico">💡</span><div><span class="ct">Extension-management conflicts</span> If Chrome/Edge extensions are already centrally managed (Intune, GPO, Chrome Browser Cloud Management), pass <code>SKIPEXTENSIONSETTINGS=1</code> so the installer doesn&rsquo;t overwrite your existing <code>ExtensionSettings</code> policy, and add the Quilr entry to your own policy instead (see Step&nbsp;5 for the JSON).</div></div>
           </div>
           <div class="part">
