@@ -1,0 +1,32 @@
+name: Rebuild docs.quilrai.dev
+
+# docs.quilrai.dev serves this SOP at /sop/, pulled from main on every docs
+# build (quilrai/docs: scripts/sync-install-sop.js). This tells the docs site
+# to rebuild now instead of waiting for its daily build.
+#
+# Needs the DOCS_DISPATCH_TOKEN secret: a fine-grained token with access to
+# quilrai/docs and "Contents: Read and write" permission.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'static/sop/**'
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger the docs deploy
+        env:
+          GH_TOKEN: ${{ secrets.DOCS_DISPATCH_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::warning::DOCS_DISPATCH_TOKEN is not set; docs.quilrai.dev picks this up on its next daily build."
+            exit 0
+          fi
+          gh api repos/quilrai/docs/dispatches \
+            -f event_type=install-sop-updated \
+            -f "client_payload[sha]=$GITHUB_SHA"
+          echo "Triggered the quilrai/docs deploy for $GITHUB_SHA"
