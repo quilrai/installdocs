@@ -1,8 +1,10 @@
 # Validate Installation — Browser Extension
 
-Use this page after pushing the Quilr browser extension (and the **MSI / pkg** that installs the native messaging agent) to confirm both pieces are running on the endpoint. There are **three** quick checks — all three must pass for the extension to be working end-to-end.
+Use this page after pushing the Quilr browser extension (and the **MSI / pkg** that installs the native messaging agent) to confirm both pieces are running on the endpoint. Checks 1–3 must pass for the extension to be working end-to-end. On macOS after a v3 install or upgrade, also run Check 2b.
 
-> **Why three checks?** The extension is two cooperating pieces — the WebExtension in the browser **and** the `quilr-native-messaging-agent` binary installed by the MSI / pkg. They talk over Chrome / Edge's Native Messaging API. If either one is missing or stopped, the extension installs but captures nothing — so verify both, then verify they're actually talking to each other (Check 3).
+For offline config and Intune v1/v2→v3 upgrade steps, see [macOS v3 QA](/extension/qa-macos-v3).
+
+> The extension is two cooperating pieces — the WebExtension in the browser **and** the `quilr-native-messaging-agent` binary. They talk over Native Messaging. If either one is missing or stopped, the extension installs but captures nothing.
 
 ---
 
@@ -54,7 +56,25 @@ pgrep -lf 'quilr-native-messaging-agent'
 
 You should see a PID and the process path.
 
-> **If the process isn't there**, the MSI / pkg either didn't install or its postinstall didn't start the agent. Re-deploy from your MDM (or run `msiexec /i Quilr.msi TENANT=<TENANT-ID> /qn` / `sudo installer -pkg quilr-installer-mac.pkg -target /` locally). The native agent is **required** — the WebExtension is a no-op without it.
+> **If the process isn't there**, re-deploy from your MDM (or `msiexec /i Quilr.msi TENANT=<TENANT-ID> /qn` / `sudo installer -pkg quilrai-browser-extension-vYYYY.MM.DD.pkg -target /` with tenant JSON). The native agent is required — the WebExtension is a no-op without it.
+
+---
+
+## Check 2b. Which macOS installer generation is on the Mac
+
+The popup’s Agent version is the native binary. It can change without a new pkg. On macOS, the v3 pkg writes the installer generation next to the tenant config. v1 (Chrome/Edge only) and v2 (Chrome/Edge plus Firefox/Safari) machines have no `installer_generation` until the v3 pkg runs over them.
+
+```bash
+python3 -m json.tool "/Library/Application Support/QuilrAIBE/installer-stamp.json"
+sudo python3 -m json.tool "/Library/Application Support/QuilrAIBE/be-config.json"
+pkgutil --pkg-info ai.quilr.be.browsers
+```
+
+**After a v3 install or a v1/v2 upgrade to v3**, both JSON files contain `"installer_generation": "3"` and a `pkg_version` of digits and dots (the pkg receipt version, `YYYY.MM.DD`). `pkgutil` `version` matches `pkg_version`. `installer-stamp.json` is the copy the extension can read; it does not contain the API key.
+
+**Still on v1 or v2:** `installer-stamp.json` is missing, and `be-config.json` has no `installer_generation`. That absence is the signal the v3 pkg has not run. A fresh v3 install and a v1 or v2 upgrade both show generation `3` only after that pkg succeeds. The same files are written for a manual `installer -pkg` and for an MDM pre-install script.
+
+The pkg also writes an install summary to `/var/log/quilr/quilr.log` (`[install-summary]`). That block lists tenant, browsers, generation, pkg version, whether the File-Access and Safari permission profiles are installed, and whether the native agent and Safari utility are on disk. A missing File-Access profile does not fail the install; push `quilr_browser_util_Files_Access.mobileconfig` from MDM, or grant Full Disk Access in System Settings.
 
 ---
 
@@ -72,7 +92,7 @@ This is the end-to-end check — it proves the WebExtension and the native agent
 | Quilr logo + branding | The popup loaded the bundled assets — proves the WebExtension itself rendered. |
 | **"Registered to: \<email\>"** | The user the captured events will be attributed to. |
 | `Extension v<…>` (bottom-left) | WebExtension version — bumps when Quilr ships an extension update. |
-| `Agent v<…>` (bottom-right) | Native-agent version — = the version installed by the MSI / pkg. |
+| `Agent v<…>` (bottom-right) | Native-agent binary version. On macOS the pkg can update this binary without a new installer generation — use Check 2b for the pkg generation. |
 | **Report a Bug** (blue link, lower-left) | Opens a pre-filled email to Quilr support with the two version numbers appended automatically — always use this link when escalating an issue so the support team doesn't have to ask for them. |
 
 ### When the status isn't green
@@ -98,8 +118,9 @@ The installation is healthy when **all three** are true on the endpoint:
 | 1 | Quilr extension visible **and enabled** in the browser | §Check 1 |
 | 2 | `quilr-native-messaging-agent` running in Task Manager / Activity Monitor | §Check 2 |
 | 3 | Popup shows green **"Persona Active & Extension Enabled"** with both version strings rendered | §Check 3 |
+| 4 | macOS v3 install or upgrade shows `installer_generation` `3` and a matching `pkg_version` | §Check 2b |
 
-If any of the three fails, the events will not reach the Quilr console. The browser extension does **not** perform TLS interception — its source of truth is *"is the popup green and does the event reach the console?"*, not a cert-chain inspection. *(The "Issuer = Quilr" check in [Validate Installation §4](/reference/validate-installation) applies to the **Endpoint Agent**, not the extension.)*
+If any of the three fails, the events will not reach the Quilr console. The browser extension does **not** perform TLS interception — pass/fail is the green popup and whether the event reaches the console.
 
 ---
 
