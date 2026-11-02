@@ -1,69 +1,43 @@
 # Quilr Browser Extension — Jamf Pro (macOS)
 
-Deploy the Quilr browser extension to a macOS fleet via Jamf Pro. The patterns mirror the agent rollout — Configuration Profiles + Policy with a Package payload.
+Deploy with **two Configuration Profiles + one Policy** (preinstall script, then the generic pkg).
 
-> **Sister guide:** [Jamf Pro — macOS](/deployment/jamf) for the agent. Same MDM, same scoping, same flow — just the artefacts differ.
+> **Sister guide:** [Jamf Pro — macOS](/deployment/jamf) for the endpoint agent.
 
 ---
 
 ## Prerequisites
 
-Same as the Quilr Endpoint Agent rollout — see [Prerequisites](/prerequisites) for the complete checklist (Jamf admin, User-Approved MDM enrollment, signed packages, network egress, etc.). Browser-extension-specific extras:
-
-- **Tenant ID** from **Quilr support** (`support@quilr.ai`) — written into `/tmp/quilr-be-install.json` before the pkg runs. Do **not** set `skip_discovery`.
-- Access to the **Quilr platform** at `https://app.quilr.ai/` (Settings → Browser Extension → Deployment).
-- Egress to `discover.quilrai.dev` and `quilr-extensions.quilr.ai`.
+- Jamf admin, enrolled Macs, signed packages, egress to `discover.quilrai.dev` and `quilr-extensions.quilr.ai` — see [Prerequisites](/prerequisites).
+- **Tenant ID** from **Quilr support** — written into `/tmp/quilr-be-install.json` before the pkg. Do **not** set `skip_discovery`.
+- Generic pkg `quilrai-browser-extension-vYYYY.MM.DD.pkg` from Quilr support.
+- Tenant `.mobileconfig` from `https://app.quilr.ai/` → **Settings → Browser Extension → Deployment → MDM** (OS = macOS, MDM = Jamf Pro).
 
 ---
 
 ## 1. Download the artefacts
 
-### 1.1 Tenant-specific pkg (direct download)
-
-| Artefact | URL |
+| Artefact | Source |
 |---|---|
-| Pkg installer | `https://quilr-extensions.quilr.ai/<TENANT-ID>/browser-util/quilr-installer-mac.pkg` |
-
-Replace `<TENANT-ID>` with the tenant identifier supplied by **Quilr support** (`support@quilr.ai`).
-
-### 1.2 Tenant-specific `.mobileconfig` (Quilr console)
-
-1. Sign in to **`https://app.quilr.ai/`**.
-2. **Settings → Browser Extension → Deployment → MDM**.
-3. **OS** = *macOS*, **MDM solution** = *Jamf Pro*.
-4. Download the tenant-specific `.mobileconfig`.
-
-### 1.3 Shared File-Access mobileconfig (public)
-
-| Artefact | URL |
-|---|---|
+| Generic pkg | `quilrai-browser-extension-vYYYY.MM.DD.pkg` from Quilr support |
+| Tenant `.mobileconfig` | Quilr console (above) |
 | File-Access mobileconfig | [`https://quilr-extensions.quilr.ai/browser-agent/prod/mac/quilr_browser_util_Files_Access.mobileconfig`](https://quilr-extensions.quilr.ai/browser-agent/prod/mac/quilr_browser_util_Files_Access.mobileconfig) |
 
 ---
 
 ## 2. Deploy in Jamf Pro
 
-### Step A. Upload both `.mobileconfig` files as Configuration Profiles
+### Step A. Configuration Profiles
 
-For each profile:
+For each `.mobileconfig`: **Computers → Configuration Profiles → Upload**. Level **Computer**. Scope your Mac group. Names: *Quilr Browser Extension — Tenant Approval* and *Quilr Browser Extension — File Access*.
 
-1. **Computers → Configuration Profiles → Upload**.
-2. Select the `.mobileconfig` — Jamf parses the payload and shows the embedded entries.
-3. **General**: name as below, category *Endpoint Security*, distribution method **Install Automatically**, level **Computer Level**.
-   - *Quilr Browser Extension — Tenant Approval*
-   - *Quilr Browser Extension — File Access*
-4. **Scope**: target your `MAC-Quilr-Extension` group (or reuse the agent scope).
-5. **Save** — Jamf signs and pushes on next MDM check-in.
+### Step B. Package
 
-### Step B. Add the pkg to Jamf
+**Settings → Computer Management → Packages → New**. Upload `quilrai-browser-extension-vYYYY.MM.DD.pkg`.
 
-1. **Settings → Computer Management → Packages → New**.
-2. Upload `quilr-installer-mac.pkg` to your distribution point.
-3. **Display name**: *Quilr Browser Extension*. **Category**: *Endpoint Security*.
+### Step C. Preinstall script
 
-### Step C. Preinstall script (tenant JSON)
-
-Attach a policy **script that runs before the package**. Use `tenant_id` (not `PLASMO_PUBLIC_TENANTID`). Do not set `skip_discovery`. Dual write covers `/tmp` cleanup.
+Script that runs **before** the package. Use `tenant_id`. Do not set `skip_discovery`.
 
 ```bash
 #!/bin/bash
@@ -79,36 +53,17 @@ cp /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json
 chmod 644 /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json
 ```
 
-For existing Chrome/Edge customers upgrading only Firefox/Safari, set `"browsers": "firefox,safari"`.
+### Step D. Policy
 
-### Step D. Build the install Policy
+1. **Computers → Policies → New**. Trigger *Recurring check-in*, frequency *Once per computer*.
+2. **Packages** → the pkg from Step B.
+3. **Scripts** → Step C script, **before** the package.
+4. **Scope** → same group as the profiles.
 
-1. **Computers → Policies → New → Display name**: *Install Quilr Browser Extension*.
-2. **General → Trigger**: *Recurring check-in*. **Frequency**: *Once per computer*.
-3. **Packages → Add** → select the pkg from §B.
-4. **Scripts**: the script from Step C, **before** the package.
-5. **Scope**: same group as the Configuration Profiles.
-6. **Save**.
-
-> **Order of operations:** Configuration Profiles install via MDM and almost always land before the policy runs. To be strict, scope the policy ~5 minutes after both profiles report *Installed*.
+Profiles first, pkg last.
 
 ---
 
 ## 3. Validate
 
-```bash
-profiles list | grep -i quilr                     # both extension profiles present
-sudo sqlite3 "/Library/Application Support/com.apple.TCC/TCC.db" \
-  "select client, allowed from access \
-   where service='kTCCServiceSystemPolicyAllFiles' and client like '%quilr%';"
-```
-
-Open the browser's extensions page — Quilr extension must be **present, enabled, "Installed by your organization"**. Then send a short test prompt on `https://claude.ai/` (or any monitored AI host). Within ~2 seconds the **prompt event should appear in the Quilr console**.
-
-> The browser extension does **not** perform TLS interception — it captures prompts and file uploads at the **DOM level** via the WebExtensions API. The "Issuer = Quilr" cert-chain check from [Validate Installation §4](/reference/validate-installation) applies to the **Endpoint Agent**, not the extension. For the extension, the source of truth is *"did the event reach the console?"*.
-
----
-
-## 4. Rollback
-
-Same pattern as the agent — unscope the Policy + Configuration Profiles from the target group. Jamf removes the profiles on next check-in and stops re-running the install Policy. See [Jamf Pro — macOS](/deployment/jamf) §10 for the full reverse-order procedure.
+[Validate Installation](/extension/validate-installation): extension enabled, native agent running, green popup, Check 2b, then a `claude.ai` prompt in the console.

@@ -125,6 +125,7 @@ const sidebars = {
       collapsed: false,
       items: [
         { type: 'doc', id: 'extension/validate-installation', label: 'Validate Installation' },
+        { type: 'doc', id: 'extension/qa-macos-v3',           label: 'macOS v3 QA' },
         { type: 'doc', id: 'extension/troubleshooting',       label: 'Troubleshooting' },
       ],
     },

@@ -123,7 +123,7 @@ Look for a value containing `piajhjohgigijkddhdpgbjdcfhmammbk`.
 
 Open `edge://extensions` and `chrome://extensions` — Quilr extension present + enabled + *Installed by your organization*. Then send a short test prompt on `https://claude.ai/` — within ~2 seconds the **event should appear in the Quilr console**.
 
-> The browser extension does **not** perform TLS interception — it captures prompts and file uploads at the **DOM level** via the WebExtensions API. The "Issuer = Quilr" cert-chain check from [Validate Installation §4](/reference/validate-installation) applies to the **Endpoint Agent's WinDivert driver**, not the extension.
+> The browser extension does **not** perform TLS interception. Pass/fail is whether the event reaches the Quilr console — see [Validate Installation](/extension/validate-installation).
 
 ---
 
