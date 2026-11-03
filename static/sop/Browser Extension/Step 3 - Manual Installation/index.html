@@ -95,7 +95,7 @@
       <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:flex-start; margin:12px 0 6px;">
         <figure style="flex:1 1 340px; min-width:280px; margin:0; padding:0;">
           <img src="../../assets/installer-tenant-browser-selection-macos.png"
-               alt="macOS installer 'Install QuilrAI Browser Extension', Configuration step. A 'Quilr Tenant ID' field with placeholder e.g. 442e052d-4c60-4cdc-961e-bc9db74a40ca, and under 'Install the Quilr extension for:' four checked browsers: Google Chrome, Microsoft Edge, Mozilla Firefox, and Safari. Go Back and Continue buttons."
+               alt="macOS browser-extension installer Configuration step showing browser choices; the tenant ID example is redacted."
                loading="lazy"
                style="display:block; width:100%; height:auto; border:1px solid var(--line); border-radius:10px; background:#0a0c12; box-shadow:0 6px 24px rgba(0,0,0,.35);" />
           <figcaption style="margin-top:8px; font-size:12.5px; color:var(--ink-soft); text-align:center;">
@@ -249,7 +249,7 @@ sudo chmod 600 /tmp/quilr-be-install.json</code></pre></div>
               <table>
                 <thead><tr><th>Property</th><th>Values / example</th><th>What it does</th></tr></thead>
                 <tbody>
-                  <tr><td><code>TENANT</code></td><td>GUID, e.g. <code>TENANT=2fc6fb7e-be22-47b7-b9cb-71471eec5627</code></td><td><strong>Required.</strong> Tenant ID — flows into managed storage (<code>PLASMO_PUBLIC_TENANTID</code>), extension URLs, the native-messaging-host manifest, and logs. Interactive (non-silent) installs prompt for it.</td></tr>
+                  <tr><td><code>TENANT</code></td><td>Your tenant GUID, for example <code>TENANT=YOUR_TENANT_ID</code></td><td><strong>Required.</strong> Tenant ID — flows into managed storage (<code>PLASMO_PUBLIC_TENANTID</code>), extension URLs, the native-messaging-host manifest, and logs. Interactive (non-silent) installs prompt for it.</td></tr>
                   <tr><td><code>PINNED</code></td><td><code>true</code> (default) / <code>false</code></td><td>Pin the extension to the browser toolbar. <code>false</code> omits the pin fields. Not persisted across upgrades.</td></tr>
                   <tr><td><code>ENVIRONMENT</code></td><td><code>USA-POC</code> (default), <code>USA-Prod</code>, <code>India-POC</code>, <code>India-Prod</code>, <code>MEA-POC</code></td><td>Backend environment label; persisted as <code>&hellip;\Install\Environment</code>.</td></tr>
                   <tr><td><code>PROXY</code></td><td><code>host:port</code>, or <code>none</code>/<code>direct</code>, or <code>system</code>/<code>auto</code></td><td>Egress proxy for the updater / log-uploader&rsquo;s own calls; persisted as <code>&hellip;\Install\Proxy</code>.</td></tr>

@@ -94,7 +94,7 @@
       </table></div>
       <figure style="margin:12px 0 6px; padding:0;">
         <img src="../../assets/console-be-deployment-status.png"
-             alt="Quilr Console - Settings - Browser Extension - Deployment Status tab. A user row 'Gurmukhnishan Singh' (gsingh@quilr.ai) is shown with IdP status Active, three browser rows for Windows 11 (Microsoft Edge 149.0.4022.69, Google Chrome 149.0.7827.103, Microsoft Edge 149.0.4022.62), Extension Status Enabled with version 0.24204.842 / 0.24204.833, Browser Utility Status Enabled at 0.55.306, Last Seen times '5 minutes ago' / '3 days ago', and Persona Created = Yes."
+             alt="Browser Extension deployment status showing enabled browser rows; account identities and the search query are redacted."
              loading="lazy"
              style="display:block; width:100%; max-width:1280px; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:10px; background:#0a0c12; box-shadow:0 6px 24px rgba(0,0,0,.35);" />
         <figcaption style="margin-top:8px; font-size:12.5px; color:var(--ink-soft); text-align:center;">
@@ -153,7 +153,7 @@
         </ul>
         <figure style="margin:14px 0 4px; padding:0; max-width:560px;">
           <img src="../../assets/quilr-popup-persona-active.png"
-               alt="Quilr extension popup in its healthy state. Header shows the Quilr logo and the green dot indicator with the text 'Persona Active & Extension Enabled'. Body reads: 'Congratulations! You did it right! You just made the world a much safer place by activating the extension. Registered to: gsingh@quilr.ai. Stay safe. Quilr it!' A green shield with a checkmark sits to the right. Footer shows Extension v0.24204.842 and Agent v0.55.306."
+               alt="Extension popup showing Persona Active and Extension Enabled; the registered email is redacted."
                loading="lazy"
                style="display:block; width:100%; height:auto; border:1px solid var(--line); border-radius:10px; background:#fff; box-shadow:0 6px 24px rgba(0,0,0,.18);" />
           <figcaption style="margin-top:8px; font-size:12.5px; color:var(--ink-soft);">
@@ -216,7 +216,7 @@
       </ol>
       <figure style="margin:10px 0 6px; padding:0;">
         <img src="../../assets/console-control-prevent-leak.png"
-             alt="Quilr Console - Controls page - AI Risks tab. The row 'Preventing The Leakage Of Sensitive Data Via An AI App' is shown with When This Happens 'a user shares sensitive data with an AI application', Criticality Low, Behavior 'Users Leaking Sensitive Data', Status toggle on, Mode dropdown set to 'Action'."
+             alt="Controls listing showing a sensitive-data control in Action mode; the updater identity is redacted."
              loading="lazy"
              style="display:block; width:100%; max-width:1280px; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:10px; background:#0a0c12; box-shadow:0 6px 24px rgba(0,0,0,.35);" />
         <figcaption style="margin-top:8px; font-size:12.5px; color:var(--ink-soft); text-align:center;">
@@ -255,7 +255,7 @@ Monte Mceachern        477-12-8344    2/21/1991</code></pre></div>
       <div class="expect"><strong>Expected:</strong> the Quilr popup appears <em>before</em> the prompt is sent to the AI provider, titled <strong>&ldquo;Potentially Sensitive Data Detected.&rdquo;</strong>, with the tag <code>PERSONALLY IDENTIFIABLE INFORMATION (PII)</code> and the matched rows visible in the body. The user can&rsquo;t submit unmodified &mdash; they have to edit the prompt and click <strong>Resubmit and Continue</strong>.</div>
       <figure style="margin:12px 0 6px; padding:0; max-width:760px;">
         <img src="../../assets/quilr-popup-pii-block.png"
-             alt="Quilr Action-mode block popup. Title: &quot;Potentially Sensitive Data Detected.&quot; (yellow). Subtitle: &quot;Please review it and remove the sensitive information before submitting it to this website.&quot; A tag labelled &quot;PERSONALLY IDENTIFIABLE INFORMATION (PII)&quot; sits under &quot;Data types detected&quot;, plus a &quot;Highlight Sensitive Data&quot; button. The body shows the synthetic PII payload (Rick Edwards, Victor Faulkner, Lisa Garrison, &hellip;, Monte Mceachern) with their fake SSNs and DOBs. A green-outline &quot;Resubmit and Continue&quot; button sits in the bottom-right, with the Quilr logo and wordmark in the footer."
+             alt="Sensitive-data warning showing the detected PII category and Resubmit and Continue action; personal-data example rows are redacted."
              loading="lazy"
              style="display:block; width:100%; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:10px; background:#0a0c12; box-shadow:0 6px 24px rgba(0,0,0,.35);" />
         <figcaption style="margin-top:8px; font-size:12.5px; color:var(--ink-soft); text-align:center;">
@@ -272,7 +272,7 @@ Monte Mceachern        477-12-8344    2/21/1991</code></pre></div>
       <p>The popup only proves the block happened locally. The finding row proves the event was uploaded to the backplane and attributed to the right user, app, and control. Open <a data-env-link href="https://app.quilr.ai/en/dashboard/findings" target="_blank" rel="noopener"><strong>Findings</strong></a> in the Console, switch to the <strong>Browser Extension Findings</strong> tab, then the <strong>AI Risks</strong> sub-tab. Filter <strong>Finding Type</strong> to <code>A user shares sensitive data with an AI application</code>.</p>
       <figure style="margin:12px 0 6px; padding:0;">
         <img src="../../assets/console-findings-be.png"
-             alt="Quilr Console - Findings - Browser Extension Findings - AI Risks tab. Two findings titled 'A user shares sensitive data with an AI application' shown with Finding ID, timestamp (14 Jun 2026), Login Email canary-quilrai@quilr.ai, Persona Email canary-quilrai@quilr.ai, Department Not Available, Account Usage Type Corporate, App ChatGPT (chatgpt.com) tagged Approved / Critical, Auth Type Credentials (Username & Password), Browser Name chrome, Extension version 0.24204.736, Control 'Preventing The Leakage Of Sensitive Data Via An AI App', Event Prompt, Outcome Not available as of now. Each row tagged AI Risks / Low criticality."
+             alt="Browser Extension findings showing sensitive-data events and their browser details; finding IDs, account identities and device identifiers are redacted."
              loading="lazy"
              style="display:block; width:100%; max-width:1280px; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:10px; background:#0a0c12; box-shadow:0 6px 24px rgba(0,0,0,.35);" />
         <figcaption style="margin-top:8px; font-size:12.5px; color:var(--ink-soft); text-align:center;">
@@ -296,7 +296,7 @@ Monte Mceachern        477-12-8344    2/21/1991</code></pre></div>
       <div class="callout note" style="margin-top:10px;">
         <span class="ico">&#x1F50D;</span>
         <div><span class="ct">Use the Finding ID for escalation</span>
-        Every finding has a UUID (e.g. <code>a4ead1ed-ff81-4830-bc43-d9cc8cec2cea</code> in the screenshot). If a downstream system &mdash; SOAR, SIEM, ticketing &mdash; missed the event, hand the UUID to support; they can trace the whole upload &middot; classify &middot; persist chain from that single ID.</div>
+        Every finding has a UUID. Copy the finding ID when asking support to trace an event that did not arrive in a downstream system such as a SIEM, SOAR platform or ticketing tool.</div>
       </div>
 
       <h3>Test 4 &mdash; Multi-channel DLP coverage (copy &middot; upload &middot; paste)</h3>

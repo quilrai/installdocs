@@ -94,7 +94,7 @@
       </table></div>
       <figure style="margin:12px 0 6px; padding:0;">
         <img src="../../assets/console-ea-deployment-status.png"
-             alt="Quilr Console - Settings - Endpoint - Deployment Status tab. Three devices listed: GURMUKH-LAPTOP (Windows 11) and Gurmukhnishans-MacBook.local (Mac OS X:26_5_1) registered to gsingh@quilr.ai with status Enabled and version 1.0.48, and Gurmukh-Windows-Laptop with version 1.0.0, all showing 'Enabled' status with Last Seen times '10 hours ago', '1 day ago', '3 weeks ago'."
+             alt="Endpoint deployment status showing device operating systems, enabled states and versions; device identifiers, names, emails and the search query are redacted."
              loading="lazy"
              style="display:block; width:100%; max-width:1280px; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:10px; background:#0a0c12; box-shadow:0 6px 24px rgba(0,0,0,.35);" />
         <figcaption style="margin-top:8px; font-size:12.5px; color:var(--ink-soft); text-align:center;">
@@ -486,7 +486,7 @@ Monte Mceachern        477-12-8344    2/21/1991</code></pre></div>
       <div class="expect"><strong>Expected:</strong> a native OS window titled <strong>&ldquo;Quilr | Security Alert&rdquo;</strong> appears <em>before</em> the prompt leaves the app, with title <strong>&ldquo;Potentially Sensitive Data Detected.&rdquo;</strong>, the <code>PERSONALLY IDENTIFIABLE INFORMATION (PII)</code> tag, the matched rows underlined in red, and a <strong>Reason for bypassing</strong> dropdown the user must pick before they can click <strong>Continue with Original</strong>. The popup is rendered by the templating-engine subprocess (see Step&nbsp;6 critical-logs &middot; <code>templating-engine.log</code>).</div>
       <figure style="margin:12px 0 6px; padding:0; max-width:720px;">
         <img src="../../assets/quilr-popup-ea-pii.png"
-             alt="Quilr Endpoint Agent native popup. Window title 'Quilr | Security Alert' (blue chrome). Body title 'Potentially Sensitive Data Detected.' in yellow, subtitle 'Please review content before submitting to external website.', tag 'PERSONALLY IDENTIFIABLE INFORMATION (PII)', 'Highlight Sensitive Data' button, the synthetic-PII payload table (Robert Aragon, Ashley Borden, Thomas Conley, ...) with the SSN columns and dates underlined in red. A 'Reason for bypassing:' dropdown labelled 'Select a justification...' sits below. Footer reads 'Stay safe, Quilr it!' and a green-outlined 'Continue with Original' button is in the bottom-right."
+             alt="Endpoint security alert showing the detected PII category and justification control; personal-data example rows are redacted."
              loading="lazy"
              style="display:block; width:100%; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:10px; background:#0a0c12; box-shadow:0 6px 24px rgba(0,0,0,.35);" />
         <figcaption style="margin-top:8px; font-size:12.5px; color:var(--ink-soft); text-align:center;">
