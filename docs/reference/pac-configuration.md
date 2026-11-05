@@ -5,7 +5,7 @@ sidebar_label: PAC Configuration
 
 # PAC (Proxy Auto-Config) — Optional
 
-PAC is **only relevant** if your environment **already** uses a Proxy Auto-Config file to route traffic through an existing **web filter / SWG / forward proxy**. In that case the Quilr Endpoint Agent has to share the routing path with that stack and you need to either:
+PAC is **only relevant** if your environment **already** uses a Proxy Auto-Config file to route traffic through an existing **web filter / SWG / forward proxy**. In that case the WhiteMatter Endpoint Agent has to share the routing path with that stack and you need to either:
 
 > **Common stacks that use PAC** — if you run any of these, PAC is probably already in your fleet's config:
 > **Zscaler** (ZIA / ZPA) · **Netskope** · **Forcepoint** (ONE / Web Security) · **Symantec / Broadcom WSS / Edge SWG (ProxySG)** · **Cisco** (Umbrella SIG / Secure Web Appliance / WSA) · **Palo Alto Networks** (Prisma Access / NGFW) · **McAfee / Skyhigh SWG** · **Check Point** (Harmony Connect / Quantum) · **iboss** · **Menlo Security** · **Cloudflare Gateway** · **Microsoft Defender for Cloud Apps / Edge for Business** · **Akamai ETP** · **on-prem Squid / nginx forward proxy / Blue Coat / Trend Micro IWSVA**.
@@ -14,22 +14,22 @@ PAC is **only relevant** if your environment **already** uses a Proxy Auto-Confi
 
 For those stacks the choices are:
 
-- **Point the OS at Quilr's hosted PAC** (only if you don't already publish a PAC file), or
-- **Merge** Quilr's routing rules into your existing PAC.
+- **Point the OS at WhiteMatter's hosted PAC** (only if you don't already publish a PAC file), or
+- **Merge** WhiteMatter's routing rules into your existing PAC.
 
-> **If you do *not* already use a PAC file, skip this page entirely.** The Quilr agent's on-device interception layers — **WinDivert filter driver** on Windows and **Network Extension** on macOS — capture the right traffic without any system proxy / PAC at all. Adding a PAC where one isn't needed only introduces extra failure modes.
+> **If you do *not* already use a PAC file, skip this page entirely.** The WhiteMatter agent's on-device interception layers — **WinDivert filter driver** on Windows and **Network Extension** on macOS — capture the right traffic without any system proxy / PAC at all. Adding a PAC where one isn't needed only introduces extra failure modes.
 
 ---
 
-## Quilr hosted PAC
+## WhiteMatter hosted PAC
 
 | Artefact | URL |
 |---|---|
-| Quilr PAC | `https://discover.quilrai.dev/pac/<TENANT-ID>` |
+| WhiteMatter PAC | `https://discover.quilrai.dev/pac/<TENANT-ID>` |
 
-Replace `<TENANT-ID>` with the tenant identifier from **Quilr support** (`support@quilr.ai`). The file is a standard `application/x-ns-proxy-autoconfig` document containing one `FindProxyForURL(url, host)` function — the same shape every browser and OS understands.
+Replace `<TENANT-ID>` with the tenant identifier from **WhiteMatter support** (`support@quilr.ai`). The file is a standard `application/x-ns-proxy-autoconfig` document containing one `FindProxyForURL(url, host)` function — the same shape every browser and OS understands.
 
-The Quilr PAC sends **monitored AI + collaboration hosts** through the local Quilr agent's listening port and everything else **DIRECT**. Fetch it to inspect:
+The WhiteMatter PAC sends **monitored AI + collaboration hosts** through the local WhiteMatter agent's listening port and everything else **DIRECT**. Fetch it to inspect:
 
 ```bash
 curl -fsSL https://discover.quilrai.dev/pac/<TENANT-ID> | head -40
@@ -43,11 +43,11 @@ curl -fsSL https://discover.quilrai.dev/pac/<TENANT-ID> | head -40
 |---|---|
 | You do **not** currently use a PAC file | Skip PAC. Deploy the agent normally — its WFP / Network Extension layer handles interception. |
 | You currently use a PAC file but **no existing web filter** depends on it | **Option A** — point the OS / browser proxy auto-config URL at `https://discover.quilrai.dev/pac/<TENANT-ID>` directly. |
-| You currently use a PAC file **and** an upstream web filter / SWG that depends on its routing | **Option B** — **merge** Quilr's rules into your existing PAC (never replace it — you'd lose the upstream-SWG routing). |
+| You currently use a PAC file **and** an upstream web filter / SWG that depends on its routing | **Option B** — **merge** WhiteMatter's rules into your existing PAC (never replace it — you'd lose the upstream-SWG routing). |
 
 ---
 
-## Option A — Use the Quilr-hosted PAC directly
+## Option A — Use the WhiteMatter-hosted PAC directly
 
 Point the OS / browser proxy auto-config setting at:
 
@@ -66,7 +66,7 @@ Or via Edge's *ProxySettings* policy (per-browser): set `ProxySettings.ProxyMode
 
 ### macOS (Custom Configuration Profile via Intune / Jamf / Kandji)
 
-Upload a `.mobileconfig` with a `com.apple.proxy.AutoConfig.url` payload setting `ProxyAutoConfigURLString` to the Quilr PAC URL:
+Upload a `.mobileconfig` with a `com.apple.proxy.AutoConfig.url` payload setting `ProxyAutoConfigURLString` to the WhiteMatter PAC URL:
 
 ```xml
 <dict>
@@ -91,16 +91,16 @@ Deploy it via your MDM the same way you deploy other custom profiles (Device cha
 
 ### Manual (single device)
 
-- **Windows** — *Settings → Network → Proxy → Use setup script*, paste the Quilr PAC URL.
-- **macOS** — *System Settings → Network → \<active interface\> → Details → Proxies → Automatic Proxy Configuration*, paste the Quilr PAC URL.
+- **Windows** — *Settings → Network → Proxy → Use setup script*, paste the WhiteMatter PAC URL.
+- **macOS** — *System Settings → Network → \<active interface\> → Details → Proxies → Automatic Proxy Configuration*, paste the WhiteMatter PAC URL.
 
 ---
 
-## Option B — Merge Quilr's rules into your existing PAC
+## Option B — Merge WhiteMatter's rules into your existing PAC
 
-If your existing PAC is doing real work (routing internal hosts DIRECT, sending corporate traffic through a SWG, handling captive portals, etc.), you must **keep your file as the source of truth** and add Quilr's routing into it. Pointing the OS at the Quilr PAC instead would silently drop every routing rule your SWG depends on.
+If your existing PAC is doing real work (routing internal hosts DIRECT, sending corporate traffic through a SWG, handling captive portals, etc.), you must **keep your file as the source of truth** and add WhiteMatter's routing into it. Pointing the OS at the WhiteMatter PAC instead would silently drop every routing rule your SWG depends on.
 
-### Step 1 — Fetch the Quilr PAC and understand its rules
+### Step 1 — Fetch the WhiteMatter PAC and understand its rules
 
 ```bash
 curl -fsSL https://discover.quilrai.dev/pac/<TENANT-ID> -o /tmp/quilr.pac
@@ -111,7 +111,7 @@ You'll see a `FindProxyForURL(url, host)` function that pattern-matches the moni
 
 ### Step 2 — Merge with your existing PAC
 
-The skeleton below shows how to call your existing logic **first** (so corporate / SWG routing keeps working) and **fall through** to Quilr's routing for monitored hosts:
+The skeleton below shows how to call your existing logic **first** (so corporate / SWG routing keeps working) and **fall through** to WhiteMatter's routing for monitored hosts:
 
 ```javascript
 function FindProxyForURL(url, host) {
@@ -175,7 +175,7 @@ The PAC routing only addresses **which** path the traffic takes — it does *not
 - [URL Exception List — AI Apps](/reference/url-exceptions-ai)
 - [URL Exception List — Non-AI Apps](/reference/url-exceptions-nonai)
 
-If the SWG re-signs the leaf cert, the Quilr agent's pinning will fail and interception will not work — regardless of how the PAC routes the traffic.
+If the SWG re-signs the leaf cert, the WhiteMatter agent's pinning will fail and interception will not work — regardless of how the PAC routes the traffic.
 
 ---
 
@@ -192,6 +192,6 @@ curl -fsSL https://discover.quilrai.dev/pac/<TENANT-ID> -o /dev/null -w "%{http_
 | Result | Cause | Fix |
 |---|---|---|
 | `200` | Path works | Inspect the body and confirm `FindProxyForURL` is present |
-| `404` | Wrong tenant ID | Confirm with Quilr support and re-push |
+| `404` | Wrong tenant ID | Confirm with WhiteMatter support and re-push |
 | `Timeout` / `Could not resolve host` | Firewall / DNS blocking `discover.quilrai.dev` | Allowlist — see the prerequisites checklist |
 | `SSL handshake error` | An upstream SWG is decrypting `discover.quilrai.dev` | Add the host to the SWG SSL-bypass list |

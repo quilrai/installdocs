@@ -1,8 +1,24 @@
 /* ============================================================
-   Quilr Deployment SOP — shared design system
-   Theme aligned to installdocs.quilrai.dev (Infima · indigo · JetBrains Mono)
+   WhiteMatter Deployment SOP — shared design system
+   Theme aligned to installdocs.quilrai.dev (Infima · indigo)
+
+   Typography (WhiteMatter brand) — Figtree + JetBrains Mono are
+   loaded by a <link> in each page's <head>:
+     Radix Medium     — headlines, section titles, short statements
+     Figtree 400      — paragraphs and captions
+     Figtree 500      — short labels
+     Figtree 600      — navigation, buttons, selective emphasis
+     JetBrains Mono   — code only
    ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap');
+
+/* Radix is a licensed font — self-hosted, Medium weight only. */
+@font-face {
+  font-family: "Radix";
+  src: url("fonts/Radix-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   /* Brand — indigo, matching installdocs.quilrai.dev */
@@ -46,8 +62,8 @@
   --maxw:         920px;
   --sidebar-w:    288px;
 
-  /* installdocs.quilrai.dev uses JetBrains Mono throughout */
-  --font: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --font: "Figtree", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Radix", "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 }
 
@@ -66,6 +82,9 @@ body {
 }
 
 a { color: var(--brand-600); text-decoration: none; }
+
+/* form controls don't inherit the page font by default */
+button, input, select, textarea { font-family: inherit; }
 a:hover { text-decoration: underline; }
 
 /* ============================================================
@@ -99,15 +118,15 @@ a:hover { text-decoration: underline; }
   width: 34px; height: 34px; border-radius: 9px;
   background: linear-gradient(135deg, var(--brand) 0%, var(--indigo) 100%);
   display: grid; place-items: center;
-  color: #fff; font-weight: 800; font-size: 17px;
+  color: #fff; font-weight: 600; font-size: 17px;
   box-shadow: 0 4px 14px rgba(91,91,246,.45);
 }
-.brand .brand-name { color: #fff; font-weight: 700; font-size: 15px; letter-spacing: -.01em; }
+.brand .brand-name { color: #fff; font-family: var(--font-display); font-weight: 500; font-size: 15px; letter-spacing: -.01em; }
 .brand .brand-sub  { color: #7d8499; font-size: 11.5px; font-weight: 500; }
 
 .nav-group-title {
   font-size: 11px; text-transform: uppercase; letter-spacing: .09em;
-  color: #707892; font-weight: 700;
+  color: #707892; font-weight: 500;
   padding: 18px 10px 7px;
 }
 .nav { list-style: none; margin: 0; padding: 0; }
@@ -115,7 +134,7 @@ a:hover { text-decoration: underline; }
 .nav a {
   display: flex; align-items: center; gap: 11px;
   padding: 8px 10px; border-radius: 8px;
-  color: #b4bacb; font-size: 13.5px; font-weight: 500;
+  color: #b4bacb; font-size: 13.5px; font-weight: 600;
   text-decoration: none; transition: background .12s, color .12s;
 }
 .nav a:hover { background: var(--sidebar-2); color: #fff; text-decoration: none; }
@@ -126,7 +145,7 @@ a:hover { text-decoration: underline; }
   flex: 0 0 22px; width: 22px; height: 22px;
   display: grid; place-items: center;
   border: 1px solid #333a4d; border-radius: 50%;
-  font-size: 11px; font-weight: 700; color: #9aa1b5;
+  font-size: 11px; font-weight: 500; color: #9aa1b5;
   font-variant-numeric: tabular-nums;
 }
 
@@ -164,18 +183,19 @@ a:hover { text-decoration: underline; }
    ============================================================ */
 .eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
-  font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  font-size: 12px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase;
   color: var(--brand-600); background: var(--brand-soft);
   padding: 5px 12px; border-radius: 999px; margin-bottom: 18px;
 }
 
-h1 { font-size: 33px; line-height: 1.18; letter-spacing: -.02em; margin: 0 0 14px; font-weight: 800; }
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 500; }
+h1 { font-size: 33px; line-height: 1.18; letter-spacing: -.01em; margin: 0 0 14px; }
 h2 {
-  font-size: 22px; letter-spacing: -.015em; margin: 46px 0 16px; font-weight: 750; font-weight: 700;
+  font-size: 22px; letter-spacing: -.005em; margin: 46px 0 16px;
   padding-bottom: 9px; border-bottom: 1px solid var(--line);
 }
-h3 { font-size: 17px; margin: 30px 0 10px; font-weight: 700; letter-spacing: -.01em; }
-h4 { font-size: 14px; margin: 22px 0 8px; font-weight: 700; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .04em; }
+h3 { font-size: 17px; margin: 30px 0 10px; letter-spacing: 0; }
+h4 { font-size: 14px; margin: 22px 0 8px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .04em; }
 
 .lead { font-size: 17.5px; color: var(--ink-soft); line-height: 1.6; margin: 0 0 18px; }
 
@@ -183,7 +203,7 @@ p { margin: 0 0 14px; }
 ul, ol { margin: 0 0 16px; padding-left: 22px; }
 li { margin: 6px 0; }
 li::marker { color: var(--ink-faint); }
-strong { font-weight: 650; font-weight: 600; color: var(--ink); }
+strong { font-weight: 600; color: var(--ink); }
 
 hr { border: 0; border-top: 1px solid var(--line); margin: 38px 0; }
 
@@ -241,7 +261,7 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 38px 0; }
 }
 .callout .ico { flex: 0 0 22px; font-size: 17px; line-height: 1.4; }
 .callout p:last-child { margin-bottom: 0; }
-.callout .ct { font-weight: 700; display: block; margin-bottom: 2px; }
+.callout .ct { font-weight: 600; display: block; margin-bottom: 2px; }
 .callout.note { background: var(--info-soft); border-color: #cfe0fa; }
 .callout.note .ct { color: var(--info); }
 .callout.tip  { background: var(--ok-soft); border-color: #c6ecd6; }
@@ -258,7 +278,7 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 38px 0; }
 table { width: 100%; border-collapse: collapse; font-size: 13.5px; background: var(--surface); }
 thead th {
   text-align: left; background: #f3f4fa; color: var(--ink-soft);
-  font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .04em;
+  font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: .04em;
   padding: 11px 14px; border-bottom: 1px solid var(--line);
 }
 tbody td { padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
@@ -273,7 +293,7 @@ td code, th code { white-space: nowrap; }
 .tab-btns { display: flex; gap: 6px; border-bottom: 2px solid var(--line); margin-bottom: 0; }
 .tab-btn {
   border: 0; background: none; cursor: pointer;
-  padding: 10px 16px; font-size: 14px; font-weight: 650; font-weight: 600; color: var(--ink-faint);
+  padding: 10px 16px; font-size: 14px; font-weight: 600; color: var(--ink-faint);
   border-bottom: 2px solid transparent; margin-bottom: -2px;
   display: inline-flex; align-items: center; gap: 8px; font-family: var(--font);
 }
@@ -296,7 +316,7 @@ td code, th code { white-space: nowrap; }
   flex: 0 0 auto; min-width: 30px; height: 30px; padding: 0 9px;
   background: var(--brand-soft); color: var(--brand-700);
   border-radius: 8px; display: inline-grid; place-items: center;
-  font-weight: 800; font-size: 13px;
+  font-weight: 500; font-size: 13px;
 }
 .part-head h3 { margin: 0; }
 
@@ -311,7 +331,7 @@ td code, th code { white-space: nowrap; }
   flex: 0 0 18px; width: 18px; height: 18px; margin-top: 2px;
   border: 2px solid var(--line-strong); border-radius: 5px;
 }
-.checklist .ck { color: var(--ok); font-weight: 800; flex: 0 0 auto; }
+.checklist .ck { color: var(--ok); font-weight: 600; flex: 0 0 auto; }
 
 /* expected output */
 .expect {
@@ -337,23 +357,23 @@ td code, th code { white-space: nowrap; }
 .track-card .tc-ico { width: 44px; height: 44px; border-radius: 11px; display: grid; place-items: center; font-size: 22px; margin-bottom: 14px; }
 .track-card h3 { margin: 0 0 6px; }
 .track-card p { color: var(--ink-soft); font-size: 14px; margin: 0 0 14px; }
-.track-card .tc-go { font-weight: 700; font-size: 13.5px; color: var(--brand-600); }
+.track-card .tc-go { font-weight: 600; font-size: 13.5px; color: var(--brand-600); }
 .pill {
-  display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+  display: inline-block; font-size: 11px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase;
   padding: 3px 9px; border-radius: 999px; background: var(--warn-soft); color: var(--warn);
 }
 
 .steplist { counter-reset: s; list-style: none; padding: 0; margin: 22px 0; }
 .steplist li { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); }
 .steplist li:last-child { border-bottom: 0; }
-.steplist .sn { flex: 0 0 30px; height: 30px; background: var(--sidebar); color: #fff; border-radius: 8px; display: grid; place-items: center; font-weight: 700; font-size: 13px; }
-.steplist a { font-weight: 650; font-weight: 600; }
+.steplist .sn { flex: 0 0 30px; height: 30px; background: var(--sidebar); color: #fff; border-radius: 8px; display: grid; place-items: center; font-weight: 500; font-size: 13px; }
+.steplist a { font-weight: 600; }
 .steplist .sd { color: var(--ink-soft); font-size: 13.5px; }
 
 .meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 26px; }
 .chip {
   display: inline-flex; align-items: center; gap: 7px;
-  font-size: 12.5px; font-weight: 600; color: var(--ink-soft);
+  font-size: 12.5px; font-weight: 500; color: var(--ink-soft);
   background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px;
 }
 .chip .k { color: var(--ink-faint); font-weight: 500; }
@@ -385,11 +405,11 @@ td code, th code { white-space: nowrap; }
 .wdot {
   position: relative; z-index: 1;
   width: 32px; height: 32px; border-radius: 50%;
-  display: grid; place-items: center; font-size: 13px; font-weight: 700;
+  display: grid; place-items: center; font-size: 13px; font-weight: 500;
   background: var(--surface); border: 2px solid var(--line-strong); color: var(--ink-faint);
   font-variant-numeric: tabular-nums; transition: transform .12s;
 }
-.wlabel { font-size: 11.5px; font-weight: 600; color: var(--ink-faint); line-height: 1.25; max-width: 92px; }
+.wlabel { font-size: 11.5px; font-weight: 500; color: var(--ink-faint); line-height: 1.25; max-width: 92px; }
 
 /* done */
 .wstep.done .wdot { background: var(--ok); border-color: var(--ok); color: #fff; }
@@ -399,7 +419,7 @@ td code, th code { white-space: nowrap; }
 .wstep.done::after { background: var(--ok); }
 /* current */
 .wstep.current .wdot { background: var(--brand); border-color: var(--brand); color: #fff; box-shadow: 0 0 0 5px var(--brand-ring); }
-.wstep.current .wlabel { color: var(--brand-700); font-weight: 700; }
+.wstep.current .wlabel { color: var(--brand-700); font-weight: 600; }
 .wstep.current::before { background: var(--ok); }
 /* upcoming hover */
 .wstep:not(.current):hover .wdot { transform: scale(1.08); border-color: var(--brand-ring); color: var(--brand-600); }
@@ -411,15 +431,15 @@ td code, th code { white-space: nowrap; }
   display: flex; align-items: center; justify-content: space-between; gap: 14px;
   margin-top: 52px; padding-top: 24px; border-top: 1px solid var(--line);
 }
-.wizard-nav .wcount { font-size: 13px; font-weight: 600; color: var(--ink-faint); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.wizard-nav .wcount { font-size: 13px; font-weight: 500; color: var(--ink-faint); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .wbtn {
   display: inline-flex; align-items: center; gap: 9px;
-  padding: 11px 20px; border-radius: 10px; font-size: 14.5px; font-weight: 650; font-weight: 600;
+  padding: 11px 20px; border-radius: 10px; font-size: 14.5px; font-weight: 600;
   text-decoration: none; cursor: pointer; border: 1px solid transparent; transition: all .14s;
   max-width: 48%;
 }
 .wbtn .wbt { display: flex; flex-direction: column; line-height: 1.15; }
-.wbtn .wbt small { font-size: 11px; font-weight: 600; opacity: .7; }
+.wbtn .wbt small { font-size: 11px; font-weight: 500; opacity: .7; }
 .wbtn.back { background: var(--surface); border-color: var(--line-strong); color: var(--ink-soft); text-align: left; }
 .wbtn.back:hover { border-color: var(--ink-faint); color: var(--ink); text-decoration: none; background: #fbfbfe; }
 .wbtn.next { background: var(--brand); color: #fff; box-shadow: 0 6px 18px var(--brand-ring); text-align: right; }
@@ -444,8 +464,8 @@ td code, th code { white-space: nowrap; }
 }
 .pager a:hover { border-color: var(--brand-ring); box-shadow: var(--shadow); text-decoration: none; }
 .pager a.next { text-align: right; }
-.pager .dir { font-size: 12px; color: var(--ink-faint); font-weight: 600; }
-.pager .ttl { font-weight: 700; color: var(--brand-600); font-size: 14.5px; margin-top: 2px; }
+.pager .dir { font-size: 12px; color: var(--ink-faint); font-weight: 500; }
+.pager .ttl { font-weight: 600; color: var(--brand-600); font-size: 14.5px; margin-top: 2px; }
 .pager a.disabled { visibility: hidden; }
 
 /* ============================================================
@@ -489,23 +509,37 @@ td code, th code { white-space: nowrap; }
 html, body { height: 100%; }
 body { overflow: hidden; }                 /* the page itself never scrolls */
 
-/* slim top brand/breadcrumb bar — deep navbar, like installdocs.quilrai.dev */
+/* slim top brand/breadcrumb bar — follows the OS light/dark setting:
+   light bar + black logo by default, deep navbar + white logo in dark mode */
 .topbar {
   height: 54px; padding: 0 28px;
   display: flex; align-items: center; gap: 14px;
-  background: #0c0b16; border-bottom: 1px solid #1c1b2e; backdrop-filter: none;
+  background: var(--surface); border-bottom: 1px solid var(--line); backdrop-filter: none;
 }
 .topbar::before {
-  content: "Quilr AI";
-  font-weight: 800; font-size: 15px; color: #fff; letter-spacing: -.01em;
-  padding-right: 14px; border-right: 1px solid rgba(255,255,255,.16);
+  content: ""; flex: 0 0 auto; box-sizing: content-box;
+  width: 150px; height: 22px; padding-right: 14px;
+  background: url("brand/whitematter-logo-black.svg") left center / 150px 15px no-repeat;
+  border-right: 1px solid var(--line-strong);
 }
-.topbar .crumbs { color: #9aa0b5; }
-.topbar .crumbs a { color: #c7cbd9; }
-.topbar .crumbs a:hover { color: #fff; }
-.topbar .crumbs .here { color: #fff; }
-.topbar .crumbs .sep { color: #3a3950; }
-.filterbar .fl { color: #8b90a6; }
+.topbar .crumbs { color: var(--ink-faint); font-weight: 600; }
+.topbar .crumbs a { color: var(--ink-soft); }
+.topbar .crumbs a:hover { color: var(--ink); }
+.topbar .crumbs .here { color: var(--ink); }
+.topbar .crumbs .sep { color: var(--line-strong); }
+
+@media (prefers-color-scheme: dark) {
+  .topbar { background: #0c0b16; border-bottom-color: #1c1b2e; }
+  .topbar::before {
+    background-image: url("brand/whitematter-logo-white.svg");
+    border-right-color: rgba(255,255,255,.16);
+  }
+  .topbar .crumbs { color: #9aa0b5; }
+  .topbar .crumbs a { color: #c7cbd9; }
+  .topbar .crumbs a:hover { color: #fff; }
+  .topbar .crumbs .here { color: #fff; }
+  .topbar .crumbs .sep { color: #3a3950; }
+}
 
 /* the single "screen": only this region scrolls — full viewport width */
 .content {
@@ -543,7 +577,7 @@ body { overflow: hidden; }                 /* the page itself never scrolls */
 
 /* ---- Platform / Environment filter bar (injected into the top bar) ---- */
 .filterbar { display: flex; align-items: center; gap: 14px; margin-left: auto; }
-.filterbar .fl { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-faint); }
+.filterbar .fl { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-faint); }
 .filterbar select {
   font-family: var(--font); font-size: 13px; font-weight: 600; color: var(--ink);
   background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px;
@@ -562,7 +596,7 @@ body { overflow: hidden; }                 /* the page itself never scrolls */
 [data-os][hidden], [data-env][hidden] { display: none !important; }
 
 /* small caption above a command */
-.muted-note { font-size: 12.5px; color: var(--ink-faint); font-weight: 600; margin: 0 0 8px; }
+.muted-note { font-size: 12.5px; color: var(--ink-faint); font-weight: 500; margin: 0 0 8px; }
 
 /* collapsible "paste the full script" fallback */
 details.fallback { margin: 12px 0 2px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); overflow: hidden; }
@@ -661,7 +695,7 @@ details.fallback .code { margin: 12px; }
 
 /* active environment row in tables */
 tbody tr.env-active { background: var(--brand-soft) !important; box-shadow: inset 3px 0 0 var(--brand); }
-tbody tr.env-active td:first-child { font-weight: 700; color: var(--brand-700); }
+tbody tr.env-active td:first-child { font-weight: 600; color: var(--brand-700); }
 
 @media (max-width: 760px) {
   .filterbar .fl span { display: none; }       /* hide labels, keep selects */
@@ -674,17 +708,24 @@ tbody tr.env-active td:first-child { font-weight: 700; color: var(--brand-700); 
 @media (max-width: 640px) {
   .content { height: calc(100vh - 54px); --pad-x: 16px; }
   .topbar { padding: 0 16px; }
-  .topbar::before { font-size: 14px; padding-right: 10px; }
+  /* square WM mark instead of the wordmark so the bar fits on phones */
+  .topbar::before {
+    width: 20px; padding-right: 10px;
+    background-image: url("brand/wm-mark-black.svg"); background-size: 20px 20px;
+  }
   h1, .hero h1 { font-size: 25px; }
+}
+@media (max-width: 640px) and (prefers-color-scheme: dark) {
+  .topbar::before { background-image: url("brand/wm-mark-white.svg"); }
 }
 
 
-/* ── Brand logo override — show the real Quilr icon instead of the 'Q' placeholder. */
+/* ── Brand logo override — show the WhiteMatter mark instead of the 'Q' placeholder. */
 .brand .logo {
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  background: #ffffff url('quilr-icon.png') center / 80% no-repeat;
+  background: #ffffff url('brand/wm-mark-black.svg') center / 80% no-repeat;
   color: transparent;
   font-size: 0;
   flex-shrink: 0;
@@ -693,7 +734,7 @@ tbody tr.env-active td:first-child { font-weight: 700; color: var(--brand-700); 
 
 
 /* sop-brand-iconize v1 */
-/* Drop the 'Quilr AI' wordmark — the icon alone carries the brand. */
+/* Drop the wordmark — the icon alone carries the brand. */
 .brand .brand-name { display: none; }
 
 /* Re-balance the brand row now that the wordmark is gone. */
@@ -709,7 +750,7 @@ tbody tr.env-active td:first-child { font-weight: 700; color: var(--brand-700); 
   margin-left: 8px;
   padding: 7px 13px; border: 0; border-radius: 8px;
   background: linear-gradient(135deg, var(--brand, #5b5bf6) 0%, var(--indigo, #7c5cff) 100%);
-  color: #fff; font: 600 12px/1 var(--ui-font, system-ui, -apple-system, "Segoe UI", sans-serif);
+  color: #fff; font: 600 12px/1 var(--font);
   letter-spacing: .02em;
   cursor: pointer; box-shadow: 0 2px 6px rgba(91,91,246,.30);
   transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
@@ -741,7 +782,7 @@ tbody tr.env-active td:first-child { font-weight: 700; color: var(--brand-700); 
   box-shadow: 0 24px 60px rgba(0,0,0,.55);
 }
 .fb-modal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
-.fb-modal-head h3 { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+.fb-modal-head h3 { margin: 0; font-size: 17px; font-weight: 500; letter-spacing: 0; }
 .fb-close {
   background: transparent; border: 0; color: #9098ad;
   font-size: 22px; line-height: 1; cursor: pointer; padding: 4px 8px;
@@ -752,14 +793,14 @@ tbody tr.env-active td:first-child { font-weight: 700; color: var(--brand-700); 
 
 .fb-form .fb-l {
   display: block; margin-top: 12px;
-  font-size: 12px; font-weight: 600; color: #9098ad; letter-spacing: .02em;
+  font-size: 12px; font-weight: 500; color: #9098ad; letter-spacing: .02em;
   text-transform: uppercase;
 }
 .fb-form input, .fb-form select, .fb-form textarea {
   display: block; width: 100%; margin-top: 5px; box-sizing: border-box;
   background: #0a0c12; color: #e6ebf3;
   border: 1px solid #20232f; border-radius: 8px;
-  padding: 9px 11px; font: 400 13.5px/1.45 inherit;
+  padding: 9px 11px; font: 400 13.5px/1.45 var(--font);
 }
 .fb-form input:focus, .fb-form select:focus, .fb-form textarea:focus {
   outline: 0; border-color: var(--brand, #5b5bf6);
@@ -771,7 +812,7 @@ tbody tr.env-active td:first-child { font-weight: 700; color: var(--brand-700); 
 .fb-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; }
 .fb-cancel, .fb-submit {
   border: 0; border-radius: 8px;
-  padding: 9px 16px; font: 600 13px/1 inherit; cursor: pointer;
+  padding: 9px 16px; font: 600 13px/1 var(--font); cursor: pointer;
 }
 .fb-cancel { background: #1a1d27; color: #9098ad; }
 .fb-cancel:hover { background: #20242f; color: #e6ebf3; }

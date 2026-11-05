@@ -3,22 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Step 6 · Troubleshooting — Quilr Browser Extension</title>
+<title>Step 6 · Troubleshooting — WhiteMatter Browser Extension</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../../assets/styles.css" />
 
-  <!-- sop-favicon v1 -->
-  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
-  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+  <!-- sop-favicon v2 — WhiteMatter mark; the SVG follows the browser's light/dark theme -->
+  <link rel="icon" href="/sop/assets/brand/favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/svg+xml" href="/sop/assets/brand/favicon.svg" />
+  <link rel="apple-touch-icon" href="/sop/assets/brand/apple-touch-icon.png" />
 </head>
 <body>
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">
       <div class="logo">Q</div>
-      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+      <div><div class="brand-name">WhiteMatter</div><div class="brand-sub">Deployment SOP</div></div>
     </div>
     <div class="nav-group-title">Overview</div>
     <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
@@ -100,14 +101,14 @@
           <thead><tr><th>Status seen on <code>chrome://policy</code></th><th>What it means</th><th>Fix</th></tr></thead>
           <tbody>
             <tr>
-              <td><strong style="color:#22c55e;">OK</strong> &mdash; with an <code>ExtensionSettings</code> / <code>ExtensionInstallForcelist</code> row containing the Quilr extension ID</td>
+              <td><strong style="color:#22c55e;">OK</strong> &mdash; with an <code>ExtensionSettings</code> / <code>ExtensionInstallForcelist</code> row containing the WhiteMatter extension ID</td>
               <td>Policy was pushed and accepted. The browser <em>will</em> load the off-store extension. If the icon is still missing, jump to Step&nbsp;2 (manifest reachability).</td>
               <td>Continue to Step&nbsp;2.</td>
             </tr>
             <tr>
               <td><strong style="color:#ef4444;">Blocked</strong> / <em>Ignored</em> / <em>Conflict</em> next to the Quilr policy row</td>
               <td>The browser <strong>refused</strong> the policy &mdash; almost always because the device is <strong>not managed by MDM or Active Directory</strong>. Chrome / Edge will only honour <code>ExtensionInstallForcelist</code> when the policy is delivered through a recognised management channel (MDM payload on macOS, GPO / Intune CSP / Registry-under-managed-policies on Windows). Locally-set registry keys are flagged <em>Blocked</em>.</td>
-              <td>Enrol the device in your MDM (Intune / Jamf / Kandji / ManageEngine) or join it to AD, then have the MDM / GPO push the Quilr <code>ExtensionSettings</code> policy. Manual installation on an unmanaged device is not supported &mdash; the off-store extension cannot load without a managed-policy whitelist (Step&nbsp;1 of <a href="../Step%201%20-%20Prerequisites/index.html">Prerequisites</a>).</td>
+              <td>Enrol the device in your MDM (Intune / Jamf / Kandji / ManageEngine) or join it to AD, then have the MDM / GPO push the WhiteMatter <code>ExtensionSettings</code> policy. Manual installation on an unmanaged device is not supported &mdash; the off-store extension cannot load without a managed-policy whitelist (Step&nbsp;1 of <a href="../Step%201%20-%20Prerequisites/index.html">Prerequisites</a>).</td>
             </tr>
             <tr>
               <td>No Quilr row at all under <em>Extension Policies</em></td>
@@ -124,7 +125,7 @@
       </div>
 
       <h3>Firefox &mdash; <code>about:policies</code></h3>
-      <p>Firefox has no <code>chrome://policy</code> page and uses its own add-on ID. Visit <code>about:policies</code> &mdash; under <strong>Active</strong>, an <code>ExtensionSettings</code> policy must list the Quilr add-on ID <code>firefox-extension@quilr.ai</code> with <code>installation_mode: force_installed</code> and the install URL <code>https://quilr-extensions.quilr.ai/firefox/prod/firefox-mv2-prod.xpi</code>. Then confirm the add-on itself is enabled under <code>about:addons</code>.</p>
+      <p>Firefox has no <code>chrome://policy</code> page and uses its own add-on ID. Visit <code>about:policies</code> &mdash; under <strong>Active</strong>, an <code>ExtensionSettings</code> policy must list the WhiteMatter add-on ID <code>firefox-extension@quilr.ai</code> with <code>installation_mode: force_installed</code> and the install URL <code>https://quilr-extensions.quilr.ai/firefox/prod/firefox-mv2-prod.xpi</code>. Then confirm the add-on itself is enabled under <code>about:addons</code>.</p>
       <p>On Windows the policy is delivered via the registry &mdash; verify it directly:</p>
       <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>PowerShell</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
 <pre><code>Get-ItemProperty 'HKLM:\SOFTWARE\Policies\Mozilla\Firefox\ExtensionSettings\firefox-extension@quilr.ai' |
@@ -135,8 +136,8 @@
         <tbody>
           <tr>
             <td><code>about:policies</code> says &ldquo;The Enterprise Policies service is inactive&rdquo; / no <code>ExtensionSettings</code> row</td>
-            <td>The Firefox policy was never written. On Windows the MSI only configures Firefox when it is in the browser selection (<code>BROWSERS=</code> included <code>firefox</code> or <code>all</code>); on macOS the Quilr Firefox configuration profile isn&rsquo;t installed.</td>
-            <td>Windows: re-run the MSI with <code>BROWSERS=all</code> (or include <code>firefox</code>). macOS: push the Quilr Firefox <code>.mobileconfig</code> via MDM and check <strong>System Settings &rarr; General &rarr; Device Management</strong>.</td>
+            <td>The Firefox policy was never written. On Windows the MSI only configures Firefox when it is in the browser selection (<code>BROWSERS=</code> included <code>firefox</code> or <code>all</code>); on macOS the WhiteMatter Firefox configuration profile isn&rsquo;t installed.</td>
+            <td>Windows: re-run the MSI with <code>BROWSERS=all</code> (or include <code>firefox</code>). macOS: push the WhiteMatter Firefox <code>.mobileconfig</code> via MDM and check <strong>System Settings &rarr; General &rarr; Device Management</strong>.</td>
           </tr>
           <tr>
             <td>Policy row present but the add-on is missing in <code>about:addons</code></td>
@@ -147,11 +148,11 @@
       </table></div>
 
       <h3>Safari (macOS) &mdash; no policy page</h3>
-      <p>Safari has no policy surface like <code>chrome://policy</code> / <code>about:policies</code> &mdash; the Quilr Safari extension is delivered by the pkg as an app extension and governed by configuration profiles. Verify in this order:</p>
+      <p>Safari has no policy surface like <code>chrome://policy</code> / <code>about:policies</code> &mdash; the WhiteMatter Safari extension is delivered by the pkg as an app extension and governed by configuration profiles. Verify in this order:</p>
       <ul>
-        <li><strong>Safari &rarr; Settings &rarr; Extensions</strong> &mdash; Quilr is listed and <strong>enabled</strong>, with access allowed for the monitored sites (or &ldquo;All Websites&rdquo;).</li>
-        <li><strong>System Settings &rarr; General &rarr; Device Management</strong> &mdash; the Quilr configuration profiles delivered by your MDM are present. From Terminal: <code>profiles list | grep -i quilr</code></li>
-        <li>If Quilr doesn&rsquo;t appear in Safari&rsquo;s extension list at all, the pkg didn&rsquo;t install (or was removed) &mdash; re-run the pkg from <a href="../Step%203%20-%20Manual%20Installation/index.html">Step&nbsp;3</a>, then quit and reopen Safari.</li>
+        <li><strong>Safari &rarr; Settings &rarr; Extensions</strong> &mdash; WhiteMatter is listed and <strong>enabled</strong>, with access allowed for the monitored sites (or &ldquo;All Websites&rdquo;).</li>
+        <li><strong>System Settings &rarr; General &rarr; Device Management</strong> &mdash; the WhiteMatter configuration profiles delivered by your MDM are present. From Terminal: <code>profiles list | grep -i quilr</code></li>
+        <li>If WhiteMatter doesn&rsquo;t appear in Safari&rsquo;s extension list at all, the pkg didn&rsquo;t install (or was removed) &mdash; re-run the pkg from <a href="../Step%203%20-%20Manual%20Installation/index.html">Step&nbsp;3</a>, then quit and reopen Safari.</li>
       </ul>
 
       <h2>Step 2 · Manifest reachability</h2>
@@ -225,13 +226,13 @@ curl -sI "https://quilr-extensions.quilr.ai/${TENANT_ID}/vanguard.crx" \
       </div>
 
       <h2>Step 6 &middot; File-upload issues &mdash; check the upload log</h2>
-      <p>When a user uploads a file to an AI tool (drag-and-drop into ChatGPT / Claude / Copilot, etc.) but the upload event <strong>never shows up in the Quilr console</strong>, the extension picked the event up locally but the native-agent upload pipe choked. The per-user upload log captures every attempt &mdash; success or failure.</p>
+      <p>When a user uploads a file to an AI tool (drag-and-drop into ChatGPT / Claude / Copilot, etc.) but the upload event <strong>never shows up in the WhiteMatter console</strong>, the extension picked the event up locally but the native-agent upload pipe choked. The per-user upload log captures every attempt &mdash; success or failure.</p>
 
       <div class="table-wrap"><table>
         <thead><tr><th>OS</th><th>Log directory</th></tr></thead>
         <tbody>
           <tr><td>Windows</td><td><code>%APPDATA%\sentinel\logs\</code> &nbsp;<span style="opacity:.7;">(= <code>C:\Users\&lt;USER&gt;\AppData\Roaming\sentinel\logs\</code>)</span></td></tr>
-          <tr><td>macOS</td><td><code>~/Library/Logs/sentinel/</code> &nbsp;<span style="opacity:.7;">(confirm the exact filename with Quilr support if absent)</span></td></tr>
+          <tr><td>macOS</td><td><code>~/Library/Logs/sentinel/</code> &nbsp;<span style="opacity:.7;">(confirm the exact filename with WhiteMatter support if absent)</span></td></tr>
         </tbody>
       </table></div>
 
@@ -271,7 +272,7 @@ Get-ChildItem $dir -File | Sort LastWriteTime -Desc | Select -First 1 |
           <tr>
             <td><code>upload failed: 413 Payload Too Large</code></td>
             <td>File exceeded the tenant&rsquo;s per-upload size cap.</td>
-            <td>Raise the cap in <a data-env-link href="https://app.quilr.ai/en/settings/browser-extension/deployment" target="_blank" rel="noopener">Quilr Console &rarr; Settings &rarr; Browser Extension &rarr; Deployment</a> (DLP &rarr; Limits), or instruct the user to chunk the file. Per-file caps are enforced server-side.</td>
+            <td>Raise the cap in <a data-env-link href="https://app.quilr.ai/en/settings/browser-extension/deployment" target="_blank" rel="noopener">WhiteMatter Console &rarr; Settings &rarr; Browser Extension &rarr; Deployment</a> (DLP &rarr; Limits), or instruct the user to chunk the file. Per-file caps are enforced server-side.</td>
           </tr>
           <tr>
             <td>No matching entry at all for the timestamp the user attempted the upload</td>
@@ -282,7 +283,7 @@ Get-ChildItem $dir -File | Sort LastWriteTime -Desc | Select -First 1 |
       </table></div>
 
             <h2>Step 7 &middot; Deep dive &mdash; inspect the extension service worker</h2>
-      <p>When the symptom doesn&rsquo;t fit any of the above patterns &mdash; everything &ldquo;looks&rdquo; installed but the extension misbehaves quietly &mdash; the next stop is the Quilr extension&rsquo;s own background service worker. It logs every API call, every native-agent ping, and every DLP verdict. The Console tab tells you <em>why</em>; the Network tab tells you <em>where</em>.</p>
+      <p>When the symptom doesn&rsquo;t fit any of the above patterns &mdash; everything &ldquo;looks&rdquo; installed but the extension misbehaves quietly &mdash; the next stop is the WhiteMatter extension&rsquo;s own background service worker. It logs every API call, every native-agent ping, and every DLP verdict. The Console tab tells you <em>why</em>; the Network tab tells you <em>where</em>.</p>
 
       <h3>Opening the service worker DevTools</h3>
       <ol>
@@ -295,7 +296,7 @@ Get-ChildItem $dir -File | Sort LastWriteTime -Desc | Select -First 1 |
       <div class="callout note">
         <span class="ico">&#x1F4A1;</span>
         <div><span class="ct">Three different contexts &mdash; pick the right one</span>
-        The popup, the page&rsquo;s content script, and the background service worker each have a separate Console / Network. Only the <strong>service worker</strong> shows the Quilr&nbsp;&rarr;&nbsp;backplane API traffic and the native-messaging handshake. The popup&rsquo;s DevTools (right-click popup &rarr; Inspect) is useful for auth-status UI bugs only; the page&rsquo;s own DevTools (F12 on the AI site) shows content-script interception of the user&rsquo;s prompts &mdash; not the Quilr API calls.</div>
+        The popup, the page&rsquo;s content script, and the background service worker each have a separate Console / Network. Only the <strong>service worker</strong> shows the WhiteMatter&nbsp;&rarr;&nbsp;backplane API traffic and the native-messaging handshake. The popup&rsquo;s DevTools (right-click popup &rarr; Inspect) is useful for auth-status UI bugs only; the page&rsquo;s own DevTools (F12 on the AI site) shows content-script interception of the user&rsquo;s prompts &mdash; not the WhiteMatter API calls.</div>
       </div>
 
       <h3>Console &mdash; what a healthy startup looks like</h3>
@@ -318,7 +319,7 @@ Get-ChildItem $dir -File | Sort LastWriteTime -Desc | Select -First 1 |
           <tr>
             <td><code>[ERROR] BootstrapService: Persona not found</code></td>
             <td>No auth token in extension storage &mdash; the persona never resolved.</td>
-            <td>Sign the user into the Quilr console in another tab; the extension picks up the cookie on next heartbeat. If it stays missing, the SSO &rarr; <a data-env-link href="https://app.quilr.ai/" target="_blank" rel="noopener">tenant Console</a> handshake is broken (Step&nbsp;1 &amp; allow-list).</td>
+            <td>Sign the user into the WhiteMatter console in another tab; the extension picks up the cookie on next heartbeat. If it stays missing, the SSO &rarr; <a data-env-link href="https://app.quilr.ai/" target="_blank" rel="noopener">tenant Console</a> handshake is broken (Step&nbsp;1 &amp; allow-list).</td>
           </tr>
           <tr>
             <td><code>[ERROR] NativeAgentService: Failed to connect to native host</code></td>
@@ -328,7 +329,7 @@ Get-ChildItem $dir -File | Sort LastWriteTime -Desc | Select -First 1 |
           <tr>
             <td><code>[ERROR] FetchOrgDomains: Missing Persona, No token data available</code></td>
             <td>Same as &ldquo;Persona not found&rdquo; but caught later in the org-domains call &mdash; usually means the persona expired mid-session.</td>
-            <td>Sign in again to the Quilr console; the next heartbeat will refresh the token.</td>
+            <td>Sign in again to the WhiteMatter console; the next heartbeat will refresh the token.</td>
           </tr>
           <tr>
             <td><code>[ERROR] DLPService: Error in DLP service</code> followed by a timeout / 403</td>
@@ -344,7 +345,7 @@ Get-ChildItem $dir -File | Sort LastWriteTime -Desc | Select -First 1 |
       </table></div>
 
       <h3>Network &mdash; the API calls you should see</h3>
-      <p>In the same DevTools window, switch to the <strong>Network</strong> tab. The service worker continues making calls in the background &mdash; you don&rsquo;t need to click anything on the page. Filter by <code>/browser-extension/</code>, <code>/api/</code>, <code>/dlp/</code>, or <code>/playbook-service/</code> to see only the Quilr traffic.</p>
+      <p>In the same DevTools window, switch to the <strong>Network</strong> tab. The service worker continues making calls in the background &mdash; you don&rsquo;t need to click anything on the page. Filter by <code>/browser-extension/</code>, <code>/api/</code>, <code>/dlp/</code>, or <code>/playbook-service/</code> to see only the WhiteMatter traffic.</p>
       <div class="table-wrap"><table>
         <thead><tr><th>Endpoint</th><th>When it fires</th><th>Healthy response</th></tr></thead>
         <tbody>
@@ -362,7 +363,7 @@ Get-ChildItem $dir -File | Sort LastWriteTime -Desc | Select -First 1 |
       <div class="callout note">
         <span class="ico">&#x1F310;</span>
         <div><span class="ct">Host varies by tenant environment</span>
-        The base host on the left of every endpoint comes from the env-config (Quilr Console env &rarr; <code>app.quilr.ai</code> / <code>platform.quilrai.com</code> / <code>secure.quilr.ai</code> / etc.). The DLP endpoint hits the env-specific <code>dlpone.*</code> or <code>dlp-platform.*</code> host. If the Network tab shows the wrong host, the extension hydrated the wrong env &mdash; check the <code>EnvConfig: hydrate</code> log line.</div>
+        The base host on the left of every endpoint comes from the env-config (WhiteMatter Console env &rarr; <code>app.quilr.ai</code> / <code>platform.quilrai.com</code> / <code>secure.quilr.ai</code> / etc.). The DLP endpoint hits the env-specific <code>dlpone.*</code> or <code>dlp-platform.*</code> host. If the Network tab shows the wrong host, the extension hydrated the wrong env &mdash; check the <code>EnvConfig: hydrate</code> log line.</div>
       </div>
 
       <h3>Native-messaging port &mdash; the silent one</h3>

@@ -1,6 +1,6 @@
-# Quilr Browser Extension — ManageEngine Endpoint Central (Windows / MSI)
+# WhiteMatter Browser Extension — ManageEngine Endpoint Central (Windows / MSI)
 
-Deploy the Quilr browser extension to a Windows fleet via ManageEngine Endpoint Central. The flow mirrors the agent — Software Repository entry + MSI properties + "Install MSI Software" Configuration.
+Deploy the WhiteMatter browser extension to a Windows fleet via ManageEngine Endpoint Central. The flow mirrors the agent — Software Repository entry + MSI properties + "Install MSI Software" Configuration.
 
 > **Sister guide:** [ManageEngine Endpoint Central — Windows (MSI)](/deployment/manageengine-msi) for the agent. Same UI, same options; only the artefact + product name differ.
 
@@ -8,9 +8,9 @@ Deploy the Quilr browser extension to a Windows fleet via ManageEngine Endpoint 
 
 ## Prerequisites
 
-Same as the Quilr Endpoint Agent rollout — see [Prerequisites](/prerequisites) for the complete checklist (Endpoint Central admin, target Windows endpoints reachable via the Endpoint Central agent, signed MSI, network egress, …). Browser-extension-specific extras:
+Same as the WhiteMatter Endpoint Agent rollout — see [Prerequisites](/prerequisites) for the complete checklist (Endpoint Central admin, target Windows endpoints reachable via the Endpoint Central agent, signed MSI, network egress, …). Browser-extension-specific extras:
 
-- **Tenant ID** from **Quilr support** (`support@quilr.ai`) — passed to the MSI as `TENANTID=<TENANT-ID>` in the MSI/MSP Properties field.
+- **Tenant ID** from **WhiteMatter support** (`support@quilr.ai`) — passed to the MSI as `TENANTID=<TENANT-ID>` in the MSI/MSP Properties field.
 - Reachability for `quilr-extensions.quilr.ai` (CDN that hosts the MSI).
 
 ---
@@ -29,7 +29,7 @@ Place `Quilr.msi` on the Endpoint Central server's shared location (or upload di
 
 ### Step A. Start a new Windows package
 
-**Software Deployment → Add Package → Add Windows Package** → name: *Quilr Browser Extension*. **Category**: *Security*.
+**Software Deployment → Add Package → Add Windows Package** → name: *WhiteMatter Browser Extension*. **Category**: *Security*.
 
 ### Step B. Locate the installable
 
@@ -45,9 +45,9 @@ Browse to `Quilr.msi`.
 > TENANTID=<TENANT-ID>
 > ```
 >
-> Replace `<TENANT-ID>` with the tenant identifier supplied by **Quilr support** (`support@quilr.ai`). Without it the extension installs but stays idle until reinstalled.
+> Replace `<TENANT-ID>` with the tenant identifier supplied by **WhiteMatter support** (`support@quilr.ai`). Without it the extension installs but stays idle until reinstalled.
 >
-> Add any additional space-separated `PROPERTY=VALUE` pairs in the same field if Quilr support provides further custom MSI properties.
+> Add any additional space-separated `PROPERTY=VALUE` pairs in the same field if WhiteMatter support provides further custom MSI properties.
 
 ### Step D. Save
 
@@ -58,8 +58,8 @@ The package now appears in the Software Repository.
 ## 3. Create the "Install MSI Software" Configuration
 
 1. **Configurations → Add Configuration → Install MSI Software** (Windows).
-2. **Name**: *Install Quilr Browser Extension*.
-3. **Define configuration → MSI Package Name**: select *Quilr Browser Extension* from §2.
+2. **Name**: *Install WhiteMatter Browser Extension*.
+3. **Define configuration → MSI Package Name**: select *WhiteMatter Browser Extension* from §2.
 4. *(Optional)* Scheduler: leave default unless your maintenance window requires otherwise.
 5. **Deployment settings**: run as **System**.
 6. **Define target**: target your `WIN-Quilr-Extension` static / custom group.
@@ -94,14 +94,14 @@ foreach ($key in @(
 }
 ```
 
-Replace `<TENANT-ID>` with the tenant identifier supplied by **Quilr support** (`support@quilr.ai`). What each key in the JSON does:
+Replace `<TENANT-ID>` with the tenant identifier supplied by **WhiteMatter support** (`support@quilr.ai`). What each key in the JSON does:
 
 | Key | Effect |
 |---|---|
 | `installation_mode: "force_installed"` | Installs the extension silently; users cannot disable or remove it. |
 | `override_update_url: true` | Forces the browser to fetch the extension from `update_url`, not the public web store. |
 | `toolbar_state: "force_shown"` | Pins the Quilr icon to the browser toolbar. |
-| `update_url` | Tenant-specific Quilr CDN manifest that ships extension updates. |
+| `update_url` | Tenant-specific WhiteMatter CDN manifest that ships extension updates. |
 
 Wrap that script in a Custom Script Configuration in Endpoint Central and target the same group.
 
@@ -121,7 +121,7 @@ Get-ItemProperty `
 
 Look for a value containing `piajhjohgigijkddhdpgbjdcfhmammbk`.
 
-Open `edge://extensions` and `chrome://extensions` — Quilr extension present + enabled + *Installed by your organization*. Then send a short test prompt on `https://claude.ai/` — within ~2 seconds the **event should appear in the Quilr console**.
+Open `edge://extensions` and `chrome://extensions` — WhiteMatter extension present + enabled + *Installed by your organization*. Then send a short test prompt on `https://claude.ai/` — within ~2 seconds the **event should appear in the WhiteMatter console**.
 
 > The browser extension does **not** perform TLS interception — it captures prompts and file uploads at the **DOM level** via the WebExtensions API. The "Issuer = Quilr" cert-chain check from [Validate Installation §4](/reference/validate-installation) applies to the **Endpoint Agent's WinDivert driver**, not the extension.
 
@@ -129,4 +129,4 @@ Open `edge://extensions` and `chrome://extensions` — Quilr extension present +
 
 ## 6. Rollback
 
-Create an **Uninstall MSI Software** Configuration targeting the same group and pointing at the *Quilr Browser Extension* package, OR delete the registry policy values you created in §4. See [ManageEngine Endpoint Central — Windows (MSI)](/deployment/manageengine-msi) §11 for the equivalent agent rollback.
+Create an **Uninstall MSI Software** Configuration targeting the same group and pointing at the *WhiteMatter Browser Extension* package, OR delete the registry policy values you created in §4. See [ManageEngine Endpoint Central — Windows (MSI)](/deployment/manageengine-msi) §11 for the equivalent agent rollback.

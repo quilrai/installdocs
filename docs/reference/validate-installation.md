@@ -3,9 +3,9 @@ title: Validate Installation
 description: Post-install validation steps for Windows + macOS. MDM-agnostic.
 ---
 
-# Quilr Endpoint Agent — Validate Installation (Windows + macOS)
+# WhiteMatter Endpoint Agent — Validate Installation (Windows + macOS)
 
-**Subtitle:** Post-install validation steps for the Quilr Endpoint Agent. Works regardless of how the agent was deployed (Intune, Jamf, Kandji, ManageEngine, or manual).
+**Subtitle:** Post-install validation steps for the WhiteMatter Endpoint Agent. Works regardless of how the agent was deployed (Intune, Jamf, Kandji, ManageEngine, or manual).
 
 **Version:** 2026.05.11
 
@@ -13,7 +13,7 @@ description: Post-install validation steps for Windows + macOS. MDM-agnostic.
 
 ## 1. Overview
 
-Use this page after a fresh install — or any time you need to confirm an existing endpoint is still healthy — to answer one question: **is the Quilr Endpoint Agent installed correctly and actively intercepting traffic?**
+Use this page after a fresh install — or any time you need to confirm an existing endpoint is still healthy — to answer one question: **is the WhiteMatter Endpoint Agent installed correctly and actively intercepting traffic?**
 
 Each platform section walks through the same five concerns in order. A check that fails halts the chain; jump to the linked Troubleshooting Guide section for the fix, then come back and re-run from that step.
 
@@ -34,7 +34,7 @@ Section 4 then runs a **functional test** with `claude.ai` that proves the agent
 > Run every command in **Terminal** with `sudo` rights (or `sudo -i` for the SQLite read).
 
 
-**Where the macOS agent writes its logs** — consult these whenever a check below fails. The Quilr "internal" naming for binaries / logs still uses the `Sentinel` family; the user-facing surface uses `QuilrAI`.
+**Where the macOS agent writes its logs** — consult these whenever a check below fails. The WhiteMatter "internal" naming for binaries / logs still uses the `Sentinel` family; the user-facing surface uses `QuilrAI`.
 
 | Source | Path | What to look for |
 |---|---|---|
@@ -64,7 +64,7 @@ ls -ld /Applications/QuilrAIProxy.app && \
 
 | Log | Path |
 |---|---|
-| Quilr installer trace | `/Library/Application Support/Sentinel/logs/sentinel-endpoint.log` |
+| WhiteMatter installer trace | `/Library/Application Support/Sentinel/logs/sentinel-endpoint.log` |
 | macOS installer subsystem | `/var/log/install.log` *(filter with `grep -i quilr` or `grep -i Sentinel`)* |
 
 ```bash
@@ -214,7 +214,7 @@ If the service exists but isn't running:
 Get-Service -Name <ServiceName> | Start-Service
 ```
 
-**If it fails:** confirm the MSI postinstall completed; check the agent log under `%PROGRAMDATA%\quilrai\logs\` (confirm the exact path with Quilr support).
+**If it fails:** confirm the MSI postinstall completed; check the agent log under `%PROGRAMDATA%\quilrai\logs\` (confirm the exact path with WhiteMatter support).
 
 ### Step 3. WinDivert filter driver is registered
 
@@ -297,7 +297,7 @@ Then, in **Firefox** or a native HTTPS client (not Edge/Chrome — those use the
 
 ### TLS-chain check (both platforms)
 
-The leaf cert presented at `claude.ai` should be Anthropic's real CA, **not** your corporate SWG's CA — otherwise an upstream proxy is decrypting Claude before the Quilr agent sees it, and interception will fail.
+The leaf cert presented at `claude.ai` should be Anthropic's real CA, **not** your corporate SWG's CA — otherwise an upstream proxy is decrypting Claude before the WhiteMatter agent sees it, and interception will fail.
 
 ```bash
 # macOS / Linux
@@ -319,7 +319,7 @@ $ssl.RemoteCertificate.Issuer
 
 ### Quilr CA in the cert chain (browser check — both platforms)
 
-This is the **strongest** end-to-end proof that the agent is actively intercepting AI traffic: when Quilr is in the path, the leaf certificate the browser sees for a monitored host is **signed by the Quilr CA**, not by the site's real CA. Use `claude.ai` as the example — the same procedure works for any monitored host in the *URL Exception List — AI Apps*.
+This is the **strongest** end-to-end proof that the agent is actively intercepting AI traffic: when WhiteMatter is in the path, the leaf certificate the browser sees for a monitored host is **signed by the Quilr CA**, not by the site's real CA. Use `claude.ai` as the example — the same procedure works for any monitored host in the *URL Exception List — AI Apps*.
 
 1. Open **https://claude.ai/** in your default browser.
 2. Click the **padlock icon** to the left of the URL bar.
@@ -331,10 +331,10 @@ This is the **strongest** end-to-end proof that the agent is actively intercepti
 
 **Expected:** the issuer is the **Quilr CA** — the friendly name contains *Quilr* and the chain matches the `quilr-root-ca` + `quilr-ea-intermediate-ca` you installed earlier.
 
-**If the issuer is Anthropic's real CA** (e.g. *WE1*, *Let's Encrypt*, *DigiCert*, *Cloudflare Inc ECC CA-3*), the Quilr agent is **not** intercepting that browser flow. Common causes:
+**If the issuer is Anthropic's real CA** (e.g. *WE1*, *Let's Encrypt*, *DigiCert*, *Cloudflare Inc ECC CA-3*), the WhiteMatter agent is **not** intercepting that browser flow. Common causes:
 
 - Agent process not running — see §2 Step 2 (macOS) or §3 Step 2 (Windows).
-- The browser is excluded from the agent on this platform (Edge/Chrome on Windows are intentionally excluded — they use the Quilr browser extension instead; see the separate [Browser Extension — Validate Installation](/extension/validate-installation) page).
+- The browser is excluded from the agent on this platform (Edge/Chrome on Windows are intentionally excluded — they use the WhiteMatter browser extension instead; see the separate [Browser Extension — Validate Installation](/extension/validate-installation) page).
 - The browser is using a separate proxy / VPN that bypasses the agent.
 
 **Command-line equivalent (macOS / Linux):**
@@ -367,7 +367,7 @@ The installation is **healthy** when every check below returns `OK`:
 | macOS | Network Extension `[activated enabled]` | §2 Step 4 |
 | macOS | FDA granted via MDM (`allowed=1, auth_reason=4`) | §2 Step 5 |
 | macOS | Claude.ai prompt produces `flow.matched` log | §4 |
-| Windows | Quilr MSI in registry uninstall keys + `%ProgramFiles%\QuilrAI` folder on disk | §3 Step 1 |
+| Windows | WhiteMatter MSI in registry uninstall keys + `%ProgramFiles%\QuilrAI` folder on disk | §3 Step 1 |
 | Windows | QuilrAIProxy/Quilr Windows service `Running` | §3 Step 2 |
 | Windows | WinDivert filters registered | §3 Step 3 |
 | Windows | Quilr root in **Root** store + intermediate in **CA** | §3 Step 4 |
@@ -385,10 +385,10 @@ Open a support ticket at **`support@quilr.ai`** with the items below if validati
 - The output of the **macOS one-liner** in §2 (or Windows one-liner in §3).
 - The output of the **Claude.ai functional test** in §4.
 - For macOS: a copy of `/Library/Logs/quilrai/agent.stderr.log` and `proxy.log.YYYY-MM-DD` for the day of the test.
-- For Windows: the most recent file under `%PROGRAMDATA%\quilrai\logs\` (confirm the exact directory with Quilr support) and the **Intune Management Extension** log at `%ProgramData%\Microsoft\IntuneManagementExtension\Logs\IntuneManagementExtension.log`.
+- For Windows: the most recent file under `%PROGRAMDATA%\quilrai\logs\` (confirm the exact directory with WhiteMatter support) and the **Intune Management Extension** log at `%ProgramData%\Microsoft\IntuneManagementExtension\Logs\IntuneManagementExtension.log`.
 - Tenant UUID, device hostname, agent version, time window of the failed test, OS version.
 - Whether an upstream SWG (Netskope, Zscaler, Cisco Umbrella, Palo Alto, Forcepoint, …) is in the network path.
 
 ---
 
-*End of document — Quilr AI | Adapt AI Securely*
+*End of document — WhiteMatter | Adapt AI Securely*

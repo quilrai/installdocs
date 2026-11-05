@@ -3,9 +3,9 @@ title: Kandji — macOS
 description: MDM via Kandji. Library Items + Custom Apps.
 ---
 
-# Quilr Endpoint Agent — Kandji Deployment Guide
+# WhiteMatter Endpoint Agent — Kandji Deployment Guide
 
-**Subtitle:** Mass deployment of the Quilr Endpoint Agent CA trust chain, configuration profiles, and installer package via Kandji on macOS.
+**Subtitle:** Mass deployment of the WhiteMatter Endpoint Agent CA trust chain, configuration profiles, and installer package via Kandji on macOS.
 
 **Version:** 2026.05.11
 
@@ -13,7 +13,7 @@ description: MDM via Kandji. Library Items + Custom Apps.
 
 ## 1. Overview
 
-This guide walks a Kandji administrator through deploying the **Quilr Endpoint Agent** install bundle to a fleet of macOS devices. The bundle ships the Quilr CA trust chain, two `.mobileconfig` profiles (Full Disk Access PPPC and Network Extension approval), and the installer package.
+This guide walks a Kandji administrator through deploying the **WhiteMatter Endpoint Agent** install bundle to a fleet of macOS devices. The bundle ships the Quilr CA trust chain, two `.mobileconfig` profiles (Full Disk Access PPPC and Network Extension approval), and the installer package.
 
 **The deployment order is strict and intentional: CA certificates first, then both configuration profiles, then the installer package.** Following this order means the agent finds a populated trust store and pre-approved system permissions on its very first launch — no failed TLS handshake, no end-user prompt, no blocked network extension dialog.
 
@@ -48,10 +48,10 @@ This guide walks a Kandji administrator through deploying the **Quilr Endpoint A
 |---|---|
 | Kandji tenant | Administrator (or Library + Blueprint editor) role |
 | MDM enrollment | Target Macs enrolled via Automated Device Enrollment (ADE/DEP) or User Enrollment with **User-Approved MDM** (`profiles status -type enrollment`) |
-| Liftoff / Blueprint baseline | A Blueprint exists for the target fleet — e.g. *macOS — Production* or *macOS — Quilr Pilot* |
+| Liftoff / Blueprint baseline | A Blueprint exists for the target fleet — e.g. *macOS — Production* or *macOS — WhiteMatter Pilot* |
 | Signed installer | `quilr-endpoint-agent-installer.pkg` is signed with a Developer ID Installer certificate and notarized |
-| Network egress | Endpoints can reach the Quilr distribution host and the Quilr control plane (see *URL Exception List — AI Apps* / *Non-AI Apps* companion guides for required SSL-bypass entries) |
-| Bundle download | Latest bundle obtained from Quilr support (Part 1) |
+| Network egress | Endpoints can reach the WhiteMatter distribution host and the WhiteMatter control plane (see *URL Exception List — AI Apps* / *Non-AI Apps* companion guides for required SSL-bypass entries) |
+| Bundle download | Latest bundle obtained from WhiteMatter support (Part 1) |
 | Profile signing | Upload each `.mobileconfig` as-is — do **not** re-sign before upload (Kandji re-signs on push) |
 
 ---
@@ -60,11 +60,11 @@ This guide walks a Kandji administrator through deploying the **Quilr Endpoint A
 
 ### Step A. Obtain the bundle
 
-The install bundle zip is distributed by **Quilr support**. Contact your Quilr support representative to request the download URL and any associated checksum for the current production build.
+The install bundle zip is distributed by **WhiteMatter support**. Contact your WhiteMatter support representative to request the download URL and any associated checksum for the current production build.
 
 1. **Download the bundle** from [`https://quilr-extensions.quilr.ai/endpoint-agent/prod/mac/installer/quilr-endpoint-agent-install-bundle.zip`](https://quilr-extensions.quilr.ai/endpoint-agent/prod/mac/installer/quilr-endpoint-agent-install-bundle.zip).
 2. Download the zip on the workstation you use to administer Kandji.
-3. Verify the checksum provided by Quilr before extracting.
+3. Verify the checksum provided by WhiteMatter before extracting.
 4. Unzip into a clean staging directory.
 
 ### Step B. Bundle contents
@@ -85,7 +85,7 @@ quilr-endpoint-agent-install-bundle/
 | `certs/quilr-ea-intermediate-ca.crt` | Quilr intermediate CA — chains to the root | **Certificate** Library Item | 1 |
 | `quilr-endpoint-agent_FullDiskAccess.mobileconfig` | Pre-grants Full Disk Access + App Management (PPPC) | **Custom Profile** | 2 |
 | `quilr-endpoint-agent-nw-extension.mobileconfig` | Pre-approves the Network Extension / content filter | **Custom Profile** | 2 |
-| `quilr-endpoint-agent-installer.pkg` | Installs the Quilr Endpoint Agent to `/Applications` | **Custom App** (with Audit & Enforce) | 3 |
+| `quilr-endpoint-agent-installer.pkg` | Installs the WhiteMatter Endpoint Agent to `/Applications` | **Custom App** (with Audit & Enforce) | 3 |
 
 > **Order of operations:** Always deploy in this sequence — **(1) Certificate Library Items (Part 2), (2) both Custom Profiles (Part 3), (3) Custom App (Part 4).** When the .pkg lands last, the agent inherits a populated trust store and every required system approval on its very first launch — no failed TLS handshakes, no user prompts, no blocked extensions.
 
@@ -93,7 +93,7 @@ quilr-endpoint-agent-install-bundle/
 
 ## 4. Part 2 — Deploy CA Certificates to the System Trust Store
 
-This is the **first** thing to add to the Blueprint. The Quilr Endpoint Agent validates TLS against Quilr's internal CA, so the trust store must be populated before the agent runs. Push the root and intermediate CAs to the **System keychain** via Kandji so every managed Mac trusts them automatically. **MDM-delivered roots are trusted system-wide without user prompts** — this is the key advantage over a manual `security add-trusted-cert`.
+This is the **first** thing to add to the Blueprint. The WhiteMatter Endpoint Agent validates TLS against Quilr's internal CA, so the trust store must be populated before the agent runs. Push the root and intermediate CAs to the **System keychain** via Kandji so every managed Mac trusts them automatically. **MDM-delivered roots are trusted system-wide without user prompts** — this is the key advantage over a manual `security add-trusted-cert`.
 
 ### Step A. Add each certificate as a Library Item
 
@@ -101,11 +101,11 @@ This is the **first** thing to add to the Blueprint. The Quilr Endpoint Agent va
 2. **Name**: *Quilr Root CA* (one Library Item per cert keeps assignments clean).
 3. **Certificate file**: upload `quilr-root-ca.crt`.
 4. **Allow export from keychain**: *off* for the root.
-5. **Assignment**: add to the *macOS — Quilr Pilot* Blueprint (and any other Blueprints in scope).
+5. **Assignment**: add to the *macOS — WhiteMatter Pilot* Blueprint (and any other Blueprints in scope).
 6. **Save**.
 7. Repeat Steps 1–6 for `quilr-ea-intermediate-ca.crt` — Library Item name *Quilr Intermediate CA*.
 
-> Both certificates **must** land before any other Quilr Library Item is enabled — if the intermediate is missing, the agent's first TLS handshake against the Quilr control plane fails with *unknown authority*.
+> Both certificates **must** land before any other WhiteMatter Library Item is enabled — if the intermediate is missing, the agent's first TLS handshake against the WhiteMatter control plane fails with *unknown authority*.
 
 ### Step B. Verify the certs landed and are trusted
 
@@ -125,7 +125,7 @@ In the Kandji console, you can also confirm at **Devices → *device* → Librar
 
 ## 5. Part 3 — Deploy the Configuration Profiles
 
-Add each `.mobileconfig` from the bundle root as a **Custom Profile** Library Item **after** the certs have landed and **before** the installer Custom App. Upload them as **two separate** Custom Profiles — do not merge their payloads, since each one is signed by Quilr and corresponds to a distinct system control surface.
+Add each `.mobileconfig` from the bundle root as a **Custom Profile** Library Item **after** the certs have landed and **before** the installer Custom App. Upload them as **two separate** Custom Profiles — do not merge their payloads, since each one is signed by WhiteMatter and corresponds to a distinct system control surface.
 
 ### Step A. General workflow for every `.mobileconfig`
 
@@ -135,7 +135,7 @@ For each `.mobileconfig`, repeat the following:
 2. **Profile**: drag in the `.mobileconfig` and upload. Kandji parses the payload and shows the embedded entries.
 3. **Name**: as listed in the table in Step B.
 4. **Run on**: *macOS*.
-5. **Assignment**: add to the *macOS — Quilr Pilot* Blueprint.
+5. **Assignment**: add to the *macOS — WhiteMatter Pilot* Blueprint.
 6. **Save**. Kandji signs and pushes the profile on the next device check-in.
 
 ### Step B. Profile-by-profile reference
@@ -154,7 +154,7 @@ The Full Disk Access mobileconfig contains a `com.apple.TCC.configuration-profil
 | `kTCCServiceSystemPolicyAllFiles` (Full Disk Access) | Read the TCC database, read protected directories during file-upload extraction |
 | `kTCCServiceAppManagement` | Manage the installed agent binaries on macOS 14+ where App Management is gated |
 
-Both entries are matched against the agent's CodeRequirement (Team ID + bundle ID + designated requirement). If Quilr re-signs with a new Team ID, the profile must be re-issued.
+Both entries are matched against the agent's CodeRequirement (Team ID + bundle ID + designated requirement). If WhiteMatter re-signs with a new Team ID, the profile must be re-issued.
 
 ### Step D. Confirm both profiles are scoped on a pilot device
 
@@ -181,9 +181,9 @@ Add the package **last** as a Custom App Library Item with Audit & Enforce enabl
 
 ### Step A. Pre-install — write the tenant config
 
-Before the `.pkg` runs, the agent's postinstall reads `/tmp/quilr-endpoint-agent.json` to enroll into the correct Quilr tenant. In Kandji, paste this into the Custom App's **Pre-install script** field (Step C below documents the same field for environment cleanup — you can combine both scripts).
+Before the `.pkg` runs, the agent's postinstall reads `/tmp/quilr-endpoint-agent.json` to enroll into the correct WhiteMatter tenant. In Kandji, paste this into the Custom App's **Pre-install script** field (Step C below documents the same field for environment cleanup — you can combine both scripts).
 
-Replace `<TENANT-ID>` with the tenant identifier supplied by **Quilr support** (`support@quilr.ai`).
+Replace `<TENANT-ID>` with the tenant identifier supplied by **WhiteMatter support** (`support@quilr.ai`).
 
 ```bash
 #!/bin/bash
@@ -196,7 +196,7 @@ exit 0
 ### Step B. Add the Custom App
 
 1. **Library → Add Library Item → search "Custom App" → Add**.
-2. **Name**: *Quilr Endpoint Agent*.
+2. **Name**: *WhiteMatter Endpoint Agent*.
 3. **Installer**: upload `quilr-endpoint-agent-installer.pkg`. Kandji uploads it to its hosted CDN.
 4. **Restart**: *None required*.
 5. **Run on**: *macOS*.
@@ -252,7 +252,7 @@ exit 0
 
 ### Step C. Assign and release
 
-1. **Assignment**: add the Custom App to the *macOS — Quilr Pilot* Blueprint.
+1. **Assignment**: add the Custom App to the *macOS — WhiteMatter Pilot* Blueprint.
 2. **Save**. Kandji queues the install on the next check-in for every device in the Blueprint.
 3. **Library Item → Status** tab shows install progress per device (Installed / Failed / Pending / Re-installing).
 
@@ -270,7 +270,7 @@ exit 0
 | Root CA file | `certs/quilr-root-ca.crt` |
 | Intermediate CA file | `certs/quilr-ea-intermediate-ca.crt` |
 | Bundle download URL | [`https://quilr-extensions.quilr.ai/endpoint-agent/prod/mac/installer/quilr-endpoint-agent-install-bundle.zip`](https://quilr-extensions.quilr.ai/endpoint-agent/prod/mac/installer/quilr-endpoint-agent-install-bundle.zip) |
-| Kandji Blueprint (suggested) | *macOS — Quilr Pilot* (promote to *macOS — Production* after validation) |
+| Kandji Blueprint (suggested) | *macOS — WhiteMatter Pilot* (promote to *macOS — Production* after validation) |
 | Sample tenant ID | `t-7f2c9a18-b3e4` |
 | Sample subscriber ID | `sub-19adf6e1` |
 
@@ -321,7 +321,7 @@ sudo log stream --predicate 'subsystem == "ai.quilr.endpoint"' --info
 
 **Audit & Enforce status in Kandji:**
 
-In the console, open *Library → Quilr Endpoint Agent → Status* and confirm every device shows *Installed* (green). Devices that fail audit appear as *Remediation Pending* and Kandji will re-run the install automatically.
+In the console, open *Library → WhiteMatter Endpoint Agent → Status* and confirm every device shows *Installed* (green). Devices that fail audit appear as *Remediation Pending* and Kandji will re-run the install automatically.
 
 ---
 
@@ -331,13 +331,13 @@ In the console, open *Library → Quilr Endpoint Agent → Status* and confirm e
 |---|---|---|
 | `tls: x509: certificate signed by unknown authority` in the agent log | Only one of the two CA Library Items was installed (root or intermediate missing) | Confirm both Certificate Library Items are in the Blueprint and show *Installed* on the device. Re-issue if missing. |
 | Network Extension stuck at `[activated waiting for user]` | SystemExtensions payload missing or wrong Team / bundle ID in the mobileconfig | Re-validate the Network Extension Custom Profile (Step 5.B). The bundle ID must match the binary inside `QuilrEndpointAgent.app/Contents/PlugIns/`. |
-| FDA prompt is shown to the user on first launch | PPPC profile not installed, or CodeRequirement does not match a re-signed binary | Confirm the FDA Custom Profile is *Installed*; re-sync. If the binary was re-signed by Quilr, request a refreshed PPPC bundle. |
+| FDA prompt is shown to the user on first launch | PPPC profile not installed, or CodeRequirement does not match a re-signed binary | Confirm the FDA Custom Profile is *Installed*; re-sync. If the binary was re-signed by WhiteMatter, request a refreshed PPPC bundle. |
 | Browser shows "Cannot verify identity" for a monitored host (e.g. `chatgpt.com`) | Upstream SWG (Netskope / Zscaler / etc.) is decrypting the same host | Add the host to the SWG's SSL-bypass list — see the *URL Exception List — AI Apps* (or *Non-AI Apps*) companion guide. |
 | Custom App stuck at "Pending" in Kandji | Device hasn't checked in since the Library Item was added | Open the **Kandji menu-bar app** on the device → *Check In Now*, or wait for the next 15-minute scheduled check-in. |
 | Audit & Enforce repeatedly re-installing the agent | Audit script returning non-zero — version drift or daemon not loaded | Inspect Kandji's audit output (per-device run history in the console). Fix the underlying cause (e.g. a user manually killed the daemon). |
 | Daemon not running on a device that reports *Installed* | Postinstall script didn't kickstart the LaunchDaemon | Run `sudo launchctl kickstart -k system/ai.quilr.sentinel` manually; add the post-install script in §6.B if not already present. |
 
-For deeper diagnostics, see the *Quilr Endpoint Agent Troubleshooting Guide* and the `logsamples/` folder.
+For deeper diagnostics, see the *WhiteMatter Endpoint Agent Troubleshooting Guide* and the `logsamples/` folder.
 
 ---
 
@@ -345,7 +345,7 @@ For deeper diagnostics, see the *Quilr Endpoint Agent Troubleshooting Guide* and
 
 Kandji rollback is cleaner than Jamf's because Library Items are removed from the device the moment they leave the Blueprint — no separate uninstall policy required.
 
-1. **Remove the Custom App from the Blueprint first.** Library → *Quilr Endpoint Agent* → Assignment → remove the Blueprint → **Save**. Kandji will not run the postinstall on next check-in, but the existing install remains.
+1. **Remove the Custom App from the Blueprint first.** Library → *WhiteMatter Endpoint Agent* → Assignment → remove the Blueprint → **Save**. Kandji will not run the postinstall on next check-in, but the existing install remains.
 2. *(Optional)* Push a one-shot **Custom Script** Library Item that runs the uninstall — paste the contents of §9 of the *Troubleshooting Guide*'s **Clean Uninstall** block. Assign to the Blueprint, wait for execution, then remove the script.
 3. **Unscope both Custom Profiles** (FDA + Network Extension). Kandji removes them on next check-in, which also drops the PPPC entries from `TCC.db` and deactivates the system extension.
 4. **Unscope both Certificate Library Items.** Kandji removes the CAs from the System keychain.
@@ -360,11 +360,11 @@ Kandji rollback is cleaner than Jamf's because Library Items are removed from th
 
 | Step | Action | Where in Kandji |
 |---|---|---|
-| 1 | Obtain install bundle zip | Request URL from Quilr support |
+| 1 | Obtain install bundle zip | Request URL from WhiteMatter support |
 | 2 | Add both Certificate Library Items (deploy **first**) | Library → Add → *Certificate* (×2) |
 | 3 | Add both Custom Profiles — FDA PPPC + Network Extension (deploy **second**) | Library → Add → *Custom Profile* (×2) |
 | 4 | Add the installer .pkg as a Custom App with Audit & Enforce (deploy **last**) | Library → Add → *Custom App* |
-| 5 | Assign all five Library Items to the *macOS — Quilr Pilot* Blueprint | Each Library Item → Assignment tab |
+| 5 | Assign all five Library Items to the *macOS — WhiteMatter Pilot* Blueprint | Each Library Item → Assignment tab |
 | 6 | Validate certs → profiles → agent on a target Mac | `profiles list`, `tccutil`, `systemextensionsctl`, `openssl s_client` |
 | 7 | Promote the Blueprint to production rings | Devices → reassign target devices to *macOS — Production* |
 
@@ -389,8 +389,8 @@ Every step above is grounded in the official Kandji support documentation. The U
 | §10 Rollback — moving devices between Blueprints | [Move a Device to a Different Blueprint](https://support.kandji.io/kb/move-a-device-to-a-different-blueprint) |
 | Real-world reference deployments (third-party agents — same pattern as this guide) | [Deploy CrowdStrike as a Custom App](https://support.kandji.io/kb/deploying-crowdstrike-as-a-custom-app) · [Deploy Bitdefender Endpoint Security Tool as a Custom App](https://support.kandji.io/kb/deploying-bitdefender-endpoint-security-tool-as-a-custom-app) |
 
-> **Pattern reuse.** The CrowdStrike and Bitdefender deployment guides above are the closest published parallels to this Quilr Endpoint Agent deployment — both ship a CA chain + PPPC + System Extension + pkg with an audit script. If anything in this guide is ambiguous, those two Kandji-authored guides describe the same operational pattern with a different vendor's payload.
+> **Pattern reuse.** The CrowdStrike and Bitdefender deployment guides above are the closest published parallels to this WhiteMatter Endpoint Agent deployment — both ship a CA chain + PPPC + System Extension + pkg with an audit script. If anything in this guide is ambiguous, those two Kandji-authored guides describe the same operational pattern with a different vendor's payload.
 
 ---
 
-*End of document — Quilr AI | Adapt AI Securely*
+*End of document — WhiteMatter | Adapt AI Securely*

@@ -1,6 +1,6 @@
-# Quilr Browser Extension — macOS Manual Install
+# WhiteMatter Browser Extension — macOS Manual Install
 
-Install the Quilr browser extension on a single Mac without MDM — useful for pilots, technician workstations, and one-off rollouts. Same three artefacts as every macOS guide; install them in Terminal as the admin user.
+Install the WhiteMatter browser extension on a single Mac without MDM — useful for pilots, technician workstations, and one-off rollouts. Same three artefacts as every macOS guide; install them in Terminal as the admin user.
 
 > **Sister guide:** [macOS Manual Install](/deployment/macos-manual) for the agent. The `installer -pkg` + `profiles install` Terminal patterns are identical.
 
@@ -8,10 +8,10 @@ Install the Quilr browser extension on a single Mac without MDM — useful for p
 
 ## Prerequisites
 
-Same as the Quilr Endpoint Agent rollout — see [Prerequisites](/prerequisites) for the complete checklist. Browser-extension-specific extras:
+Same as the WhiteMatter Endpoint Agent rollout — see [Prerequisites](/prerequisites) for the complete checklist. Browser-extension-specific extras:
 
-- **Tenant ID** from **Quilr support** (`support@quilr.ai`) — used in the macOS pkg URL.
-- Access to the **Quilr platform** at `https://app.quilr.ai/` (Settings → Browser Extension → Deployment) to fetch the tenant `.mobileconfig`.
+- **Tenant ID** from **WhiteMatter support** (`support@quilr.ai`) — used in the macOS pkg URL.
+- Access to the **WhiteMatter platform** at `https://app.quilr.ai/` (Settings → Browser Extension → Deployment) to fetch the tenant `.mobileconfig`.
 - Reachability for `quilr-extensions.quilr.ai` (serves the pkg + the public File-Access mobileconfig).
 - Admin (sudo) rights on the target Mac.
 
@@ -28,7 +28,7 @@ curl -fsSL -o ~/Downloads/quilr-installer-mac.pkg \
   "https://quilr-extensions.quilr.ai/${TENANT_ID}/browser-util/quilr-installer-mac.pkg"
 ```
 
-### 1.2 Tenant-specific `.mobileconfig` (Quilr console)
+### 1.2 Tenant-specific `.mobileconfig` (WhiteMatter console)
 
 Sign in to `https://app.quilr.ai/` → **Settings → Browser Extension → Deployment → MDM** → **OS** = *macOS*, **MDM solution** = *Manual / no MDM* → download the tenant-specific `.mobileconfig` into `~/Downloads/`.
 
@@ -77,9 +77,9 @@ sudo sqlite3 "/Library/Application Support/com.apple.TCC/TCC.db" \
    where service='kTCCServiceSystemPolicyAllFiles' and client like '%quilr%';"
 ```
 
-Open the browser's extensions page (`chrome://extensions`, `edge://extensions`, Safari → Settings → Extensions) — Quilr extension must be **present and enabled**. *Note: without an MDM, the extension won't show "Installed by your organization"; that's expected for a manual install.*
+Open the browser's extensions page (`chrome://extensions`, `edge://extensions`, Safari → Settings → Extensions) — WhiteMatter extension must be **present and enabled**. *Note: without an MDM, the extension won't show "Installed by your organization"; that's expected for a manual install.*
 
-Then send a short test prompt on `https://claude.ai/` — within ~2 seconds the **event should appear in the Quilr console**.
+Then send a short test prompt on `https://claude.ai/` — within ~2 seconds the **event should appear in the WhiteMatter console**.
 
 > The browser extension does **not** perform TLS interception — it captures prompts and file uploads at the **DOM level** via the WebExtensions API. The "Issuer = Quilr" cert-chain check from [Validate Installation §4](/reference/validate-installation) applies to the **Endpoint Agent**, not the extension.
 

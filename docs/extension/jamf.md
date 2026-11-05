@@ -1,6 +1,6 @@
-# Quilr Browser Extension — Jamf Pro (macOS)
+# WhiteMatter Browser Extension — Jamf Pro (macOS)
 
-Deploy the Quilr browser extension to a macOS fleet via Jamf Pro. The patterns mirror the agent rollout — Configuration Profiles + Policy with a Package payload.
+Deploy the WhiteMatter browser extension to a macOS fleet via Jamf Pro. The patterns mirror the agent rollout — Configuration Profiles + Policy with a Package payload.
 
 > **Sister guide:** [Jamf Pro — macOS](/deployment/jamf) for the agent. Same MDM, same scoping, same flow — just the artefacts differ.
 
@@ -8,10 +8,10 @@ Deploy the Quilr browser extension to a macOS fleet via Jamf Pro. The patterns m
 
 ## Prerequisites
 
-Same as the Quilr Endpoint Agent rollout — see [Prerequisites](/prerequisites) for the complete checklist (Jamf admin, User-Approved MDM enrollment, signed packages, network egress, etc.). Browser-extension-specific extras:
+Same as the WhiteMatter Endpoint Agent rollout — see [Prerequisites](/prerequisites) for the complete checklist (Jamf admin, User-Approved MDM enrollment, signed packages, network egress, etc.). Browser-extension-specific extras:
 
-- **Tenant ID** from **Quilr support** (`support@quilr.ai`) — pre-baked into the tenant artefacts you download from the Quilr console.
-- Access to the **Quilr platform** at `https://app.quilr.ai/` (Settings → Browser Extension → Deployment).
+- **Tenant ID** from **WhiteMatter support** (`support@quilr.ai`) — pre-baked into the tenant artefacts you download from the WhiteMatter console.
+- Access to the **WhiteMatter platform** at `https://app.quilr.ai/` (Settings → Browser Extension → Deployment).
 - Reachability for `quilr-extensions.quilr.ai` (serves the public File-Access mobileconfig).
 
 ---
@@ -24,9 +24,9 @@ Same as the Quilr Endpoint Agent rollout — see [Prerequisites](/prerequisites)
 |---|---|
 | Pkg installer | `https://quilr-extensions.quilr.ai/<TENANT-ID>/browser-util/quilr-installer-mac.pkg` |
 
-Replace `<TENANT-ID>` with the tenant identifier supplied by **Quilr support** (`support@quilr.ai`).
+Replace `<TENANT-ID>` with the tenant identifier supplied by **WhiteMatter support** (`support@quilr.ai`).
 
-### 1.2 Tenant-specific `.mobileconfig` (Quilr console)
+### 1.2 Tenant-specific `.mobileconfig` (WhiteMatter console)
 
 1. Sign in to **`https://app.quilr.ai/`**.
 2. **Settings → Browser Extension → Deployment → MDM**.
@@ -59,11 +59,11 @@ For each profile:
 
 1. **Settings → Computer Management → Packages → New**.
 2. Upload `quilr-installer-mac.pkg` to your distribution point.
-3. **Display name**: *Quilr Browser Extension*. **Category**: *Endpoint Security*.
+3. **Display name**: *WhiteMatter Browser Extension*. **Category**: *Endpoint Security*.
 
 ### Step C. Build the install Policy
 
-1. **Computers → Policies → New → Display name**: *Install Quilr Browser Extension*.
+1. **Computers → Policies → New → Display name**: *Install WhiteMatter Browser Extension*.
 2. **General → Trigger**: *Recurring check-in*. **Frequency**: *Once per computer*.
 3. **Packages → Add** → select the pkg from §B.
 4. **Scope**: same group as the Configuration Profiles.
@@ -82,7 +82,7 @@ sudo sqlite3 "/Library/Application Support/com.apple.TCC/TCC.db" \
    where service='kTCCServiceSystemPolicyAllFiles' and client like '%quilr%';"
 ```
 
-Open the browser's extensions page — Quilr extension must be **present, enabled, "Installed by your organization"**. Then send a short test prompt on `https://claude.ai/` (or any monitored AI host). Within ~2 seconds the **prompt event should appear in the Quilr console**.
+Open the browser's extensions page — WhiteMatter extension must be **present, enabled, "Installed by your organization"**. Then send a short test prompt on `https://claude.ai/` (or any monitored AI host). Within ~2 seconds the **prompt event should appear in the WhiteMatter console**.
 
 > The browser extension does **not** perform TLS interception — it captures prompts and file uploads at the **DOM level** via the WebExtensions API. The "Issuer = Quilr" cert-chain check from [Validate Installation §4](/reference/validate-installation) applies to the **Endpoint Agent**, not the extension. For the extension, the source of truth is *"did the event reach the console?"*.
 

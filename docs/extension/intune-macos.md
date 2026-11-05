@@ -1,6 +1,6 @@
-# Quilr Browser Extension — Microsoft Intune (macOS)
+# WhiteMatter Browser Extension — Microsoft Intune (macOS)
 
-Deploy the Quilr browser extension to a macOS fleet via Microsoft Intune. The extension is delivered as **one pkg + two `.mobileconfig` profiles**; this guide reuses the same Intune object types you already use for the Quilr Endpoint Agent on macOS — Custom configuration profiles + Unmanaged macOS PKG app.
+Deploy the WhiteMatter browser extension to a macOS fleet via Microsoft Intune. The extension is delivered as **one pkg + two `.mobileconfig` profiles**; this guide reuses the same Intune object types you already use for the WhiteMatter Endpoint Agent on macOS — Custom configuration profiles + Unmanaged macOS PKG app.
 
 > **Sister guide:** if you're rolling out the agent itself, see [Microsoft Intune — macOS (pkg)](/deployment/intune-macos). The patterns are identical; this guide focuses on the extension-specific artefacts.
 
@@ -8,10 +8,10 @@ Deploy the Quilr browser extension to a macOS fleet via Microsoft Intune. The ex
 
 ## Prerequisites
 
-Same as the Quilr Endpoint Agent rollout — see [Prerequisites](/prerequisites) for the complete checklist (Intune admin, Apple MDM push certificate, ADE / Company-Portal enrollment, signed packages, network egress, …). Browser-extension-specific extras:
+Same as the WhiteMatter Endpoint Agent rollout — see [Prerequisites](/prerequisites) for the complete checklist (Intune admin, Apple MDM push certificate, ADE / Company-Portal enrollment, signed packages, network egress, …). Browser-extension-specific extras:
 
-- **Tenant ID** from **Quilr support** (`support@quilr.ai`) — used in the macOS pkg URL and pre-baked into the tenant `.mobileconfig`.
-- Access to the **Quilr platform** at `https://app.quilr.ai/` (Settings → Browser Extension → Deployment) to fetch the tenant `.mobileconfig`.
+- **Tenant ID** from **WhiteMatter support** (`support@quilr.ai`) — used in the macOS pkg URL and pre-baked into the tenant `.mobileconfig`.
+- Access to the **WhiteMatter platform** at `https://app.quilr.ai/` (Settings → Browser Extension → Deployment) to fetch the tenant `.mobileconfig`.
 - Reachability for `quilr-extensions.quilr.ai` (serves the pkg + the public File-Access mobileconfig).
 
 ---
@@ -24,11 +24,11 @@ Same as the Quilr Endpoint Agent rollout — see [Prerequisites](/prerequisites)
 |---|---|
 | Pkg installer | `https://quilr-extensions.quilr.ai/<TENANT-ID>/browser-util/quilr-installer-mac.pkg` |
 
-Replace `<TENANT-ID>` with the tenant identifier supplied by **Quilr support** (`support@quilr.ai`).
+Replace `<TENANT-ID>` with the tenant identifier supplied by **WhiteMatter support** (`support@quilr.ai`).
 
-### 1.2 Tenant-specific `.mobileconfig` (from the Quilr console)
+### 1.2 Tenant-specific `.mobileconfig` (from the WhiteMatter console)
 
-1. Sign in to the **Quilr platform** at `https://app.quilr.ai/`.
+1. Sign in to the **WhiteMatter platform** at `https://app.quilr.ai/`.
 2. Navigate **Settings → Browser Extension → Deployment → MDM**.
 3. Pick **OS = macOS** and **MDM solution = Microsoft Intune**.
 4. Download the tenant-specific `.mobileconfig` (it pre-approves the extension and binds it to your tenant).
@@ -70,7 +70,7 @@ For each profile:
 
 1. **Apps → All apps → Add → App type: macOS app (PKG)** *(unmanaged PKG)*.
 2. Upload `quilr-installer-mac.pkg`.
-3. **Name**: *Quilr Browser Extension*. **Publisher**: *Quilr AI*.
+3. **Name**: *WhiteMatter Browser Extension*. **Publisher**: *WhiteMatter*.
 4. **Assignments → Required → MAC-Quilr-Extension**. **Review + create**.
 
 > **Order of operations:** the two **profiles first**, the **pkg last**. Same rationale as the agent — when the pkg's postinstall runs, every permission is already granted, so no user prompt appears.
@@ -91,9 +91,9 @@ sudo sqlite3 "/Library/Application Support/com.apple.TCC/TCC.db" \
    where service='kTCCServiceSystemPolicyAllFiles' and client like '%quilr%';"
 ```
 
-Open the browser's extension page (`chrome://extensions`, `edge://extensions`, Safari → Settings → Extensions) — the Quilr extension must be **present, enabled, "Installed by your organization"**.
+Open the browser's extension page (`chrome://extensions`, `edge://extensions`, Safari → Settings → Extensions) — the WhiteMatter extension must be **present, enabled, "Installed by your organization"**.
 
-Then send a short test prompt on `https://claude.ai/` (or any monitored AI host). Within ~2 seconds the **prompt event should appear in the Quilr console**.
+Then send a short test prompt on `https://claude.ai/` (or any monitored AI host). Within ~2 seconds the **prompt event should appear in the WhiteMatter console**.
 
 > The browser extension does **not** perform TLS interception — it captures prompts and file uploads at the **DOM level** via the WebExtensions API. The "Issuer = Quilr" cert-chain check from [Validate Installation §4](/reference/validate-installation) applies to the **Endpoint Agent**, not the extension. For the extension, the source of truth is *"did the event reach the console?"*.
 
@@ -103,7 +103,7 @@ Then send a short test prompt on `https://claude.ai/` (or any monitored AI host)
 
 > Same Intune-macOS caveat as the agent: the **Uninstall** assignment intent is **not available** for macOS PKG apps.
 
-1. Push a macOS **shell script** that runs the extension uninstaller (Quilr support can supply the exact command).
+1. Push a macOS **shell script** that runs the extension uninstaller (WhiteMatter support can supply the exact command).
 2. Unassign the PKG app from the group.
 3. Unassign both Custom configuration profiles.
 

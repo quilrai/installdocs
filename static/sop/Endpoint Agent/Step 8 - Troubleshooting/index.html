@@ -3,22 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Step 6 · Troubleshooting — Quilr Endpoint Agent</title>
+<title>Step 6 · Troubleshooting — WhiteMatter Endpoint Agent</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../../assets/styles.css" />
 
-  <!-- sop-favicon v1 -->
-  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
-  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+  <!-- sop-favicon v2 — WhiteMatter mark; the SVG follows the browser's light/dark theme -->
+  <link rel="icon" href="/sop/assets/brand/favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/svg+xml" href="/sop/assets/brand/favicon.svg" />
+  <link rel="apple-touch-icon" href="/sop/assets/brand/apple-touch-icon.png" />
 </head>
 <body>
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">
       <div class="logo">Q</div>
-      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+      <div><div class="brand-name">WhiteMatter</div><div class="brand-sub">Deployment SOP</div></div>
     </div>
     <div class="nav-group-title">Overview</div>
     <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
@@ -171,7 +172,7 @@ profiles list | grep -i quilr | wc -l</code></pre></div>
           <tr>
             <td><code>TLS handshake failed</code> &nbsp;<span style="opacity:.7;">(<code>ProxyTlsHandshakeFail</code>)</span></td>
             <td><code>proxy.log</code></td>
-            <td>Client TLS handshake failure &mdash; usually AV/EDR running its own MITM proxy in front of Quilr, or the system root store rejecting the Quilr CA.</td>
+            <td>Client TLS handshake failure &mdash; usually AV/EDR running its own MITM proxy in front of WhiteMatter, or the system root store rejecting the Quilr CA.</td>
             <td>Verify the Quilr root cert is present in the system store (Step&nbsp;4 of Verify Install). Add AV/EDR exclusion for <code>%ProgramFiles%\QuilrAI\</code> / <code>/Applications/QuilrAIProxy.app/</code>.</td>
           </tr>
           <tr>
@@ -269,7 +270,7 @@ sudo tail -F "/Library/Application Support/QuilrAI/logs/agent.log.${TODAY}"</cod
           <tr>
             <td>Network Extension shows <code>[activated waiting for user]</code> after pkg install on an ADE-enrolled Mac, even though the SystemExtensions payload is present.</td>
             <td>Bundle ID in the SystemExtensions payload does not match the binary, or the Team ID was changed in a re-signed build.</td>
-            <td>Re-validate the <code>.mobileconfig</code> bundle ID against <code>codesign -dr -</code> on the <code>.systemextension</code>. Request a refreshed payload from Quilr support if the binary was re-signed.</td>
+            <td>Re-validate the <code>.mobileconfig</code> bundle ID against <code>codesign -dr -</code> on the <code>.systemextension</code>. Request a refreshed payload from WhiteMatter support if the binary was re-signed.</td>
           </tr>
           <tr>
             <td>FDA prompt is shown to the user on first launch.</td>
@@ -284,7 +285,7 @@ sudo tail -F "/Library/Application Support/QuilrAI/logs/agent.log.${TODAY}"</cod
         <thead><tr><th>Symptom</th><th>Resolution</th></tr></thead>
         <tbody>
           <tr><td>Package fails (exit 1)</td><td>Check Gatekeeper: <code>spctl --assess --type install -vvv</code>; ensure 300&nbsp;MB free disk; remove conflicting prior builds via the uninstall script.</td></tr>
-          <tr><td>Codesign mismatch</td><td>The PPPC profile&rsquo;s CodeRequirement must match the agent&rsquo;s Team ID. Request a matching bundle if Quilr re-signs binaries.</td></tr>
+          <tr><td>Codesign mismatch</td><td>The PPPC profile&rsquo;s CodeRequirement must match the agent&rsquo;s Team ID. Request a matching bundle if WhiteMatter re-signs binaries.</td></tr>
           <tr><td>Profile won&rsquo;t install</td><td><code>sudo profiles renew -type enrollment</code>; confirm User-Approved MDM; re-upload (don&rsquo;t re-sign) in Jamf.</td></tr>
           <tr><td>CA cert untrusted</td><td>Verify <em>both</em> root and intermediate are in the System keychain; re-upload Certificate payloads if only one is present.</td></tr>
           <tr><td>FDA not granted</td><td>Confirm the PPPC profile is installed; verify a <code>SystemPolicyAllFiles</code> entry with matching CodeRequirement; query TCC for <code>allowed=1</code>.</td></tr>
@@ -326,7 +327,7 @@ sudo tail -F "/Library/Application Support/QuilrAI/logs/agent.log.${TODAY}"</cod
           <tr><td>Windows Event Log &mdash; Application</td><td><code>Get-WinEvent -LogName Application | ? { $_.ProviderName -match 'Quilr' } | Select -First 50</code></td><td>User-mode service crashes &middot; uncaught exceptions surfaced to WER</td></tr>
         </tbody>
       </table></div>
-      <p style="color:var(--ink-soft); font-size:.9em; margin-top:-6px;">Templating-engine / broker filenames mirror the macOS layout; if a file is missing on a given build, confirm the exact name with Quilr support before escalating.</p>
+      <p style="color:var(--ink-soft); font-size:.9em; margin-top:-6px;">Templating-engine / broker filenames mirror the macOS layout; if a file is missing on a given build, confirm the exact name with WhiteMatter support before escalating.</p>
 
       <h2>Known issues</h2>
       <p style="color:var(--ink-soft); margin-top:-6px;">Specific failure modes seen in the field — match the diagnostic clue in the left column to skip straight to the fix.</p>
@@ -356,7 +357,7 @@ sudo tail -F "/Library/Application Support/QuilrAI/logs/agent.log.${TODAY}"</cod
           <tr>
             <td>Agent installed and service running, but every probe to <code>app.quilr.ai</code> / <code>dlpone.quilr.ai</code> returns HTTP <code>200</code> with HTML body (a login page).</td>
             <td>Captive portal or SWG block page replacing the response.</td>
-            <td>SSL-bypass the Quilr backplane hosts on the SWG; revisit captive-portal coverage if the endpoint is roaming. See <a href="../Step%201%20-%20Prerequisites/index.html#network">Step 1 § Network allow-list</a>.</td>
+            <td>SSL-bypass the WhiteMatter backplane hosts on the SWG; revisit captive-portal coverage if the endpoint is roaming. See <a href="../Step%201%20-%20Prerequisites/index.html#network">Step 1 § Network allow-list</a>.</td>
           </tr>
         </tbody>
       </table></div>

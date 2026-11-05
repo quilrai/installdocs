@@ -3,22 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Step 4 · Validate Installation — Quilr Endpoint Agent</title>
+<title>Step 4 · Validate Installation — WhiteMatter Endpoint Agent</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../../assets/styles.css" />
 
-  <!-- sop-favicon v1 -->
-  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
-  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+  <!-- sop-favicon v2 — WhiteMatter mark; the SVG follows the browser's light/dark theme -->
+  <link rel="icon" href="/sop/assets/brand/favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/svg+xml" href="/sop/assets/brand/favicon.svg" />
+  <link rel="apple-touch-icon" href="/sop/assets/brand/apple-touch-icon.png" />
 </head>
 <body>
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">
       <div class="logo">Q</div>
-      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+      <div><div class="brand-name">WhiteMatter</div><div class="brand-sub">Deployment SOP</div></div>
     </div>
     <div class="nav-group-title">Overview</div>
     <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
@@ -78,12 +79,12 @@
       platform has five sequential checks — a failed check halts progression until you resolve it.</p>
 
       <h2>Console-side validation &mdash; the fastest check</h2>
-      <p>If the agent successfully phoned home, the device shows up in the <strong>Quilr Console</strong> within seconds. Open <a data-env-link href="https://app.quilr.ai/en/settings/endpoint" target="_blank" rel="noopener"><strong>Settings &rarr; Endpoint</strong></a> in your tenant Console and switch to the <strong>Deployment Status</strong> tab. Type the device&rsquo;s hostname or the user&rsquo;s email in the search box.</p>
+      <p>If the agent successfully phoned home, the device shows up in the <strong>WhiteMatter Console</strong> within seconds. Open <a data-env-link href="https://app.quilr.ai/en/settings/endpoint" target="_blank" rel="noopener"><strong>Settings &rarr; Endpoint</strong></a> in your tenant Console and switch to the <strong>Deployment Status</strong> tab. Type the device&rsquo;s hostname or the user&rsquo;s email in the search box.</p>
       <div class="table-wrap"><table>
         <thead><tr><th>Column</th><th>Healthy value</th><th>If it&rsquo;s wrong &hellip;</th></tr></thead>
         <tbody>
           <tr><td><strong>Device</strong></td><td>Hostname matches the machine you installed on, with a UUID below</td><td>Missing &rarr; agent never reached <code>discover.quilrai.dev</code>. Check the Step&nbsp;6 allow-list &amp; AV exclusion.</td></tr>
-          <tr><td><strong>Email Address</strong></td><td>The signed-in user&rsquo;s email</td><td>Empty &rarr; email-discovery hasn&rsquo;t resolved a persona; sign the user into the Quilr Console once.</td></tr>
+          <tr><td><strong>Email Address</strong></td><td>The signed-in user&rsquo;s email</td><td>Empty &rarr; email-discovery hasn&rsquo;t resolved a persona; sign the user into the WhiteMatter Console once.</td></tr>
           <tr><td><strong>Full Name</strong></td><td>Resolved from the IdP</td><td>Empty &rarr; same as Email; persona unresolved.</td></tr>
           <tr><td><strong>OS</strong></td><td>Detected platform (e.g. <code>Windows 11 Pro</code> / <code>Mac&nbsp;OS&nbsp;X:26_5_1</code>)</td><td>Wrong build &rarr; the agent reported a different OS than expected; usually just stale telemetry, rerun after a reboot.</td></tr>
           <tr><td><strong>Status</strong></td><td><code>Enabled</code></td><td><code>Disabled</code> &rarr; the agent service is stopped. Restart it (Windows: <code>Start-Service QuilrAIAgent</code>, macOS: <code>sudo launchctl kickstart system/ai.quilr.sentinel</code>).</td></tr>
@@ -136,7 +137,7 @@ defaults read /Applications/QuilrAIProxy.app/Contents/Info.plist CFBundleShortVe
             <table style="width:100%;border-collapse:collapse;font-size:.9em;margin:6px 0 10px;">
               <thead><tr style="text-align:left;border-bottom:1px solid var(--line);"><th style="padding:6px 8px;">Log</th><th style="padding:6px 8px;">Path</th></tr></thead>
               <tbody>
-                <tr><td style="padding:6px 8px;">Quilr installer trace</td><td style="padding:6px 8px;"><code>/Library/Application Support/Sentinel/logs/sentinel-endpoint.log</code></td></tr>
+                <tr><td style="padding:6px 8px;">WhiteMatter installer trace</td><td style="padding:6px 8px;"><code>/Library/Application Support/Sentinel/logs/sentinel-endpoint.log</code></td></tr>
                 <tr><td style="padding:6px 8px;">macOS installer subsystem</td><td style="padding:6px 8px;"><code>/var/log/install.log</code> <span style="opacity:.7;">(filter with <code>grep -i quilr</code>)</span></td></tr>
               </tbody>
             </table>
@@ -258,7 +259,7 @@ certutil -store CA   | Select-String -Pattern 'Quilr' -SimpleMatch</code></pre><
               <tr><td>Windows Event Log &mdash; Application</td><td><code>Get-WinEvent -LogName Application | ? { $_.ProviderName -match 'Quilr' } | Select -First 50</code></td><td>User-mode service crashes &middot; uncaught exceptions surfaced to WER</td></tr>
             </tbody>
           </table></div>
-          <p style="color:var(--ink-soft); font-size:.9em; margin-top:-6px;">Templating-engine / broker filenames mirror the macOS layout; if a file is missing on a given build, confirm the exact name with Quilr support before escalating.</p>
+          <p style="color:var(--ink-soft); font-size:.9em; margin-top:-6px;">Templating-engine / broker filenames mirror the macOS layout; if a file is missing on a given build, confirm the exact name with WhiteMatter support before escalating.</p>
 
           <h2 style="margin-top:24px;">Install folder layout (Windows)</h2>
           <p style="color:var(--ink-soft); margin-top:-6px;">Reference tree of what a healthy install puts on disk. Use to spot missing binaries (failed MSI custom action) or rogue extras (tampering).</p>
@@ -420,7 +421,7 @@ $ssl.RemoteCertificate.Issuer</code></pre></div>
         <div><span class="ct">How to read the result</span>
         If the issuer shows a real CA (WE1, Let&rsquo;s Encrypt, DigiCert, Cloudflare), traffic is reaching the origin
         un-intercepted — and if it shows your <em>SWG</em>, that host needs to be on the SWG&rsquo;s SSL-bypass list. When the
-        Quilr agent is working, a browser padlock → certificate details will show <strong>Issued By: Quilr CA</strong>.</div>
+        WhiteMatter agent is working, a browser padlock → certificate details will show <strong>Issued By: Quilr CA</strong>.</div>
       </div>
 
       <h3>Browser padlock check</h3>
@@ -432,10 +433,10 @@ $ssl.RemoteCertificate.Issuer</code></pre></div>
       <p>Leaf certificate <strong>Issued By = Quilr CA</strong> confirms active interception. If it shows Anthropic&rsquo;s real CA, the agent is not intercepting that browser&rsquo;s flow.</p>
 
       <h2>Desktop-app DLP test &mdash; verify the agent intercepts native AI apps</h2>
-      <p>The proxy + WinDivert / Network Extension stack should intercept TLS traffic from <em>both</em> browsers and native desktop AI apps (Claude Desktop, ChatGPT Desktop, Cursor, GitHub Copilot, &hellip;). This test confirms the desktop side with a synthetic-PII payload and the Quilr <strong>Security Alert</strong> popup.</p>
+      <p>The proxy + WinDivert / Network Extension stack should intercept TLS traffic from <em>both</em> browsers and native desktop AI apps (Claude Desktop, ChatGPT Desktop, Cursor, GitHub Copilot, &hellip;). This test confirms the desktop side with a synthetic-PII payload and the WhiteMatter <strong>Security Alert</strong> popup.</p>
 
       <h3>1 &mdash; Confirm Guardrails are ON for the target apps</h3>
-      <p>Open <a data-env-link href="https://app.quilr.ai/en/settings/endpoint/detection-configurations" target="_blank" rel="noopener"><strong>Settings &rarr; Endpoint &rarr; Detection configurations</strong></a> in the Quilr Console. The header should read &ldquo;<code>X/X active</code>&rdquo; (all detection configs enabled). For every app row you intend to test, confirm each category (Chat / File Upload / Codex / &hellip;) shows the green <strong>GUARDRAILS ON</strong> pill.</p>
+      <p>Open <a data-env-link href="https://app.quilr.ai/en/settings/endpoint/detection-configurations" target="_blank" rel="noopener"><strong>Settings &rarr; Endpoint &rarr; Detection configurations</strong></a> in the WhiteMatter Console. The header should read &ldquo;<code>X/X active</code>&rdquo; (all detection configs enabled). For every app row you intend to test, confirm each category (Chat / File Upload / Codex / &hellip;) shows the green <strong>GUARDRAILS ON</strong> pill.</p>
       <figure style="margin:10px 0 6px; padding:0;">
         <img src="../../assets/console-ea-guardrails.png"
              alt="Quilr Console - Settings - Endpoint - Detection configurations tab. Header reads '27/27 active' next to a search box. Endpoint Applications section lists 12 apps including ChatGPT (4 types configured, NO DESKTOP APP MONITORING, BROWSER MONITORING AVAILABLE, 4/4 ACTIVE; categories Chat, File Upload, Chat (Anonymous), Codex; Chat row shows GUARDRAILS ON, 7 MONITOR / 11 NOT MONITORED, BROWSERS 13/13), Claude (3 types configured, DESKTOP APP MONITORED, BROWSER MONITORING AVAILABLE, 3/3 ACTIVE; categories Chat, Claude Code Desktop, File Upload Desktop; Chat shows GUARDRAILS ON / 7 JUSTIFY), Cursor (2 types, Chat + File Upload, GUARDRAILS ON / 7 MONITOR), GitHub Copilot (1 type configured). Each app row has 'Guardrails' and 'Monitored Browsers' buttons on the right."
@@ -483,7 +484,7 @@ Monte Mceachern        477-12-8344    2/21/1991</code></pre></div>
       <p>(Same publicly-circulated synthetic-PII test list from BE Step&nbsp;4 Test&nbsp;3; do not use real personal data.)</p>
 
       <h3>3 &mdash; What you should see</h3>
-      <div class="expect"><strong>Expected:</strong> a native OS window titled <strong>&ldquo;Quilr | Security Alert&rdquo;</strong> appears <em>before</em> the prompt leaves the app, with title <strong>&ldquo;Potentially Sensitive Data Detected.&rdquo;</strong>, the <code>PERSONALLY IDENTIFIABLE INFORMATION (PII)</code> tag, the matched rows underlined in red, and a <strong>Reason for bypassing</strong> dropdown the user must pick before they can click <strong>Continue with Original</strong>. The popup is rendered by the templating-engine subprocess (see Step&nbsp;6 critical-logs &middot; <code>templating-engine.log</code>).</div>
+      <div class="expect"><strong>Expected:</strong> a native OS window titled <strong>&ldquo;WhiteMatter | Security Alert&rdquo;</strong> appears <em>before</em> the prompt leaves the app, with title <strong>&ldquo;Potentially Sensitive Data Detected.&rdquo;</strong>, the <code>PERSONALLY IDENTIFIABLE INFORMATION (PII)</code> tag, the matched rows underlined in red, and a <strong>Reason for bypassing</strong> dropdown the user must pick before they can click <strong>Continue with Original</strong>. The popup is rendered by the templating-engine subprocess (see Step&nbsp;6 critical-logs &middot; <code>templating-engine.log</code>).</div>
       <figure style="margin:12px 0 6px; padding:0; max-width:720px;">
         <img src="../../assets/quilr-popup-ea-pii.png"
              alt="Quilr Endpoint Agent native popup. Window title 'Quilr | Security Alert' (blue chrome). Body title 'Potentially Sensitive Data Detected.' in yellow, subtitle 'Please review content before submitting to external website.', tag 'PERSONALLY IDENTIFIABLE INFORMATION (PII)', 'Highlight Sensitive Data' button, the synthetic-PII payload table (Robert Aragon, Ashley Borden, Thomas Conley, ...) with the SSN columns and dates underlined in red. A 'Reason for bypassing:' dropdown labelled 'Select a justification...' sits below. Footer reads 'Stay safe, Quilr it!' and a green-outlined 'Continue with Original' button is in the bottom-right."
@@ -516,7 +517,7 @@ Monte Mceachern        477-12-8344    2/21/1991</code></pre></div>
         <thead><tr><th>If the popup didn&rsquo;t fire</th><th>Where to look</th></tr></thead>
         <tbody>
           <tr><td>Console shows <code>DESKTOP APP MONITORED</code> on this app but <code>GUARDRAILS</code> are off</td><td>Toggle on, wait 90&nbsp;s, retry.</td></tr>
-          <tr><td>Console shows <code>NO DESKTOP APP MONITORING</code> for this app</td><td>Pick a different app from the list (the screenshot in step&nbsp;1 shows which qualify), or have Quilr support enable desktop-app monitoring for the requested app.</td></tr>
+          <tr><td>Console shows <code>NO DESKTOP APP MONITORING</code> for this app</td><td>Pick a different app from the list (the screenshot in step&nbsp;1 shows which qualify), or have WhiteMatter support enable desktop-app monitoring for the requested app.</td></tr>
           <tr><td>Popup appears in a browser but not in the desktop app</td><td>The Browser Extension intercepted first. Close the AI site in every browser tab during the desktop-app test, OR uninstall the BE to isolate the EA path.</td></tr>
           <tr><td>No popup anywhere; agent logs show <code>TLS handshake failed</code> against the AI host</td><td>The Quilr CA isn&rsquo;t trusted by the desktop app&rsquo;s embedded TLS stack (some Electron apps ship their own root store). See Step&nbsp;6 &sect; TLS handshake failure.</td></tr>
           <tr><td>Popup fires but no Finding in Console</td><td>Tail <code>proxy.log</code> for <code>Forward failed</code> &mdash; the local intercept worked but the upload to the backplane choked. See Step&nbsp;6 &sect; Forward failed.</td></tr>
@@ -526,7 +527,7 @@ Monte Mceachern        477-12-8344    2/21/1991</code></pre></div>
             <div class="callout tip">
         <span class="ico">✅</span>
         <div><span class="ct">Exit criteria for Step 4</span>
-        All five platform checks green · functional <code>matched … claude.ai</code> event observed · padlock shows the Quilr
+        All five platform checks green · functional <code>matched … claude.ai</code> event observed · padlock shows the WhiteMatter
         CA. The device is fully protected. For fleet rollout, continue to Step&nbsp;5.</div>
       </div>
 

@@ -3,12 +3,12 @@ title: Troubleshooting
 description: Diagnostics, log paths, common failure modes, and the diag-bundle script.
 ---
 
-# Quilr Endpoint Agent — Troubleshooting Guide
+# WhiteMatter Endpoint Agent — Troubleshooting Guide
 
 **Installation and runtime diagnostics for macOS**
 *Version 2026.05.11 — companion to the Jamf Pro Deployment Guide*
 
-> Internally the agent's binaries are named `quilrai`, `quilrai-proxy`, and `templating-engine`; on disk they live under `/Library/Application Support/quilrai/` and `/Library/Logs/quilrai/`. The user-facing product name is **Quilr Endpoint Agent**. Both naming conventions appear in this guide because both appear in the field — log paths, process names, and crash reports use the internal name.
+> Internally the agent's binaries are named `quilrai`, `quilrai-proxy`, and `templating-engine`; on disk they live under `/Library/Application Support/quilrai/` and `/Library/Logs/quilrai/`. The user-facing product name is **WhiteMatter Endpoint Agent**. Both naming conventions appear in this guide because both appear in the field — log paths, process names, and crash reports use the internal name.
 
 ---
 
@@ -18,18 +18,18 @@ description: Diagnostics, log paths, common failure modes, and the diag-bundle s
 |---|---|
 | The pkg won't install or the user sees an installer error | §4 Installation Issues |
 | Profile shows "Not Verified" in System Settings | §4.4 / §4.5 |
-| Agent is installed but no events reach the Quilr console | §5.2 |
+| Agent is installed but no events reach the WhiteMatter console | §5.2 |
 | Browser shows TLS errors after install | §5.4 / §5.5 |
 | Need raw log lines to compare against your environment | §7 + `logsamples/` |
-| Need to call the Quilr API from a script | See **API Reference** companion document |
+| Need to call the WhiteMatter API from a script | See **API Reference** companion document |
 
 Before diving in, run the **30-second triage** in §2 — it covers ~80% of field issues.
 
-> **Prerequisite: every Quilr API endpoint must be allowed by the network and SSL-bypassed by every upstream SWG.** If `quilr-hub.quilr.ai`, `secure.quilr.ai` (or your tenant's `QUILR_BACKEND_BASE_URL`), `dlpone.quilr.ai` (or `QUILR_DLP_ENDPOINT`), the tenant auth host, or `openidconnect.googleapis.com` is blocked, mid-stream-decrypted, or category-filtered, the agent **cannot enroll, cannot fetch its config, cannot detect content, and cannot ship events** — every other symptom in this guide cascades from that. Confirm the allow-list **before** debugging anything else (§1.1).
+> **Prerequisite: every WhiteMatter API endpoint must be allowed by the network and SSL-bypassed by every upstream SWG.** If `quilr-hub.quilr.ai`, `secure.quilr.ai` (or your tenant's `QUILR_BACKEND_BASE_URL`), `dlpone.quilr.ai` (or `QUILR_DLP_ENDPOINT`), the tenant auth host, or `openidconnect.googleapis.com` is blocked, mid-stream-decrypted, or category-filtered, the agent **cannot enroll, cannot fetch its config, cannot detect content, and cannot ship events** — every other symptom in this guide cascades from that. Confirm the allow-list **before** debugging anything else (§1.1).
 
-### 1.1 Required Network Allow-list — Quilr API Endpoints
+### 1.1 Required Network Allow-list — WhiteMatter API Endpoints
 
-Every endpoint below must be **(a)** reachable from the macOS fleet over outbound 443, **(b)** allowed by URL-category filtering in any SWG / DNS filter, and **(c)** bypassed from SSL/TLS inspection. Quilr decrypts on the device — a second decryptor mid-stream will break TLS pinning and the agent will fail closed.
+Every endpoint below must be **(a)** reachable from the macOS fleet over outbound 443, **(b)** allowed by URL-category filtering in any SWG / DNS filter, and **(c)** bypassed from SSL/TLS inspection. WhiteMatter decrypts on the device — a second decryptor mid-stream will break TLS pinning and the agent will fail closed.
 
 | Host | Purpose | Used by |
 |---|---|---|
@@ -138,9 +138,9 @@ Sample lines from each are stored in **`logsamples/`** alongside this guide. The
 - `/var/log/install.log` contains `installer: PackageKit: Install Failed`.
 
 **Causes & fix**
-1. **Package not notarized / Gatekeeper denial.** Confirm with `spctl --assess --type install -vvv /path/to/quilr-endpoint-agent-installer.pkg`. If Gatekeeper rejects, request a re-notarized package from Quilr support.
+1. **Package not notarized / Gatekeeper denial.** Confirm with `spctl --assess --type install -vvv /path/to/quilr-endpoint-agent-installer.pkg`. If Gatekeeper rejects, request a re-notarized package from WhiteMatter support.
 2. **Disk space.** `df -h /Applications` — pkg needs ~300 MB free.
-3. **Conflicting install.** A previous Quilr build still resident. Run the uninstall script (§9) and retry.
+3. **Conflicting install.** A previous WhiteMatter build still resident. Run the uninstall script (§9) and retry.
 
 See `logsamples/install-pkg-failed.log` for a sample of the `install.log` entries you should expect.
 
@@ -150,7 +150,7 @@ See `logsamples/install-pkg-failed.log` for a sample of the `install.log` entrie
 - `codesign --verify -vvv /Applications/QuilrAIProxy.app` returns `code object is not signed at all` or a different Team ID than the PPPC profile expects.
 
 **Fix**
-- The PPPC `.mobileconfig` matches the agent's CodeRequirement string. If Quilr re-signs the binary with a new Team ID, the old PPPC profile no longer applies — request the matching bundle from Quilr support.
+- The PPPC `.mobileconfig` matches the agent's CodeRequirement string. If WhiteMatter re-signs the binary with a new Team ID, the old PPPC profile no longer applies — request the matching bundle from WhiteMatter support.
 
 ### 4.3 Profile fails to install via MDM
 
@@ -195,7 +195,7 @@ Sample log: `logsamples/fda-missing.log`.
 
 **Symptoms**
 - `systemextensionsctl list` shows the extension as `[activated waiting for user]` or doesn't show it at all.
-- Browser traffic is **not** being captured (no events in the Quilr console).
+- Browser traffic is **not** being captured (no events in the WhiteMatter console).
 
 **Fix**
 1. Confirm the Network Extension profile is installed (`profiles list | grep -i "Quilr.*Network"`).
@@ -269,7 +269,7 @@ Each file starts with a short `# Scenario:` header explaining the failure and th
 
 ---
 
-## 8. When to Escalate to Quilr Support
+## 8. When to Escalate to WhiteMatter Support
 
 Open a support ticket (`support@quilr.ai`) and include the bundle below if:
 
@@ -315,4 +315,4 @@ sudo rm -rf /Library/Logs/QuilrAIProxy
 
 ---
 
-*End of document — Quilr AI | Adapt AI Securely*
+*End of document — WhiteMatter | Adapt AI Securely*

@@ -3,9 +3,9 @@ title: Jamf Pro — macOS
 description: MDM via Jamf Pro. Configuration Profiles + Policy.
 ---
 
-# Quilr Endpoint Agent — Jamf Pro Deployment Guide
+# WhiteMatter Endpoint Agent — Jamf Pro Deployment Guide
 
-**Subtitle:** Mass deployment of the Quilr Endpoint Agent CA trust chain, configuration profiles, and installer package via Jamf Pro on macOS.
+**Subtitle:** Mass deployment of the WhiteMatter Endpoint Agent CA trust chain, configuration profiles, and installer package via Jamf Pro on macOS.
 
 **Version:** 2026.05.08
 
@@ -13,7 +13,7 @@ description: MDM via Jamf Pro. Configuration Profiles + Policy.
 
 ## 1. Overview
 
-This guide walks a Jamf Pro administrator through deploying the **Quilr Endpoint Agent** install bundle to a fleet of macOS devices. The bundle includes the Quilr CA trust chain, two `.mobileconfig` profiles (Full Disk Access PPPC and Network Extension approval), and the installer package.
+This guide walks a Jamf Pro administrator through deploying the **WhiteMatter Endpoint Agent** install bundle to a fleet of macOS devices. The bundle includes the Quilr CA trust chain, two `.mobileconfig` profiles (Full Disk Access PPPC and Network Extension approval), and the installer package.
 
 **The deployment order is strict and intentional: CA certificates first, then both configuration profiles, then the installer package.** Following this order means the agent finds a populated trust store and pre-approved system permissions on its very first launch — no failed TLS handshake, no end-user prompt, no blocked network extension dialog.
 
@@ -34,8 +34,8 @@ This guide walks a Jamf Pro administrator through deploying the **Quilr Endpoint
 | Jamf Pro tenant | Administrator privileges and a configured distribution point |
 | MDM enrollment | Target Macs enrolled and showing **User-Approved MDM** (`profiles status -type enrollment`) |
 | Signed installer | `quilr-endpoint-agent-installer.pkg` is signed with a Developer ID Installer certificate and notarized |
-| Network egress | Endpoints can reach the Quilr distribution host and the Quilr control plane |
-| Bundle download | Latest bundle obtained from Quilr support (Part 1) |
+| Network egress | Endpoints can reach the WhiteMatter distribution host and the WhiteMatter control plane |
+| Bundle download | Latest bundle obtained from WhiteMatter support (Part 1) |
 | Profile signing | Upload each `.mobileconfig` as-is — do **not** re-sign before upload (Jamf signs on push) |
 
 ---
@@ -44,11 +44,11 @@ This guide walks a Jamf Pro administrator through deploying the **Quilr Endpoint
 
 ### Step A. Obtain the bundle
 
-The install bundle zip is distributed by **Quilr support**. Contact your Quilr support representative to request the download URL and any associated checksum for the current production build.
+The install bundle zip is distributed by **WhiteMatter support**. Contact your WhiteMatter support representative to request the download URL and any associated checksum for the current production build.
 
 1. **Download the bundle** from [`https://quilr-extensions.quilr.ai/endpoint-agent/prod/mac/installer/quilr-endpoint-agent-install-bundle.zip`](https://quilr-extensions.quilr.ai/endpoint-agent/prod/mac/installer/quilr-endpoint-agent-install-bundle.zip).
 2. Download the zip on the workstation you use to administer Jamf Pro.
-3. Verify the checksum provided by Quilr before extracting.
+3. Verify the checksum provided by WhiteMatter before extracting.
 4. Unzip into a clean staging directory.
 
 ### Step B. Bundle contents
@@ -69,7 +69,7 @@ quilr-endpoint-agent-install-bundle/
 | `certs/quilr-ea-intermediate-ca.crt` | Quilr intermediate CA — chains to the root | Configuration Profile (Certificate payload) | 1 |
 | `quilr-endpoint-agent_FullDiskAccess.mobileconfig` | Pre-grants Full Disk Access and App Management (PPPC) | Configuration Profile | 2 |
 | `quilr-endpoint-agent-nw-extension.mobileconfig` | Pre-approves the agent's Network Extension / content filter | Configuration Profile | 2 |
-| `quilr-endpoint-agent-installer.pkg` | Installs the Quilr Endpoint Agent to `/Applications` | Package + Policy | 3 |
+| `quilr-endpoint-agent-installer.pkg` | Installs the WhiteMatter Endpoint Agent to `/Applications` | Package + Policy | 3 |
 
 > **Order of operations:** Always deploy in this sequence — **(1) CA cert profile (Part 2), (2) both configuration profiles (Part 3), (3) install policy (Part 4).** When the .pkg lands last, the agent inherits a populated trust store and every required system approval on its very first launch — no failed TLS handshakes, no user prompts, no blocked extensions.
 
@@ -77,7 +77,7 @@ quilr-endpoint-agent-install-bundle/
 
 ## 4. Part 2 — Deploy CA Certificates to the System Trust Store
 
-This is the **first** thing to scope. The Quilr Endpoint Agent validates TLS against Quilr's internal CA, so the trust store must be populated before the agent runs. Push the root and intermediate CAs to the System keychain via Jamf so every managed Mac trusts them automatically. **MDM-delivered roots are trusted system-wide without user prompts** — this is the key advantage over a manual `security add-trusted-cert`.
+This is the **first** thing to scope. The WhiteMatter Endpoint Agent validates TLS against Quilr's internal CA, so the trust store must be populated before the agent runs. Push the root and intermediate CAs to the System keychain via Jamf so every managed Mac trusts them automatically. **MDM-delivered roots are trusted system-wide without user prompts** — this is the key advantage over a manual `security add-trusted-cert`.
 
 ### Step A. Upload each certificate as a Configuration Profile
 
@@ -104,7 +104,7 @@ openssl s_client -connect claude.ai:443 -servername claude.ai </dev/null
 
 ## 5. Part 3 — Deploy the Configuration Profiles
 
-Scope each `.mobileconfig` from the bundle root **after** the certs have landed and **before** the installer policy. Upload them as **two separate** Configuration Profiles in Jamf — do not merge their payloads, since each one is signed by Quilr and corresponds to a distinct system control surface.
+Scope each `.mobileconfig` from the bundle root **after** the certs have landed and **before** the installer policy. Upload them as **two separate** Configuration Profiles in Jamf — do not merge their payloads, since each one is signed by WhiteMatter and corresponds to a distinct system control surface.
 
 ### Step A. General workflow for every `.mobileconfig`
 
@@ -149,11 +149,11 @@ Only run this step after Parts 2 and 3 are confirmed installed on a pilot device
 
 ### Step A. Pre-install — write the tenant config
 
-Before the `.pkg` runs, the agent's postinstall reads `/tmp/quilr-endpoint-agent.json` to enroll into the correct Quilr tenant. In Jamf Pro, deliver this as a **Script** attached to the install Policy with **Priority = Before**.
+Before the `.pkg` runs, the agent's postinstall reads `/tmp/quilr-endpoint-agent.json` to enroll into the correct WhiteMatter tenant. In Jamf Pro, deliver this as a **Script** attached to the install Policy with **Priority = Before**.
 
 1. **Settings → Computer Management → Scripts → New**.
-2. **Display name**: *Quilr — Write tenant config (pre-install)*.
-3. **Script** tab — paste the snippet below. Replace `<TENANT-ID>` with the tenant identifier supplied by **Quilr support** (`support@quilr.ai`).
+2. **Display name**: *WhiteMatter — Write tenant config (pre-install)*.
+3. **Script** tab — paste the snippet below. Replace `<TENANT-ID>` with the tenant identifier supplied by **WhiteMatter support** (`support@quilr.ai`).
 
 ```bash
 #!/bin/bash
@@ -176,7 +176,7 @@ exit 0
 ### Step B. Build the install policy
 
 1. **Computers → Policies → New**.
-2. **General** tab: name *Install Quilr Endpoint Agent*; triggers **Recurring Check-in** and **Enrollment Complete**; execution frequency **Once per computer**.
+2. **General** tab: name *Install WhiteMatter Endpoint Agent*; triggers **Recurring Check-in** and **Enrollment Complete**; execution frequency **Once per computer**.
 3. **Packages** tab: add `quilr-endpoint-agent-installer.pkg`, action = **Install**.
 4. **Scope** tab: target the same smart/static group used in Parts 2 and 3.
 5. **Self Service** (optional): expose for on-demand reinstall.
@@ -219,8 +219,8 @@ sudo profiles show -type configuration | grep -E 'AllFiles|AppBundles|NetworkExt
 
 **System UI shows the agent as managed (after .pkg installs):**
 
-- System Settings → Privacy & Security → **Full Disk Access** → Quilr Endpoint Agent is on, with a managed-by-MDM badge.
-- System Settings → Network → **Filters** lists Quilr's filter as *Active*.
+- System Settings → Privacy & Security → **Full Disk Access** → WhiteMatter Endpoint Agent is on, with a managed-by-MDM badge.
+- System Settings → Network → **Filters** lists WhiteMatter's filter as *Active*.
 
 **Live TCC log:**
 
@@ -228,7 +228,7 @@ sudo profiles show -type configuration | grep -E 'AllFiles|AppBundles|NetworkExt
 log show --predicate 'subsystem == "com.apple.TCC"' --last 5m --info | grep -i quilr
 ```
 
-**Agent reports check-in:** Confirm the device appears in the Quilr console with the expected hostname and recent heartbeat.
+**Agent reports check-in:** Confirm the device appears in the WhiteMatter console with the expected hostname and recent heartbeat.
 
 ---
 
@@ -262,7 +262,7 @@ log show --predicate 'subsystem == "com.apple.TCC"' --last 5m --info | grep -i q
 
 | Step | Action | Location |
 |---|---|---|
-| 1 | Obtain install bundle zip | Request URL from Quilr support |
+| 1 | Obtain install bundle zip | Request URL from WhiteMatter support |
 | 2 | Upload root + intermediate CAs (deploy first) | Configuration Profiles → Certificate payload |
 | 3 | Upload both mobileconfigs — FDA + NW Extension (deploy second) | Configuration Profiles → Upload (2 separate profiles) |
 | 4 | Upload installer .pkg (deploy last) | Settings → Packages → New |
@@ -273,4 +273,4 @@ log show --predicate 'subsystem == "com.apple.TCC"' --last 5m --info | grep -i q
 
 ---
 
-*Quilr AI — Adapt AI Securely*
+*WhiteMatter — Adapt AI Securely*

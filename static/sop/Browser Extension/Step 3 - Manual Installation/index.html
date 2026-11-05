@@ -3,22 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Step 3 · Manual Installation — Quilr Browser Extension</title>
+<title>Step 3 · Manual Installation — WhiteMatter Browser Extension</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../../assets/styles.css" />
 
-  <!-- sop-favicon v1 -->
-  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
-  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+  <!-- sop-favicon v2 — WhiteMatter mark; the SVG follows the browser's light/dark theme -->
+  <link rel="icon" href="/sop/assets/brand/favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/svg+xml" href="/sop/assets/brand/favicon.svg" />
+  <link rel="apple-touch-icon" href="/sop/assets/brand/apple-touch-icon.png" />
 </head>
 <body>
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">
       <div class="logo">Q</div>
-      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+      <div><div class="brand-name">WhiteMatter</div><div class="brand-sub">Deployment SOP</div></div>
     </div>
     <div class="nav-group-title">Overview</div>
     <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
@@ -79,7 +80,7 @@
       <div class="callout note" style="display:flex; align-items:center; gap:14px;">
         <span class="ico" style="font-size:22px;">&#x1F517;</span>
         <div style="flex:1;">
-          <span class="ct">Quilr Console</span>
+          <span class="ct">WhiteMatter Console</span>
           Tenant artifacts (.pkg / .mobileconfig / MSI download links) live in <strong>Settings &rarr; Browser Extension &rarr; Deployment</strong>. The link below tracks the <strong>Environment</strong> selector in the top bar.
         </div>
         <a data-env-link href="https://app.quilr.ai/en/settings/browser-extension/deployment" target="_blank" rel="noopener"
@@ -91,7 +92,7 @@
 
 
       <h2>Choose the browsers to configure</h2>
-      <p>Both installers open a <strong>Configuration</strong> screen that collects the Quilr tenant id and lets you choose which browsers receive the Quilr extension and native messaging host. Select the browsers in use on the device, then continue. The available browsers differ by platform.</p>
+      <p>Both installers open a <strong>Configuration</strong> screen that collects the WhiteMatter tenant id and lets you choose which browsers receive the WhiteMatter extension and native messaging host. Select the browsers in use on the device, then continue. The available browsers differ by platform.</p>
       <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:flex-start; margin:12px 0 6px;">
         <figure style="flex:1 1 340px; min-width:280px; margin:0; padding:0;">
           <img src="../../assets/installer-tenant-browser-selection-macos.png"
@@ -114,7 +115,7 @@
       </div>
 
       <h2>Extension identity</h2>
-      <p>The Quilr browser extension is identified by a fixed ID. After the MSI / pkg installs it, jump straight to its row in the extensions page using the direct deep-links below.</p>
+      <p>The WhiteMatter browser extension is identified by a fixed ID. After the MSI / pkg installs it, jump straight to its row in the extensions page using the direct deep-links below.</p>
       <div class="table-wrap">
         <table>
           <tbody>
@@ -142,8 +143,8 @@
         <div class="tab-panel active" data-panel="mac">
           <h3>Prerequisites for this device</h3>
           <ul>
-            <li>Tenant ID from Quilr support; admin rights on the Mac</li>
-            <li>Access to the Quilr console (<a data-env-link href="https://app.quilr.ai/en/settings/browser-extension/deployment" target="_blank" rel="noopener"><code>https://app.quilr.ai/en/settings/browser-extension/deployment</code></a>) for the tenant profile</li>
+            <li>Tenant ID from WhiteMatter support; admin rights on the Mac</li>
+            <li>Access to the WhiteMatter console (<a data-env-link href="https://app.quilr.ai/en/settings/browser-extension/deployment" target="_blank" rel="noopener"><code>https://app.quilr.ai/en/settings/browser-extension/deployment</code></a>) for the tenant profile</li>
             <li>Network reachability to <code>quilr-extensions.quilr.ai</code></li>
           </ul>
 
@@ -155,7 +156,7 @@
                 <thead><tr><th>#</th><th>Artifact</th><th>Source</th><th>Tenant-specific?</th></tr></thead>
                 <tbody>
                   <tr><td>1.1</td><td>Extension pkg &mdash; <code>quilr-installer-mac.pkg</code></td><td><code>https://quilr-extensions.quilr.ai/installer/mac/quilrai-browser-extension.pkg</code></td><td>no</td></tr>
-                  <tr><td>1.2</td><td><strong>Extension</strong> <code>.mobileconfig</code></td><td>Quilr Console &rarr; <a data-env-link href="https://app.quilr.ai/en/settings/browser-extension/deployment" target="_blank" rel="noopener"><code>/en/settings/browser-extension/deployment</code></a></td><td>yes</td></tr>
+                  <tr><td>1.2</td><td><strong>Extension</strong> <code>.mobileconfig</code></td><td>WhiteMatter Console &rarr; <a data-env-link href="https://app.quilr.ai/en/settings/browser-extension/deployment" target="_blank" rel="noopener"><code>/en/settings/browser-extension/deployment</code></a></td><td>yes</td></tr>
                   <tr><td>1.3</td><td><strong>File-Access</strong> <code>.mobileconfig</code> &mdash; <em>optional</em></td><td><code>https://quilr-extensions.quilr.ai/browser-agent/prod/mac/quilr_browser_util_Files_Access.mobileconfig</code></td><td>no &mdash; shared &amp; optional (MDM only)</td></tr>
                 </tbody>
               </table>
@@ -164,7 +165,7 @@
             <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
 <pre><code>curl -fsSL -o ~/Downloads/quilr-installer-mac.pkg \
   "https://quilr-extensions.quilr.ai/installer/mac/quilrai-browser-extension.pkg"</code></pre></div>
-            <h4>1.2 — Extension config profile (from Quilr Console)</h4>
+            <h4>1.2 — Extension config profile (from WhiteMatter Console)</h4>
             <p>Jump to <a data-env-link href="https://app.quilr.ai/en/settings/browser-extension/deployment" target="_blank" rel="noopener"><strong>Settings &rarr; Browser Extension &rarr; Deployment</strong></a> in your tenant Console. Under <strong>MDM</strong>, select <strong>macOS</strong> and <strong>&ldquo;Manual / no MDM&rdquo;</strong>, then download the <code>.mobileconfig</code> to <code>~/Downloads/</code>. This profile carries the tenant-specific Chrome / Edge / Brave force-install policy.</p>
             <h4>1.3 — File-Access config profile (MDM only &mdash; <em>optional</em> on unmanaged Macs)</h4>
             <p style="margin-bottom:6px;">macOS only honours <strong>Full Disk Access (FDA) configuration profiles pushed by an MDM</strong>. <code>sudo profiles install</code> on the command line cannot grant FDA &mdash; the kernel ignores it. If your fleet is MDM-managed, download the profile and push it via Jamf / Kandji / Intune-mac. On an unmanaged Mac, skip the profile and use the manual toggle below.</p>
@@ -192,7 +193,7 @@
 
           <div class="part">
             <div class="part-head"><span class="part-badge">3</span><h3>Optional · configure a Discovery-offline install</h3></div>
-            <p>Use this only when the Mac cannot contact Quilr Discovery. The pre-install JSON must contain every key shown below. Obtain each environment-specific value from <a href="mailto:support@quilr.ai">support@quilr.ai</a>; the correct URLs depend on where the tenant is onboarded.</p>
+            <p>Use this only when the Mac cannot contact WhiteMatter Discovery. The pre-install JSON must contain every key shown below. Obtain each environment-specific value from <a href="mailto:support@quilr.ai">support@quilr.ai</a>; the correct URLs depend on where the tenant is onboarded.</p>
             <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash · run before the pkg</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
 <pre><code>sudo tee /tmp/quilr-be-install.json &gt;/dev/null &lt;&lt;'EOF'
 {
@@ -210,7 +211,7 @@
 EOF
 sudo chown root:wheel /tmp/quilr-be-install.json
 sudo chmod 600 /tmp/quilr-be-install.json</code></pre></div>
-            <div class="callout warn"><span class="ico">⚠️</span><div><span class="ct">Discovery-offline, not fully air-gapped</span> Setting <code>skip_discovery</code> to <code>1</code> prevents Discovery calls, but the BFF, OAuth, DLP, update, and browser-extension artifact URLs supplied by Quilr Support must still be reachable.</div></div>
+            <div class="callout warn"><span class="ico">⚠️</span><div><span class="ct">Discovery-offline, not fully air-gapped</span> Setting <code>skip_discovery</code> to <code>1</code> prevents Discovery calls, but the BFF, OAuth, DLP, update, and browser-extension artifact URLs supplied by WhiteMatter Support must still be reachable.</div></div>
           </div>
 
           <div class="part">
@@ -272,7 +273,7 @@ sudo chmod 600 /tmp/quilr-be-install.json</code></pre></div>
   FIREFOXINSTALLURL="<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>" `
   EXTENSIONENV="PLASMO_PUBLIC_BFF_ENDPOINT=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;PLASMO_PUBLIC_OAUTH_URL=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;PLASMO_PUBLIC_OAUTH_LOGIN_URL=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;PLASMO_PUBLIC_DLP_END_POINT=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;PLASMO_PUBLIC_UPDATE_URL=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;BASE_URL=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>"</code></pre></div>
             <div class="callout warn"><span class="ico">⚠️</span><div><span class="ct">All environment keys are required</span> Keep every key shown in <code>EXTENSIONENV</code> and obtain each value, including <code>FIREFOXINSTALLURL</code>, from <a href="mailto:support@quilr.ai">support@quilr.ai</a>. Values vary according to where the tenant is onboarded. This skips Discovery only; the supplied service and artifact URLs must remain reachable.</div></div>
-            <div class="callout note"><span class="ico">💡</span><div><span class="ct">Extension-management conflicts</span> If Chrome/Edge extensions are already centrally managed (Intune, GPO, Chrome Browser Cloud Management), pass <code>SKIPEXTENSIONSETTINGS=1</code> so the installer doesn&rsquo;t overwrite your existing <code>ExtensionSettings</code> policy, and add the Quilr entry to your own policy instead (see Step&nbsp;5 for the JSON).</div></div>
+            <div class="callout note"><span class="ico">💡</span><div><span class="ct">Extension-management conflicts</span> If Chrome/Edge extensions are already centrally managed (Intune, GPO, Chrome Browser Cloud Management), pass <code>SKIPEXTENSIONSETTINGS=1</code> so the installer doesn&rsquo;t overwrite your existing <code>ExtensionSettings</code> policy, and add the WhiteMatter entry to your own policy instead (see Step&nbsp;5 for the JSON).</div></div>
           </div>
           <div class="part">
             <div class="part-head"><span class="part-badge">4</span><h3>Confirm</h3></div>

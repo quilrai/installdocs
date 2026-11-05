@@ -3,22 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Step 1 · Prerequisites — Quilr Browser Extension</title>
+<title>Step 1 · Prerequisites — WhiteMatter Browser Extension</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../../assets/styles.css" />
 
-  <!-- sop-favicon v1 -->
-  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
-  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+  <!-- sop-favicon v2 — WhiteMatter mark; the SVG follows the browser's light/dark theme -->
+  <link rel="icon" href="/sop/assets/brand/favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/svg+xml" href="/sop/assets/brand/favicon.svg" />
+  <link rel="apple-touch-icon" href="/sop/assets/brand/apple-touch-icon.png" />
 </head>
 <body>
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">
       <div class="logo">Q</div>
-      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+      <div><div class="brand-name">WhiteMatter</div><div class="brand-sub">Deployment SOP</div></div>
     </div>
     <div class="nav-group-title">Overview</div>
     <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
@@ -73,7 +74,7 @@
 
       <span class="eyebrow">Browser Extension · Step 1 of 7</span>
       <h1>Prerequisites</h1>
-      <p class="lead">The Quilr browser extension covers the Chromium browsers (Chrome, Edge), Mozilla Firefox, and Safari that the Endpoint
+      <p class="lead">The WhiteMatter browser extension covers the Chromium browsers (Chrome, Edge), Mozilla Firefox, and Safari that the Endpoint
       Agent excludes by design. Before deploying, understand its two-component architecture and gather the tenant-specific
       artifacts.</p>
 
@@ -83,7 +84,7 @@
       </div>
 
       <h2>1 · Understand the two-component model</h2>
-      <p>The Quilr browser extension is <strong>not a stand-alone WebExtension</strong>. It has two parts that must both be present:</p>
+      <p>The WhiteMatter browser extension is <strong>not a stand-alone WebExtension</strong>. It has two parts that must both be present:</p>
       <div class="card-grid">
         <div class="track-card" style="cursor:default;">
           <div class="tc-ico" style="background:#f1ecff;color:#7c3aed;">🧩</div>
@@ -105,9 +106,9 @@
 
       <h2>2 · What you need</h2>
       <ul>
-        <li>Target device must be <strong>enrolled in MDM (Intune, Jamf, Kandji, ManageEngine&hellip;) or domain-joined to Active Directory</strong>. The Quilr extension is distributed <strong>off-store</strong> (not in the Chrome Web Store / Edge Add-ons), so Chrome and Edge block it from loading unless an <code>ExtensionInstallForcelist</code> / <code>ExtensionSettings</code> policy whitelists the Quilr extension &mdash; and that policy can only be pushed to a centrally managed device. The installer writes this policy for you; the extension ID and browser deep-links are listed in <a href="../Step%203%20-%20Manual%20Installation/index.html">Step&nbsp;3</a>.</li>
+        <li>Target device must be <strong>enrolled in MDM (Intune, Jamf, Kandji, ManageEngine&hellip;) or domain-joined to Active Directory</strong>. The WhiteMatter extension is distributed <strong>off-store</strong> (not in the Chrome Web Store / Edge Add-ons), so Chrome and Edge block it from loading unless an <code>ExtensionInstallForcelist</code> / <code>ExtensionSettings</code> policy whitelists the WhiteMatter extension &mdash; and that policy can only be pushed to a centrally managed device. The installer writes this policy for you; the extension ID and browser deep-links are listed in <a href="../Step%203%20-%20Manual%20Installation/index.html">Step&nbsp;3</a>.</li>
         <li><strong>Tenant ID</strong> from <a href="mailto:support@quilr.ai">support@quilr.ai</a> — used as <code>TENANT=&lt;TENANT-ID&gt;</code> (MSI) and as a URL path segment (macOS pkg).</li>
-        <li>Access to the Quilr console at <code>https://app.quilr.ai/</code> → Settings → Browser Extension → Deployment.</li>
+        <li>Access to the WhiteMatter console at <code>https://app.quilr.ai/</code> → Settings → Browser Extension → Deployment.</li>
         <li>Admin rights on the target device and your MDM platform.</li>
         <li>Network reachability to <code>quilr-extensions.quilr.ai</code> (validated in Step&nbsp;2).</li>
       </ul>
@@ -117,7 +118,7 @@
         <table>
           <thead><tr><th>Platform</th><th>Artifacts</th><th>Source</th></tr></thead>
           <tbody>
-            <tr data-os="mac"><td><strong>macOS</strong></td><td>Tenant pkg + tenant <code>.mobileconfig</code> + shared File-Access <code>.mobileconfig</code></td><td>Tenant URL · Quilr console · public URL</td></tr>
+            <tr data-os="mac"><td><strong>macOS</strong></td><td>Tenant pkg + tenant <code>.mobileconfig</code> + shared File-Access <code>.mobileconfig</code></td><td>Tenant URL · WhiteMatter console · public URL</td></tr>
             <tr data-os="win"><td><strong>Windows</strong></td><td><code>Quilr.msi</code></td><td><code>https://quilr-extensions.quilr.ai/installer/windows/Quilr.msi</code></td></tr>
           </tbody>
         </table>
@@ -141,8 +142,8 @@
 
             <h2>5 · Network allow-list</h2>
       <ul>
-        <li>Endpoints must reach the Quilr backplane on <strong>TCP&nbsp;443</strong> (outbound HTTPS).</li>
-        <li>TLS-intercepting proxies (Zscaler, Netskope, Symantec, Forcepoint, iboss) must <strong>SSL-bypass every Quilr host below</strong> &mdash; otherwise the proxy re-signs the certificate and the extension&rsquo;s update fetch / native-agent backplane calls fail.</li>
+        <li>Endpoints must reach the WhiteMatter backplane on <strong>TCP&nbsp;443</strong> (outbound HTTPS).</li>
+        <li>TLS-intercepting proxies (Zscaler, Netskope, Symantec, Forcepoint, iboss) must <strong>SSL-bypass every WhiteMatter host below</strong> &mdash; otherwise the proxy re-signs the certificate and the extension&rsquo;s update fetch / native-agent backplane calls fail.</li>
       </ul>
 
       <h3>Shared hosts &mdash; all environments (TCP/443)</h3>
@@ -158,7 +159,7 @@
       </div>
 
       <h3>Tenant-specific base &amp; DLP hosts</h3>
-      <p>The host pair below depends on which Quilr environment your tenant lives in &mdash; the row matching the <strong>Environment</strong> selector in the top bar is the one you need.</p>
+      <p>The host pair below depends on which WhiteMatter environment your tenant lives in &mdash; the row matching the <strong>Environment</strong> selector in the top bar is the one you need.</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Environment</th><th>Base URL</th><th>DLP Host</th><th>Auth URL</th></tr></thead>
@@ -197,7 +198,7 @@ auth-extension.quilr.ai</code></pre>
 
       <h2>6 · MDM browser policy — optional</h2>
       <p>MDM browser policies (<code>ExtensionSettings</code> / <code>ExtensionInstallForcelist</code>) are only needed if your
-      organization already centrally manages browser extensions and wants to enforce Quilr through that channel (toolbar
+      organization already centrally manages browser extensions and wants to enforce WhiteMatter through that channel (toolbar
       pinning, preventing removal). <strong>The MSI/pkg alone is sufficient</strong> without existing MDM extension management.</p>
 
       <div class="callout tip">

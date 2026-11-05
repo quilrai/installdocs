@@ -3,22 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Step 3 · Manual Installation — Quilr Endpoint Agent</title>
+<title>Step 3 · Manual Installation — WhiteMatter Endpoint Agent</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../../assets/styles.css" />
 
-  <!-- sop-favicon v1 -->
-  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
-  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+  <!-- sop-favicon v2 — WhiteMatter mark; the SVG follows the browser's light/dark theme -->
+  <link rel="icon" href="/sop/assets/brand/favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/svg+xml" href="/sop/assets/brand/favicon.svg" />
+  <link rel="apple-touch-icon" href="/sop/assets/brand/apple-touch-icon.png" />
 </head>
 <body>
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">
       <div class="logo">Q</div>
-      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+      <div><div class="brand-name">WhiteMatter</div><div class="brand-sub">Deployment SOP</div></div>
     </div>
     <div class="nav-group-title">Overview</div>
     <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
@@ -89,7 +90,7 @@
         <span class="ico">🔐</span>
         <div><span class="ct">Critical order: trust the CAs first</span>
         Always import the Quilr root + intermediate CAs <strong>before</strong> installing the package, so the agent&rsquo;s
-        first TLS handshake with the Quilr control plane succeeds.</div>
+        first TLS handshake with the WhiteMatter control plane succeeds.</div>
       </div>
 
       <div class="tabs">
@@ -105,7 +106,7 @@
             <li>Local administrator account with <code>sudo</code> rights</li>
             <li>Physical / console access (Screen Sharing or a logged-in session)</li>
             <li>macOS 13+ on the current release</li>
-            <li>Network access to the Quilr distribution host and control plane (proven in Step&nbsp;2)</li>
+            <li>Network access to the WhiteMatter distribution host and control plane (proven in Step&nbsp;2)</li>
             <li>The install bundle: <code>quilr-endpoint-agent-install-bundle.zip</code></li>
           </ul>
 
@@ -165,7 +166,7 @@ sudo security add-trusted-cert -d -r trustAsRoot \
             <ol>
               <li>In Finder, <strong>double-click <code>quilr-endpoint-agent-installer.pkg</code></strong>.</li>
               <li>Follow the macOS Installer wizard: <strong>Continue → Install</strong>, authenticating as an administrator.</li>
-              <li>If no tenant config is found, the installer <strong>prompts for your Tenant ID</strong> — enter the value from Quilr support and continue.</li>
+              <li>If no tenant config is found, the installer <strong>prompts for your Tenant ID</strong> — enter the value from WhiteMatter support and continue.</li>
               <li>Wait for <strong>&ldquo;The installation was successful.&rdquo;</strong></li>
             </ol>
 
@@ -280,7 +281,7 @@ sudo launchctl bootstrap system /Library/LaunchDaemons/com.sentinel.agent.plist<
           <ul>
             <li><strong>Local administrator</strong> rights — run PowerShell / the MSI elevated (Run as administrator)</li>
             <li>Windows 10 (version 1809) or later / Windows 11, 64-bit</li>
-            <li>Network access to the Quilr distribution host and control plane (proven in Step&nbsp;2)</li>
+            <li>Network access to the WhiteMatter distribution host and control plane (proven in Step&nbsp;2)</li>
             <li><code>%ProgramFiles%\QuilrAI\</code> excluded in AV / EDR (see Step&nbsp;1)</li>
             <li>The install bundle: <code>quilr-endpoint-agent-win-install-bundle.zip</code></li>
           </ul>
@@ -348,7 +349,7 @@ Expand-Archive $env:TEMP\quilr-win.zip -DestinationPath C:\Staging\Quilr -Force<
               <span class="ico">⛔</span>
               <div><span class="ct">Tenant ID is mandatory</span>
               Setup will not proceed past this screen without it — without a tenant the agent cannot authenticate the device to
-              your organisation. Get the value from your IT admin or the Quilr admin console.</div>
+              your organisation. Get the value from your IT admin or the WhiteMatter admin console.</div>
             </div>
             <details class="fallback">
               <summary>Prefer the command line / silent install? Show CLI equivalent</summary>
@@ -368,13 +369,13 @@ certutil -store Root | findstr /i quilr
 certutil -store CA   | findstr /i quilr
 netsh wfp show state | findstr /i quilr</code></pre>
             </div>
-            <div class="expect"><strong>Expected:</strong> the Quilr service is <code>Running</code> / <code>Automatic</code>, both CAs appear, and WFP shows Quilr filters.</div>
+            <div class="expect"><strong>Expected:</strong> the Quilr service is <code>Running</code> / <code>Automatic</code>, both CAs appear, and WFP shows WhiteMatter filters.</div>
           </div>
 
           <div class="callout warn">
             <span class="ico">🌐</span>
             <div><span class="ct">Browser coverage</span>
-            The endpoint agent <strong>excludes Microsoft Edge and Google Chrome</strong>. Use the Quilr <strong>Browser
+            The endpoint agent <strong>excludes Microsoft Edge and Google Chrome</strong>. Use the WhiteMatter <strong>Browser
             Extension</strong> track to cover those. Firefox and native apps are covered by the agent.</div>
           </div>
         </div>

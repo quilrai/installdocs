@@ -3,22 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Step 6 · Enable PAC Routing — Quilr Endpoint Agent</title>
+<title>Step 6 · Enable PAC Routing — WhiteMatter Endpoint Agent</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../../assets/styles.css" />
 
-  <!-- sop-favicon v1 -->
-  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
-  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+  <!-- sop-favicon v2 — WhiteMatter mark; the SVG follows the browser's light/dark theme -->
+  <link rel="icon" href="/sop/assets/brand/favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/svg+xml" href="/sop/assets/brand/favicon.svg" />
+  <link rel="apple-touch-icon" href="/sop/assets/brand/apple-touch-icon.png" />
 </head>
 <body>
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">
       <div class="logo">Q</div>
-      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+      <div><div class="brand-name">WhiteMatter</div><div class="brand-sub">Deployment SOP</div></div>
     </div>
     <div class="nav-group-title">Overview</div>
     <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
@@ -74,13 +75,13 @@
 
       <span class="eyebrow">Endpoint Agent · Step 6 of 8</span>
       <h1>Enable PAC Routing</h1>
-      <p class="lead">To let the Quilr agent inspect AI-app traffic through its proxy path, route the monitored AI &amp;
-      collaboration hosts to the agent&rsquo;s <strong>local proxy listening on <code>127.0.0.1:24080</code></strong>. Quilr ships a
-      ready Proxy Auto-Config (PAC) file that does exactly this &mdash; <strong>contact Quilr support for the PAC file for your AI apps.</strong></p>
+      <p class="lead">To let the WhiteMatter agent inspect AI-app traffic through its proxy path, route the monitored AI &amp;
+      collaboration hosts to the agent&rsquo;s <strong>local proxy listening on <code>127.0.0.1:24080</code></strong>. WhiteMatter ships a
+      ready Proxy Auto-Config (PAC) file that does exactly this &mdash; <strong>contact WhiteMatter support for the PAC file for your AI apps.</strong></p>
 
       <div class="callout crit">
         <span class="ico">&#x1F4E9;</span>
-        <div><span class="ct">Get the PAC file from Quilr support</span>
+        <div><span class="ct">Get the PAC file from WhiteMatter support</span>
         Email <a href="mailto:support@quilr.ai">support@quilr.ai</a> and request the <strong>AI-apps PAC file</strong> for your tenant.
         It is a standard <code>application/x-ns-proxy-autoconfig</code> document with a single <code>FindProxyForURL(url,&nbsp;host)</code>
         that sends monitored AI hosts to <code>PROXY 127.0.0.1:24080</code> and everything else <code>DIRECT</code>.</div>
@@ -91,8 +92,8 @@
         <div><span class="ct">When is this needed?</span>
         The agent&rsquo;s on-device interception (WinDivert driver on Windows, Network Extension on macOS) captures AI traffic
         without any system proxy. Use PAC routing when your deployment intercepts via the local proxy instead of &mdash; or alongside
-        &mdash; an existing SWG. If you already run a PAC-based web filter, <em>merge</em> Quilr&rsquo;s rule rather than replacing your file
-        (see <a href="../Step%201%20-%20Prerequisites/index.html">Step&nbsp;1 &middot; Coexisting with an existing PAC</a>). If unsure which model applies, ask Quilr support.</div>
+        &mdash; an existing SWG. If you already run a PAC-based web filter, <em>merge</em> WhiteMatter&rsquo;s rule rather than replacing your file
+        (see <a href="../Step%201%20-%20Prerequisites/index.html">Step&nbsp;1 &middot; Coexisting with an existing PAC</a>). If unsure which model applies, ask WhiteMatter support.</div>
       </div>
 
       <h2>1 &middot; What the PAC does</h2>
@@ -115,11 +116,11 @@
     return "DIRECT";
 }</code></pre></div>
       <div class="callout warn"><span class="ico">&#x26A0;&#xFE0F;</span><div><span class="ct">Keep the host list authoritative</span>
-      Use the list inside the PAC file Quilr support sends &mdash; it is kept in sync with the monitored-apps set. The snippet above is
+      Use the list inside the PAC file WhiteMatter support sends &mdash; it is kept in sync with the monitored-apps set. The snippet above is
       illustrative and trimmed.</div></div>
 
       <h2>2 &middot; Point the device at the PAC</h2>
-      <p>Host the PAC file where managed devices can reach it (an internal HTTPS URL, or the hosted URL Quilr support provides),
+      <p>Host the PAC file where managed devices can reach it (an internal HTTPS URL, or the hosted URL WhiteMatter support provides),
       then set the OS proxy <em>auto-configuration</em> setting to that URL. Push it through your MDM the same way you deployed the
       agent in <a href="../Step%205%20-%20Installing%20using%20MDM/index.html">Step&nbsp;5</a>.</p>
       <div class="tabs">
@@ -164,7 +165,7 @@
       <div class="callout tip">
         <span class="ico">&#x2705;</span>
         <div><span class="ct">Exit criteria for Step 6</span>
-        PAC file obtained from Quilr support &middot; PAC URL pushed to the pilot device&rsquo;s proxy auto-config setting &middot; a monitored AI
+        PAC file obtained from WhiteMatter support &middot; PAC URL pushed to the pilot device&rsquo;s proxy auto-config setting &middot; a monitored AI
         host routes through <code>127.0.0.1:24080</code>. Then continue to Step&nbsp;7 to verify the rollout.</div>
       </div>
 

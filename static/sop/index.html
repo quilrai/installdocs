@@ -3,16 +3,17 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Quilr Deployment SOP — Standard Operating Guide</title>
-<meta name="description" content="Step-by-step standard operating procedure for deploying the Quilr Endpoint Agent and Browser Extension." />
+<title>WhiteMatter Deployment SOP — Standard Operating Guide</title>
+<meta name="description" content="Step-by-step standard operating procedure for deploying the WhiteMatter Endpoint Agent and Browser Extension." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/styles.css" />
 
-  <!-- sop-favicon v1 -->
-  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
-  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+  <!-- sop-favicon v2 — WhiteMatter mark; the SVG follows the browser's light/dark theme -->
+  <link rel="icon" href="/sop/assets/brand/favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/svg+xml" href="/sop/assets/brand/favicon.svg" />
+  <link rel="apple-touch-icon" href="/sop/assets/brand/apple-touch-icon.png" />
 </head>
 <body>
 <div class="layout">
@@ -22,7 +23,7 @@
     <div class="brand">
       <div class="logo">Q</div>
       <div>
-        <div class="brand-name">Quilr&nbsp;AI</div>
+        <div class="brand-name">WhiteMatter</div>
         <div class="brand-sub">Deployment SOP</div>
       </div>
     </div>
@@ -73,8 +74,8 @@
     <div class="content">
       <span class="eyebrow">● Operator Guide</span>
       <div class="hero">
-        <h1>Quilr Endpoint Deployment &mdash; Standard Operating Procedure</h1>
-        <p class="lead">A sequential, operator-facing runbook for deploying, validating, and troubleshooting Quilr&rsquo;s
+        <h1>WhiteMatter Endpoint Deployment &mdash; Standard Operating Procedure</h1>
+        <p class="lead">A sequential, operator-facing runbook for deploying, validating, and troubleshooting WhiteMatter&rsquo;s
         endpoint security components across macOS and Windows fleets. <strong>Select a track below</strong> to launch its
         step-by-step wizard &mdash; each step gates the next, with Back / Next controls throughout.</p>
       </div>
@@ -104,7 +105,7 @@
       <h2>Endpoint Agent — the six steps</h2>
       <ol class="steplist">
         <li><span class="sn">1</span><div><a href="Endpoint%20Agent/Step%201%20-%20Prerequisites/index.html">Prerequisites</a><div class="sd">Tenant environment, supported OS, MDM admin access, network allow-list, and the install bundle.</div></div></li>
-        <li><span class="sn">2</span><div><a href="Endpoint%20Agent/Step%202%20-%20Prerequisites%20Validation/index.html">Prerequisites Validation</a><div class="sd">Confirm every Quilr backplane host is reachable on TCP/443 and bypassed from SSL inspection.</div></div></li>
+        <li><span class="sn">2</span><div><a href="Endpoint%20Agent/Step%202%20-%20Prerequisites%20Validation/index.html">Prerequisites Validation</a><div class="sd">Confirm every WhiteMatter backplane host is reachable on TCP/443 and bypassed from SSL inspection.</div></div></li>
         <li><span class="sn">3</span><div><a href="Endpoint%20Agent/Step%203%20-%20Manual%20Installation/index.html">Manual Installation</a><div class="sd">Single-device install via Terminal/CLI — trust CAs, install the package, approve extensions.</div></div></li>
         <li><span class="sn">4</span><div><a href="Endpoint%20Agent/Step%204%20-%20Validation%20Manual%20Installation/index.html">Validate Manual Install</a><div class="sd">Five per-platform checks plus a live claude.ai interception test and cert-chain verification.</div></div></li>
         <li><span class="sn">5</span><div><a href="Endpoint%20Agent/Step%205%20-%20Installing%20using%20MDM/index.html">Installing using MDM</a><div class="sd">Fleet rollout via Intune, Jamf Pro, Kandji, or ManageEngine Endpoint Central.</div></div></li>
@@ -120,9 +121,9 @@
       </div>
 
       <p style="color:var(--ink-faint);font-size:13px;margin-top:34px;">
-        Content mirrors the official Quilr documentation at
+        Content mirrors the official WhiteMatter documentation at
         <a href="https://installdocs.quilrai.dev" target="_blank" rel="noopener">installdocs.quilrai.dev</a>.
-        Always confirm tenant-specific values (tenant ID, environment hosts, MSI product code) with Quilr support before rollout.
+        Always confirm tenant-specific values (tenant ID, environment hosts, MSI product code) with WhiteMatter support before rollout.
       </p>
     </div>
   </main>

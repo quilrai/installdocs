@@ -1,10 +1,26 @@
 /**
- * Quilr Endpoint Agent docs — theme ported from quilr-discover
- * (frontend/app/globals.css). Dark-by-default, indigo accent, monospace
- * typography, uppercase labels with letter-spacing.
+ * WhiteMatter Endpoint Agent docs — theme ported from quilr-discover
+ * (frontend/app/globals.css). Dark-by-default, indigo accent, uppercase
+ * labels with letter-spacing.
+ *
+ * Typography (WhiteMatter brand):
+ *   Radix Medium     — headlines, section titles, short statements
+ *   Figtree 400      — paragraphs and captions
+ *   Figtree 500      — short labels
+ *   Figtree 600      — navigation, buttons, selective emphasis
+ *   JetBrains Mono   — code only
  */
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* Radix is a licensed font, self-hosted with the SOP so both sites share one copy. */
+@font-face {
+  font-family: 'Radix';
+  src: url('../../static/sop/assets/fonts/Radix-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* ─────────────────────── Tokens (dark = default) ─────────────────────── */
 
@@ -35,6 +51,8 @@
   --scrollbar-thumb: rgba(255, 255, 255, 0.10);
   --hover-overlay: rgba(255, 255, 255, 0.02);
 
+  --font-sans: 'Figtree', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-display: 'Radix', 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', 'Consolas', 'Menlo', 'SF Mono', 'Liberation Mono', monospace;
 
   /* Map onto Infima */
@@ -53,10 +71,13 @@
   --ifm-navbar-background-color: rgba(12, 11, 22, 0.72);
   --ifm-footer-background-color: #050509;
 
-  --ifm-font-family-base: var(--font-mono);
+  --ifm-font-family-base: var(--font-sans);
   --ifm-font-family-monospace: var(--font-mono);
+  --ifm-heading-font-family: var(--font-display);
+  --ifm-heading-font-weight: 500;
+  --ifm-font-weight-bold: 600;
   --ifm-code-font-size: 0.84rem;
-  --ifm-font-size-base: 13px;
+  --ifm-font-size-base: 15px;
   --ifm-line-height-base: 1.55;
 
   --ifm-color-content: var(--text-primary);
@@ -139,34 +160,35 @@ html {
 }
 
 body {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
+  font-weight: 400;
   color: var(--text-primary);
   background: var(--bg-root);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.55;
 }
 
 a { color: var(--indigo-light); font-weight: 600; text-decoration: none; }
 a:hover { color: var(--indigo); text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 2px; }
 
-/* Headings — uppercase H2 like the Discover console */
+/* Headings — Radix Medium; uppercase H2 like the Discover console */
 h1, h2, h3, h4 {
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
+  font-weight: 500;
   color: var(--text-primary);
-  letter-spacing: -0.4px;
+  letter-spacing: -0.2px;
 }
-h1 { font-size: 22px; font-weight: 700; }
+h1 { font-size: 28px; }
 h2 {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 18px;
   text-transform: uppercase;
   letter-spacing: 0.6px;
   margin-top: 2.2rem;
   padding-bottom: 0.4rem;
   border-bottom: 1px solid var(--border);
 }
-h3 { font-size: 13px; font-weight: 700; letter-spacing: 0.2px; }
-h4 { font-size: 12px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--text-secondary); }
+h3 { font-size: 16px; letter-spacing: 0.2px; }
+h4 { font-size: 13px; letter-spacing: 0.4px; text-transform: uppercase; color: var(--text-secondary); }
 
 /* ─────────────────────── Navbar ─────────────────────── */
 
@@ -179,11 +201,11 @@ h4 { font-size: 12px; font-weight: 700; letter-spacing: 0.4px; text-transform: u
 }
 
 .navbar__logo img {
-  height: 28px;
+  height: 16px;
   width: auto;
 }
 
-.navbar__title { font-weight: 700; color: var(--text-primary); }
+.navbar__title { font-weight: 600; color: var(--text-primary); }
 .navbar__link, .navbar__brand { color: var(--text-secondary); font-weight: 600; }
 .navbar__link:hover { color: var(--text-primary); background: var(--indigo-dim); border-radius: 6px; }
 .navbar__link--active { color: var(--indigo-light); background: var(--indigo-dim); border-radius: 6px; }
@@ -195,13 +217,13 @@ h4 { font-size: 12px; font-weight: 700; letter-spacing: 0.4px; text-transform: u
   border-right: 1px solid var(--border);
 }
 
-.menu { font-family: var(--font-mono); font-size: 13px; padding: 12px 8px 24px !important; }
+.menu { font-family: var(--font-sans); font-size: 14px; padding: 12px 8px 24px !important; }
 
 /* Section labels — UPPERCASE small caps */
 .menu__link--sublist,
 .menu__list-item-collapsible .menu__link {
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 500;
   letter-spacing: 1.2px;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -222,8 +244,8 @@ h4 { font-size: 12px; font-weight: 700; letter-spacing: 0.4px; text-transform: u
 /* Doc links */
 .menu__link {
   border-radius: 8px;
-  font-weight: 500;
-  font-size: 13px;
+  font-weight: 600;
+  font-size: 14px;
   color: var(--text-secondary);
   padding: 10px 12px;
   margin: 1px 0;
@@ -256,7 +278,7 @@ h4 { font-size: 12px; font-weight: 700; letter-spacing: 0.4px; text-transform: u
 }
 
 .menu__list .menu__list .menu__link {
-  font-size: 12px;
+  font-size: 13px;
   padding: 8px 12px;
 }
 
@@ -269,9 +291,9 @@ h4 { font-size: 12px; font-weight: 700; letter-spacing: 0.4px; text-transform: u
 }
 
 .quilr-platform-filter-label {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 1.4px;
   color: var(--text-muted);
   opacity: 0.9;
@@ -290,7 +312,7 @@ h4 { font-size: 12px; font-weight: 700; letter-spacing: 0.4px; text-transform: u
 
 .quilr-platform-filter-buttons button {
   flex: 1;
-  font: 600 11px var(--font-mono);
+  font: 600 11px var(--font-sans);
   letter-spacing: 0.4px;
   text-transform: uppercase;
   color: var(--text-secondary);
@@ -361,9 +383,9 @@ article {
 }
 
 .docs-doc-id-index article > header h1 {
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -0.6px;
+  font-size: 34px;
+  font-weight: 500;
+  letter-spacing: -0.4px;
   color: var(--text-primary);
 }
 
@@ -422,7 +444,7 @@ code:not(pre code) {
 }
 
 .admonition .admonition-heading {
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.6px;
   font-size: 11px;
@@ -453,13 +475,13 @@ table {
   overflow: hidden;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  font-size: 12px;
+  font-size: 14px;
   margin: 14px 0;
 }
 
 table th, table td {
   padding: 10px 14px;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   border-bottom: 1px solid var(--border);
   vertical-align: middle;
 }
@@ -467,8 +489,8 @@ table th, table td {
 table th {
   background: var(--bg-card);
   color: var(--text-muted);
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   text-align: left;
@@ -489,9 +511,9 @@ table tbody tr:last-child td { border-bottom: none; }
 }
 
 .tabs__item {
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 11px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 12px;
   letter-spacing: 0.7px;
   text-transform: uppercase;
   color: var(--text-secondary);
@@ -525,7 +547,7 @@ table tbody tr:last-child td { border-bottom: none; }
 
 /* ─────────────────────── Table of contents (right rail) ─────────────────────── */
 
-.table-of-contents { font-size: 11px; font-family: var(--font-mono); }
+.table-of-contents { font-size: 13px; font-family: var(--font-sans); font-weight: 500; }
 .table-of-contents__link {
   color: var(--text-secondary);
   transition: color 0.15s ease, padding-left 0.15s ease;
@@ -533,7 +555,7 @@ table tbody tr:last-child td { border-bottom: none; }
 .table-of-contents__link:hover { color: var(--text-primary); padding-left: 4px; }
 .table-of-contents__link--active {
   color: var(--indigo-light);
-  font-weight: 700;
+  font-weight: 600;
   position: relative;
 }
 .table-of-contents__link--active::before {
@@ -561,14 +583,14 @@ table tbody tr:last-child td { border-bottom: none; }
   box-shadow: 0 8px 22px -10px rgba(99, 102, 241, 0.4);
 }
 .pagination-nav__sublabel {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text-muted);
-  font-weight: 700;
+  font-weight: 500;
 }
-.pagination-nav__label { color: var(--text-primary); font-weight: 700; font-size: 13px; }
+.pagination-nav__label { color: var(--text-primary); font-weight: 600; font-size: 15px; }
 
 /* ─────────────────────── Search bar ─────────────────────── */
 
@@ -576,8 +598,8 @@ input.navbar__search-input {
   background: var(--bg-input) !important;
   border: 1px solid var(--border) !important;
   border-radius: 8px !important;
-  font-family: var(--font-mono);
-  font-size: 12px;
+  font-family: var(--font-sans);
+  font-size: 13px;
   color: var(--text-primary);
   padding-left: 2.1rem !important;
 }
@@ -611,18 +633,19 @@ input.navbar__search-input:focus {
 }
 .footer__title {
   color: var(--text-muted);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 1.2px;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 500;
 }
 .footer__link-item {
   color: var(--text-secondary);
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 600;
 }
 .footer__link-item:hover { color: var(--indigo-light); }
-.footer__copyright { opacity: 0.55; font-size: 11px; font-family: var(--font-mono); }
+.footer__copyright { opacity: 0.55; font-size: 12px; font-family: var(--font-sans); }
 
 /* ─────────────────────── Scrollbar ─────────────────────── */
 

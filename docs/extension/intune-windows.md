@@ -1,6 +1,6 @@
-# Quilr Browser Extension — Microsoft Intune (Windows / MSI)
+# WhiteMatter Browser Extension — Microsoft Intune (Windows / MSI)
 
-Deploy the Quilr browser extension to a Windows fleet via Microsoft Intune.
+Deploy the WhiteMatter browser extension to a Windows fleet via Microsoft Intune.
 
 > **Sister guide:** the agent equivalent is [Microsoft Intune — Windows (MSI)](/deployment/intune-windows). The Win32 + Settings Catalog patterns documented there apply 1-to-1 to the extension.
 
@@ -9,15 +9,15 @@ Deploy the Quilr browser extension to a Windows fleet via Microsoft Intune.
 > `Quilr.msi` installs the **browser native messaging agent** on the device — that binary is what the Edge / Chrome extension talks to over the [Native Messaging API](https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging) to capture prompts and uploads. The MSI also takes care of loading the WebExtension into the browsers, so the MSI alone is sufficient.
 >
 > - **§2 is mandatory** — push the MSI to every endpoint that needs the extension.
-> - **§3 is optional** — only relevant if your organization already centrally manages browser extensions via Intune (force-install lists, allow/block-lists, toolbar locks). If you do, push the `ExtensionSettings` policy alongside the MSI so users cannot disable or hide the Quilr extension. If you don't manage browser extensions via MDM today, **skip §3** — the MSI handles the extension load.
+> - **§3 is optional** — only relevant if your organization already centrally manages browser extensions via Intune (force-install lists, allow/block-lists, toolbar locks). If you do, push the `ExtensionSettings` policy alongside the MSI so users cannot disable or hide the WhiteMatter extension. If you don't manage browser extensions via MDM today, **skip §3** — the MSI handles the extension load.
 
 ---
 
 ## Prerequisites
 
-Same as the Quilr Endpoint Agent rollout — see [Prerequisites](/prerequisites) for the complete checklist (Intune admin, Entra-joined Windows endpoints, Win32 Content Prep Tool, signed MSI, network egress, …). Browser-extension-specific extras:
+Same as the WhiteMatter Endpoint Agent rollout — see [Prerequisites](/prerequisites) for the complete checklist (Intune admin, Entra-joined Windows endpoints, Win32 Content Prep Tool, signed MSI, network egress, …). Browser-extension-specific extras:
 
-- **Tenant ID** from **Quilr support** (`support@quilr.ai`) — passed to the MSI as `TENANT=<TENANT-ID>`.
+- **Tenant ID** from **WhiteMatter support** (`support@quilr.ai`) — passed to the MSI as `TENANT=<TENANT-ID>`.
 - Reachability for `quilr-extensions.quilr.ai` (CDN that hosts `Quilr.msi`).
 
 ---
@@ -44,7 +44,7 @@ IntuneWinAppUtil.exe -c C:\Staging\QuilrExtension -s Quilr.msi -o C:\Staging\Out
 
 1. **Apps → All apps → Add → App type: Windows app (Win32)**.
 2. Upload `Quilr.intunewin`.
-3. **Name**: *Quilr Browser Extension*. **Publisher**: *Quilr AI*.
+3. **Name**: *WhiteMatter Browser Extension*. **Publisher**: *WhiteMatter*.
 
 ### Step C. Program (install / uninstall)
 
@@ -55,7 +55,7 @@ IntuneWinAppUtil.exe -c C:\Staging\QuilrExtension -s Quilr.msi -o C:\Staging\Out
 | Install behavior | **System** |
 | Device restart behavior | *No specific action* |
 
-> **`TENANT` parameter (required).** Replace `<TENANT-ID>` with the tenant identifier supplied by **Quilr support** (`support@quilr.ai`). Without it the extension installs but stays idle.
+> **`TENANT` parameter (required).** Replace `<TENANT-ID>` with the tenant identifier supplied by **WhiteMatter support** (`support@quilr.ai`). Without it the extension installs but stays idle.
 
 ### Step D. Detection rule
 
@@ -74,11 +74,11 @@ Choose **one**:
 
 **Skip this section unless your organization centrally manages browser extensions via MDM.** The MSI in §2 already loads the extension; the policy here is purely for shops that want centralized enforcement so users cannot disable, hide, or remove the extension.
 
-Deploy **alongside** the MSI from §2. This forces the browser to install the WebExtension from the Quilr CDN, pins it to the toolbar, and stops the user from disabling or removing it:
+Deploy **alongside** the MSI from §2. This forces the browser to install the WebExtension from the WhiteMatter CDN, pins it to the toolbar, and stops the user from disabling or removing it:
 
 1. **Devices → Configuration → Create → New Policy**.
 2. **Platform**: *Windows 10 and later*. **Profile type**: *Settings catalog*.
-3. **Name**: *Quilr Browser Extension — Force Install*.
+3. **Name**: *WhiteMatter Browser Extension — Force Install*.
 4. Add the setting **Configure extension management settings** under *Microsoft Edge → Extensions* **and** the equivalent under *Google Chrome → Extensions*. Paste the following JSON as the value:
 
 ```json
@@ -92,14 +92,14 @@ Deploy **alongside** the MSI from §2. This forces the browser to install the We
 }
 ```
 
-Replace `<TENANT-ID>` with the tenant identifier supplied by **Quilr support** (`support@quilr.ai`). What each key does:
+Replace `<TENANT-ID>` with the tenant identifier supplied by **WhiteMatter support** (`support@quilr.ai`). What each key does:
 
 | Key | Effect |
 |---|---|
 | `installation_mode: "force_installed"` | Installs the extension silently; users cannot disable or remove it. |
 | `override_update_url: true` | Forces the browser to fetch the extension from `update_url` instead of the public web store. |
 | `toolbar_state: "force_shown"` | Pins the Quilr icon to the browser toolbar — users cannot hide it. |
-| `update_url` | Tenant-specific Quilr CDN manifest that ships extension updates. |
+| `update_url` | Tenant-specific WhiteMatter CDN manifest that ships extension updates. |
 
 5. **Assignments → `WIN-Quilr-Extension`** (the same group as the MSI in §2). **Review + create**.
 
@@ -125,9 +125,9 @@ Get-ItemProperty `
   -ErrorAction SilentlyContinue
 ```
 
-Open `edge://extensions` and `chrome://extensions` — the Quilr extension must be **present, enabled, "Installed by your organization"**.
+Open `edge://extensions` and `chrome://extensions` — the WhiteMatter extension must be **present, enabled, "Installed by your organization"**.
 
-Then send a short test prompt on `https://claude.ai/` (or any monitored AI host). Within ~2 seconds the **prompt event should appear in the Quilr console**.
+Then send a short test prompt on `https://claude.ai/` (or any monitored AI host). Within ~2 seconds the **prompt event should appear in the WhiteMatter console**.
 
 > The browser extension does **not** perform TLS interception — it captures prompts and file uploads at the **DOM level** via the WebExtensions API. The "Issuer = Quilr" cert-chain check from [Validate Installation §4](/reference/validate-installation) applies to the **Endpoint Agent's WinDivert driver**, not the extension. For the extension, the source of truth is *"did the event reach the console?"*.
 

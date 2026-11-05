@@ -3,22 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Step 4 · Validate Installation — Quilr Browser Extension</title>
+<title>Step 4 · Validate Installation — WhiteMatter Browser Extension</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../../assets/styles.css" />
 
-  <!-- sop-favicon v1 -->
-  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
-  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+  <!-- sop-favicon v2 — WhiteMatter mark; the SVG follows the browser's light/dark theme -->
+  <link rel="icon" href="/sop/assets/brand/favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/svg+xml" href="/sop/assets/brand/favicon.svg" />
+  <link rel="apple-touch-icon" href="/sop/assets/brand/apple-touch-icon.png" />
 </head>
 <body>
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">
       <div class="logo">Q</div>
-      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+      <div><div class="brand-name">WhiteMatter</div><div class="brand-sub">Deployment SOP</div></div>
     </div>
     <div class="nav-group-title">Overview</div>
     <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
@@ -77,7 +78,7 @@
       <div class="callout note" style="margin-top:6px;"><span class="ico">&#x1F4CC;</span><div><span class="ct">MDM-specific quirks to expect</span>On Windows the user must log off &amp; back on once before <code>ExtensionInstallForcelist</code> takes effect &mdash; the policy ingestion runs at logon. On macOS the user must approve any newly-pushed configuration profile <em>once</em> in <strong>System Settings &rarr; Privacy &amp; Security &rarr; Profiles</strong> (DEP-enrolled devices skip this). After those, the checks below should all pass.</div></div>
 
       <h2>Console-side validation &mdash; the fastest check</h2>
-      <p>If the device successfully phoned home, it will show up in the <strong>Quilr Console</strong> within seconds of install. Open <a data-env-link href="https://app.quilr.ai/en/settings/browser-extension/deployment" target="_blank" rel="noopener"><strong>Settings &rarr; Browser Extension</strong></a> in your tenant Console and switch to the <strong>Deployment Status</strong> tab. Type the test user&rsquo;s email / name in the search box.</p>
+      <p>If the device successfully phoned home, it will show up in the <strong>WhiteMatter Console</strong> within seconds of install. Open <a data-env-link href="https://app.quilr.ai/en/settings/browser-extension/deployment" target="_blank" rel="noopener"><strong>Settings &rarr; Browser Extension</strong></a> in your tenant Console and switch to the <strong>Deployment Status</strong> tab. Type the test user&rsquo;s email / name in the search box.</p>
       <div class="table-wrap"><table>
         <thead><tr><th>Column</th><th>Healthy value</th><th>If it&rsquo;s wrong &hellip;</th></tr></thead>
         <tbody>
@@ -89,7 +90,7 @@
           <tr><td><strong>Browser Utility Status</strong></td><td><code>Enabled</code></td><td><code>Disabled</code> &rarr; native messaging agent isn&rsquo;t running; redeploy the MSI / pkg.</td></tr>
           <tr><td><strong>Browser Utility Version</strong></td><td>Matches the agent build</td><td>Stale or empty &rarr; the MSI / pkg didn&rsquo;t install or the user never relogged.</td></tr>
           <tr><td><strong>Last Seen</strong></td><td>&ldquo;a few minutes ago&rdquo; / &ldquo;just now&rdquo;</td><td>&gt; 1 hour &rarr; the device went offline. Confirm network access; run the Step&nbsp;2 smoke test.</td></tr>
-          <tr><td><strong>Persona Created</strong></td><td><code>Yes</code></td><td><code>No</code> &rarr; sign the user into the Quilr Console once in a browser tab to seed the persona; the next heartbeat picks it up.</td></tr>
+          <tr><td><strong>Persona Created</strong></td><td><code>Yes</code></td><td><code>No</code> &rarr; sign the user into the WhiteMatter Console once in a browser tab to seed the persona; the next heartbeat picks it up.</td></tr>
         </tbody>
       </table></div>
       <figure style="margin:12px 0 6px; padding:0;">
@@ -200,16 +201,16 @@
       </div>
       <div class="expect"><strong>Expected:</strong> the Quilr icon is rendered in/next to the prompt input on at least one of these sites. Click the icon to confirm it opens the Quilr popover. No icon on <em>any</em> of these &rarr; the WebExtension is installed but the content-script didn&rsquo;t inject &mdash; the extension is disabled, the page-script permission was revoked, or the host doesn&rsquo;t match the content-script rule. See Step&nbsp;6.</div>
 
-      <h3>Test 2 &mdash; Prompt round-trips to the Quilr console</h3>
-      <p>With the icon visible, type a real prompt (e.g. <em>&ldquo;Summarise this paragraph in one line.&rdquo;</em>) into the prompt box on <a href="https://claude.ai" target="_blank" rel="noopener">https://claude.ai</a> and hit send. The event should appear in the Quilr console within ~2 seconds, proving the WebExtension &rarr; native messaging agent &rarr; backplane pipe is complete.</p>
-      <div class="expect"><strong>Expected:</strong> a corresponding event row shows up in <a data-env-link href="https://app.quilr.ai/" target="_blank" rel="noopener">the Quilr console</a> within ~2 seconds, with the user, host (<code>claude.ai</code>), and prompt body captured. No event &rarr; the icon is loading but the native messaging bridge is broken; see Step&nbsp;6.</div>
+      <h3>Test 2 &mdash; Prompt round-trips to the WhiteMatter console</h3>
+      <p>With the icon visible, type a real prompt (e.g. <em>&ldquo;Summarise this paragraph in one line.&rdquo;</em>) into the prompt box on <a href="https://claude.ai" target="_blank" rel="noopener">https://claude.ai</a> and hit send. The event should appear in the WhiteMatter console within ~2 seconds, proving the WebExtension &rarr; native messaging agent &rarr; backplane pipe is complete.</p>
+      <div class="expect"><strong>Expected:</strong> a corresponding event row shows up in <a data-env-link href="https://app.quilr.ai/" target="_blank" rel="noopener">the WhiteMatter console</a> within ~2 seconds, with the user, host (<code>claude.ai</code>), and prompt body captured. No event &rarr; the icon is loading but the native messaging bridge is broken; see Step&nbsp;6.</div>
 
       <h3>Test 3 &mdash; DLP control fires on a sensitive prompt</h3>
       <p>Tests 1 and 2 confirmed the extension renders and the pipe to the console is open. Test 3 confirms the <strong>policy half</strong> of the chain &mdash; a control configured in the console actually reaches the extension, the DLP engine matches a sensitive payload, and the Quilr popup blocks the user before the prompt leaves the device.</p>
 
       <h4>3.1 &mdash; Enable the &ldquo;Prevent leakage&rdquo; control in Action mode</h4>
       <ol>
-        <li>In the Quilr Console, open <a data-env-link href="https://app.quilr.ai/en/dashboard/controls" target="_blank" rel="noopener"><strong>Controls</strong></a> and switch to the <strong>AI Risks</strong> tab.</li>
+        <li>In the WhiteMatter Console, open <a data-env-link href="https://app.quilr.ai/en/dashboard/controls" target="_blank" rel="noopener"><strong>Controls</strong></a> and switch to the <strong>AI Risks</strong> tab.</li>
         <li>Search for <code>preven</code> and find the row <strong>&ldquo;Preventing The Leakage Of Sensitive Data Via An AI App&rdquo;</strong>.</li>
         <li>Toggle <strong>Status</strong> on (green).</li>
         <li>In the <strong>Mode</strong> dropdown, pick <strong>Action</strong> (not <em>Monitor</em>). Monitor only logs; Action shows the block popup to the user.</li>

@@ -3,7 +3,7 @@ title: URL Exception List — AI Apps
 description: Monitored AI hosts (ChatGPT, Claude, Gemini, etc.) — for SWG SSL-bypass.
 ---
 
-# Quilr Endpoint Agent — Web Proxy / SWG Exception List (AI Apps)
+# WhiteMatter Endpoint Agent — Web Proxy / SWG Exception List (AI Apps)
 
 **SSL-inspection bypass list for AI assistants and GenAI file-upload endpoints**
 *Version 2026.05.11 — derived from `agent-interceptor` config (id 285, version 64)*
@@ -14,11 +14,11 @@ description: Monitored AI hosts (ChatGPT, Claude, Gemini, etc.) — for SWG SSL-
 
 ## 1. Why This List Exists
 
-The Quilr Endpoint Agent performs **on-device TLS interception** of outbound traffic to a curated list of AI assistants and GenAI file-upload endpoints. It extracts prompt content and uploaded file content (after OCR / PDF / DOCX / XLSX / plaintext extraction), then ships structured events to the Quilr control plane for policy.
+The WhiteMatter Endpoint Agent performs **on-device TLS interception** of outbound traffic to a curated list of AI assistants and GenAI file-upload endpoints. It extracts prompt content and uploaded file content (after OCR / PDF / DOCX / XLSX / plaintext extraction), then ships structured events to the WhiteMatter control plane for policy.
 
-If your environment already runs a secure web gateway or CASB — **Netskope**, **Zscaler ZIA**, **Cisco Umbrella SIG / Secure Web Appliance**, **Palo Alto Prisma Access**, **Forcepoint ONE**, **Symantec/Broadcom WSS / Edge SWG (ProxySG)**, **McAfee/Skyhigh SWG**, **Check Point Harmony**, **iboss**, **Cloudflare Gateway**, **Menlo**, etc. — those products also terminate and re-sign TLS for the same hosts. **Two decryptors in the same path do not coexist.** When the upstream SWG presents its own CA, the Quilr agent sees an unexpected leaf certificate, pinning checks fail, request signatures break, and the chain fails closed.
+If your environment already runs a secure web gateway or CASB — **Netskope**, **Zscaler ZIA**, **Cisco Umbrella SIG / Secure Web Appliance**, **Palo Alto Prisma Access**, **Forcepoint ONE**, **Symantec/Broadcom WSS / Edge SWG (ProxySG)**, **McAfee/Skyhigh SWG**, **Check Point Harmony**, **iboss**, **Cloudflare Gateway**, **Menlo**, etc. — those products also terminate and re-sign TLS for the same hosts. **Two decryptors in the same path do not coexist.** When the upstream SWG presents its own CA, the WhiteMatter agent sees an unexpected leaf certificate, pinning checks fail, request signatures break, and the chain fails closed.
 
-> **The fix:** add every host in §3 to the SWG's **SSL/TLS inspection bypass** (a.k.a. "Do Not Decrypt", "SSL exception", "URL exemption", "Bypass Inspection") policy. Traffic still flows through the SWG — but **end-to-end encrypted** between endpoint and destination. Quilr decrypts on the host, captures the prompt/file, re-encrypts before packets leave the device.
+> **The fix:** add every host in §3 to the SWG's **SSL/TLS inspection bypass** (a.k.a. "Do Not Decrypt", "SSL exception", "URL exemption", "Bypass Inspection") policy. Traffic still flows through the SWG — but **end-to-end encrypted** between endpoint and destination. WhiteMatter decrypts on the host, captures the prompt/file, re-encrypts before packets leave the device.
 
 For interception to function correctly, every URL listed here must:
 
@@ -36,9 +36,9 @@ For interception to function correctly, every URL listed here must:
 | **Zscaler ZIA admin** | Policy → SSL Inspection → add a "Do Not Inspect" rule matching a URL Category that contains the §3 hosts. See §3.2. |
 | **Other SWG / proxy admin** | Add §3 domains to your product's "SSL bypass" feature — see §3.3 for the per-vendor cheat sheet. |
 | **Firewall / ZTNA admin** | Allow outbound 443 to every host in §3 from the macOS fleet. |
-| **EDR / Mac admin** | If a host-based content filter sits in front of Quilr's network extension, allow-list the Quilr agent process. |
-| **Compliance / DLP owner** | Use §4 to evidence which AI endpoints are actively monitored for prompt + file content by Quilr on the device. |
-| **Quilr admin** | Regenerate this guide when the `agent-interceptor` config version changes. |
+| **EDR / Mac admin** | If a host-based content filter sits in front of WhiteMatter's network extension, allow-list the WhiteMatter agent process. |
+| **Compliance / DLP owner** | Use §4 to evidence which AI endpoints are actively monitored for prompt + file content by WhiteMatter on the device. |
+| **WhiteMatter admin** | Regenerate this guide when the `agent-interceptor` config version changes. |
 
 ---
 
@@ -73,7 +73,7 @@ For interception to function correctly, every URL listed here must:
 1. Sign in to the Netskope tenant admin console.
 2. Navigate to **Policies → Real-time Protection → SSL Decryption**.
 3. Click **New Policy** (top-right).
-4. **Source**: scope to the user group / OU / device group running the Quilr Endpoint Agent.
+4. **Source**: scope to the user group / OU / device group running the WhiteMatter Endpoint Agent.
 5. **Destination**: Custom Category named `Quilr Agent Bypass — AI Apps` containing every host from §3 (wildcards for `*.oaiusercontent.com`, `*.sharepoint.com`, `*genspark*.blob.core.windows.net`).
 6. **Action**: **Do Not Decrypt**.
 7. **Set Order**: place this rule **above** any "Decrypt All" rule.
@@ -169,8 +169,8 @@ Each rule has an `excluded_apps` field that tells the agent not to intercept tra
 
 | Platform | Excluded processes | Effect |
 |---|---|---|
-| **macOS** | *(none — empty for every AI rule)* | The Quilr Network Extension intercepts AI traffic regardless of which browser or native app initiated it. |
-| **Windows** | `msedge.exe`, `chrome.exe` *(on the majority of AI rules)* | Traffic from Microsoft Edge and Google Chrome is not intercepted by the endpoint agent on Windows — those browsers are covered by the Quilr browser extension instead, avoiding double-capture. |
+| **macOS** | *(none — empty for every AI rule)* | The WhiteMatter Network Extension intercepts AI traffic regardless of which browser or native app initiated it. |
+| **Windows** | `msedge.exe`, `chrome.exe` *(on the majority of AI rules)* | Traffic from Microsoft Edge and Google Chrome is not intercepted by the endpoint agent on Windows — those browsers are covered by the WhiteMatter browser extension instead, avoiding double-capture. |
 
 ### AI rules with no Windows exclusions (intercept all processes on both OS)
 
@@ -194,7 +194,7 @@ Each rule has an `excluded_apps` field that tells the agent not to intercept tra
 | Last updated | `2026-05-11T07:59:01 UTC` |
 | Active | `true` |
 
-When the version above bumps, fetch the latest config from the Quilr control plane and regenerate this document.
+When the version above bumps, fetch the latest config from the WhiteMatter control plane and regenerate this document.
 
 ---
 
@@ -229,7 +229,7 @@ If the issuer line shows your network proxy's CA, your upstream proxy is decrypt
 ### 7.3 Confirm Windows browser exclusions are working
 
 1. Open Microsoft Edge → ChatGPT → submit a prompt.
-2. Quilr Endpoint Agent log shows **no** interception event (the browser extension captures it instead).
+2. WhiteMatter Endpoint Agent log shows **no** interception event (the browser extension captures it instead).
 3. Repeat in Chrome — same expected result.
 4. Repeat in Firefox or a non-browser app — an interception event **must** appear.
 
@@ -237,11 +237,11 @@ If the issuer line shows your network proxy's CA, your upstream proxy is decrypt
 
 ## 8. Change Management
 
-- **Adding a URL:** update the `agent-interceptor` source in the Quilr control plane, increment `version`, bump the version line in this document and re-run the generator.
+- **Adding a URL:** update the `agent-interceptor` source in the WhiteMatter control plane, increment `version`, bump the version line in this document and re-run the generator.
 - **Removing a URL:** confirm with policy and compliance owners before retiring an endpoint, since dashboards may depend on the historical app name.
 - **Browser exclusions:** toggle `msedge.exe` / `chrome.exe` in `excluded_apps.win` per rule. Section 5 must be updated.
 - **Distribution:** ship this guide alongside the Jamf deployment bundle and republish on any source-config version change.
 
 ---
 
-*End of document — Quilr AI | Adapt AI Securely*
+*End of document — WhiteMatter | Adapt AI Securely*

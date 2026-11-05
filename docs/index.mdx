@@ -1,5 +1,5 @@
 ---
-title: Quilr Endpoint Agent
+title: WhiteMatter Endpoint Agent
 sidebar_label: Overview
 slug: /
 ---
@@ -7,17 +7,17 @@ slug: /
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Quilr Endpoint Agent — Documentation
+# WhiteMatter Endpoint Agent — Documentation
 
-Operator-facing deployment, configuration, and troubleshooting guides for the **Quilr Endpoint Agent** (Windows + macOS) and the **Quilr Browser Extension**. Use the tabs below to filter by platform, or use the sidebar.
+Operator-facing deployment, configuration, and troubleshooting guides for the **WhiteMatter Endpoint Agent** (Windows + macOS) and the **WhiteMatter Browser Extension**. Use the tabs below to filter by platform, or use the sidebar.
 
 :::info Ask an AI
 
 Want a quick summary, or to ask cross-doc questions? These deep-links open a fresh chat with our [`/llms.txt`](/llms.txt) index pre-loaded — the AI can then pull in any specific page from that index on demand:
 
-- 💬 [**Ask ChatGPT**](https://chatgpt.com/?q=Please%20read%20https%3A%2F%2Finstalldocs.quilrai.dev%2Fllms.txt%20%E2%80%94%20this%20is%20the%20index%20for%20the%20Quilr%20Endpoint%20Agent%20%2B%20Quilr%20Browser%20Extension%20documentation.%20Summarize%20what%20it%20covers%2C%20then%20answer%20my%20follow-up%20questions%20by%20pulling%20in%20linked%20pages%20from%20that%20index%20as%20needed.) — summarize and Q&A
-- 💬 [**Ask Claude**](https://claude.ai/new?q=Please%20read%20https%3A%2F%2Finstalldocs.quilrai.dev%2Fllms.txt%20%E2%80%94%20this%20is%20the%20index%20for%20the%20Quilr%20Endpoint%20Agent%20%2B%20Quilr%20Browser%20Extension%20documentation.%20Summarize%20what%20it%20covers%2C%20then%20answer%20my%20follow-up%20questions%20by%20pulling%20in%20linked%20pages%20from%20that%20index%20as%20needed.) — summarize and Q&A
-- 🔎 [**Ask Perplexity**](https://www.perplexity.ai/?q=Read%20https%3A%2F%2Finstalldocs.quilrai.dev%2Fllms.txt%20%E2%80%94%20the%20Quilr%20Endpoint%20Agent%20%2B%20Browser%20Extension%20docs%20index%20%E2%80%94%20and%20summarize%20it%2C%20then%20answer%20my%20questions%20by%20pulling%20in%20linked%20pages.) — search-style answers
+- 💬 [**Ask ChatGPT**](https://chatgpt.com/?q=Please%20read%20https%3A%2F%2Finstalldocs.quilrai.dev%2Fllms.txt%20%E2%80%94%20this%20is%20the%20index%20for%20the%20WhiteMatter%20Endpoint%20Agent%20%2B%20WhiteMatter%20Browser%20Extension%20documentation.%20Summarize%20what%20it%20covers%2C%20then%20answer%20my%20follow-up%20questions%20by%20pulling%20in%20linked%20pages%20from%20that%20index%20as%20needed.) — summarize and Q&A
+- 💬 [**Ask Claude**](https://claude.ai/new?q=Please%20read%20https%3A%2F%2Finstalldocs.quilrai.dev%2Fllms.txt%20%E2%80%94%20this%20is%20the%20index%20for%20the%20WhiteMatter%20Endpoint%20Agent%20%2B%20WhiteMatter%20Browser%20Extension%20documentation.%20Summarize%20what%20it%20covers%2C%20then%20answer%20my%20follow-up%20questions%20by%20pulling%20in%20linked%20pages%20from%20that%20index%20as%20needed.) — summarize and Q&A
+- 🔎 [**Ask Perplexity**](https://www.perplexity.ai/?q=Read%20https%3A%2F%2Finstalldocs.quilrai.dev%2Fllms.txt%20%E2%80%94%20the%20WhiteMatter%20Endpoint%20Agent%20%2B%20Browser%20Extension%20docs%20index%20%E2%80%94%20and%20summarize%20it%2C%20then%20answer%20my%20questions%20by%20pulling%20in%20linked%20pages.) — search-style answers
 
 Or paste the URL `https://installdocs.quilrai.dev/llms.txt` into any AI tool that can fetch URLs.
 
@@ -67,29 +67,29 @@ Or paste the URL `https://installdocs.quilrai.dev/llms.txt` into any AI tool tha
 
 ## Browser Extension
 
-Install the Quilr browser extension into Edge / Chrome (and Safari on macOS) for the browsers the endpoint agent intentionally excludes from its interception scope.
+Install the WhiteMatter browser extension into Edge / Chrome (and Safari on macOS) for the browsers the endpoint agent intentionally excludes from its interception scope.
 
 <Tabs groupId="platform" queryString="platform">
   <TabItem value="all" label="All Platforms" default>
 
 | Guide | Variant | Notes |
 |---|---|---|
-| [Quilr Browser Extension — macOS](/extension/macos) | macOS / pkg + mobileconfig | Tenant pkg + File-Access mobileconfig via your MDM |
-| [Quilr Browser Extension — Windows](/extension/windows) | Windows / MSI | `Quilr.msi` with `TENANT=<TENANT-ID>`, or `ExtensionInstallForcelist` |
+| [WhiteMatter Browser Extension — macOS](/extension/macos) | macOS / pkg + mobileconfig | Tenant pkg + File-Access mobileconfig via your MDM |
+| [WhiteMatter Browser Extension — Windows](/extension/windows) | Windows / MSI | `Quilr.msi` with `TENANT=<TENANT-ID>`, or `ExtensionInstallForcelist` |
 
   </TabItem>
   <TabItem value="macos" label="macOS">
 
 | Guide | Variant | Notes |
 |---|---|---|
-| [Quilr Browser Extension — macOS](/extension/macos) | macOS / pkg + mobileconfig | Tenant pkg + File-Access mobileconfig via your MDM |
+| [WhiteMatter Browser Extension — macOS](/extension/macos) | macOS / pkg + mobileconfig | Tenant pkg + File-Access mobileconfig via your MDM |
 
   </TabItem>
   <TabItem value="windows" label="Windows">
 
 | Guide | Variant | Notes |
 |---|---|---|
-| [Quilr Browser Extension — Windows](/extension/windows) | Windows / MSI | `Quilr.msi` with `TENANT=<TENANT-ID>`, or `ExtensionInstallForcelist` |
+| [WhiteMatter Browser Extension — Windows](/extension/windows) | Windows / MSI | `Quilr.msi` with `TENANT=<TENANT-ID>`, or `ExtensionInstallForcelist` |
 
   </TabItem>
 </Tabs>

@@ -3,22 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Step 5 · Installing using MDM — Quilr Browser Extension</title>
+<title>Step 5 · Installing using MDM — WhiteMatter Browser Extension</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../../assets/styles.css" />
 
-  <!-- sop-favicon v1 -->
-  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
-  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+  <!-- sop-favicon v2 — WhiteMatter mark; the SVG follows the browser's light/dark theme -->
+  <link rel="icon" href="/sop/assets/brand/favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/svg+xml" href="/sop/assets/brand/favicon.svg" />
+  <link rel="apple-touch-icon" href="/sop/assets/brand/apple-touch-icon.png" />
 </head>
 <body>
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">
       <div class="logo">Q</div>
-      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+      <div><div class="brand-name">WhiteMatter</div><div class="brand-sub">Deployment SOP</div></div>
     </div>
     <div class="nav-group-title">Overview</div>
     <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
@@ -97,7 +98,7 @@
           <h3>Microsoft Intune — Windows</h3>
           <div class="part">
             <div class="part-head"><span class="part-badge">i</span><h3>Discovery-offline configuration</h3></div>
-            <p>Use these properties only when endpoints cannot contact Quilr Discovery. Every environment key shown below must be present. Ask <a href="mailto:support@quilr.ai">support@quilr.ai</a> for each value because the URLs depend on where the tenant is onboarded. Keep <code>EXTENSIONENV</code> as one quoted, semicolon-separated value.</p>
+            <p>Use these properties only when endpoints cannot contact WhiteMatter Discovery. Every environment key shown below must be present. Ask <a href="mailto:support@quilr.ai">support@quilr.ai</a> for each value because the URLs depend on where the tenant is onboarded. Keep <code>EXTENSIONENV</code> as one quoted, semicolon-separated value.</p>
             <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>MSI properties · append to the Intune install command</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
 <pre><code>TENANT=<span class="v">&lt;TENANT-ID&gt;</span> SKIPDISCOVERY=1 FIREFOXINSTALLURL="<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>" EXTENSIONENV="PLASMO_PUBLIC_BFF_ENDPOINT=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;PLASMO_PUBLIC_OAUTH_URL=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;PLASMO_PUBLIC_OAUTH_LOGIN_URL=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;PLASMO_PUBLIC_DLP_END_POINT=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;PLASMO_PUBLIC_UPDATE_URL=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>;BASE_URL=<span class="v">&lt;VALUE-FROM-QUILR-SUPPORT&gt;</span>"</code></pre></div>
             <div class="callout warn"><span class="ico">⚠️</span><div><span class="ct">Discovery-offline, not fully air-gapped</span> These settings prevent Discovery calls, but the supplied service and artifact URLs must still be reachable.</div></div>
@@ -109,7 +110,7 @@
           </div>
           <div class="part">
             <div class="part-head"><span class="part-badge">2</span><h3>Create the Win32 app</h3></div>
-            <p><strong>Apps → All apps → Add → Windows app (Win32)</strong>, upload <code>Quilr.intunewin</code>. Name &ldquo;Quilr Browser Extension,&rdquo; publisher &ldquo;Quilr AI.&rdquo;</p>
+            <p><strong>Apps → All apps → Add → Windows app (Win32)</strong>, upload <code>Quilr.intunewin</code>. Name &ldquo;WhiteMatter Browser Extension,&rdquo; publisher &ldquo;WhiteMatter.&rdquo;</p>
             <div class="table-wrap"><table>
               <thead><tr><th>Field</th><th>Value</th></tr></thead>
               <tbody>
@@ -153,7 +154,7 @@ Set-ItemProperty $ff -Name updates_disabled -Value 0 -Type DWord</code></pre></d
           <h3>Microsoft Intune — macOS</h3>
           <div class="part">
             <div class="part-head"><span class="part-badge">i</span><h3>Discovery-offline preinstall script</h3></div>
-            <p>Use this instead of the tenant-only preinstall script below when Macs cannot contact Quilr Discovery. Every environment key shown must be present. Ask <a href="mailto:support@quilr.ai">support@quilr.ai</a> for each value because the URLs depend on where the tenant is onboarded. Change <code>browsers</code> to <code>firefox,safari</code> when an existing-customer rollout must leave Chrome/Edge untouched.</p>
+            <p>Use this instead of the tenant-only preinstall script below when Macs cannot contact WhiteMatter Discovery. Every environment key shown must be present. Ask <a href="mailto:support@quilr.ai">support@quilr.ai</a> for each value because the URLs depend on where the tenant is onboarded. Change <code>browsers</code> to <code>firefox,safari</code> when an existing-customer rollout must leave Chrome/Edge untouched.</p>
             <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash · system context · before pkg</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
 <pre><code>#!/bin/bash
 set -euo pipefail
@@ -181,7 +182,7 @@ exit 0</code></pre></div>
             <div class="part-head"><span class="part-badge">1</span><h3>Gather three artifacts</h3></div>
             <ul>
               <li>Tenant pkg: <code>https://quilr-extensions.quilr.ai/installer/mac/quilrai-browser-extension.pkg</code></li>
-              <li>Tenant <code>.mobileconfig</code> from the Quilr console (Settings → Browser Extension → Deployment → MDM → macOS / Intune)</li>
+              <li>Tenant <code>.mobileconfig</code> from the WhiteMatter console (Settings → Browser Extension → Deployment → MDM → macOS / Intune)</li>
               <li>File-Access <code>.mobileconfig</code>: <code>https://quilr-extensions.quilr.ai/browser-agent/prod/mac/quilr_browser_util_Files_Access.mobileconfig</code></li>
             </ul>
           </div>
@@ -224,7 +225,7 @@ chmod 644 /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json</code><
           </div>
           <div class="part">
             <div class="part-head"><span class="part-badge">4</span><h3>Add the PKG app</h3></div>
-            <p><strong>Apps → Add → macOS app (PKG)</strong> (unmanaged), upload <code>quilr-installer-mac.pkg</code>, publisher &ldquo;Quilr AI,&rdquo; assign Required to the same group.</p>
+            <p><strong>Apps → Add → macOS app (PKG)</strong> (unmanaged), upload <code>quilr-installer-mac.pkg</code>, publisher &ldquo;WhiteMatter,&rdquo; assign Required to the same group.</p>
             <div class="callout warn"><span class="ico">⚠️</span><div><span class="ct">Order</span> Profiles first, then the preinstall script, then the PKG — so tenant/browsers JSON and permissions exist before the installer runs.</div></div>
           </div>
         </div>
@@ -234,7 +235,7 @@ chmod 644 /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json</code><
           <h3>Jamf Pro — macOS</h3>
           <div class="part">
             <div class="part-head"><span class="part-badge">1</span><h3>Gather three artifacts</h3></div>
-            <p>Tenant pkg (CDN), tenant <code>.mobileconfig</code> (Quilr console → macOS / Jamf Pro), and the public File-Access <code>.mobileconfig</code>.</p>
+            <p>Tenant pkg (CDN), tenant <code>.mobileconfig</code> (WhiteMatter console → macOS / Jamf Pro), and the public File-Access <code>.mobileconfig</code>.</p>
           </div>
           <div class="part">
             <div class="part-head"><span class="part-badge">2</span><h3>Deploy both profiles</h3></div>
@@ -275,7 +276,7 @@ chmod 644 /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json</code><
           </div>
           <div class="part">
             <div class="part-head"><span class="part-badge">4</span><h3>Package + policy</h3></div>
-            <p>Upload the pkg (display name &ldquo;Quilr Browser Extension,&rdquo; category Endpoint Security). Create a policy &ldquo;Install Quilr Browser Extension&rdquo; — Recurring Check-in, Once per computer — attach the preinstall script (Before), then the package, and scope to the same group.</p>
+            <p>Upload the pkg (display name &ldquo;WhiteMatter Browser Extension,&rdquo; category Endpoint Security). Create a policy &ldquo;Install WhiteMatter Browser Extension&rdquo; — Recurring Check-in, Once per computer — attach the preinstall script (Before), then the package, and scope to the same group.</p>
           </div>
         </div>
 
@@ -284,7 +285,7 @@ chmod 644 /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json</code><
           <h3>Kandji — macOS</h3>
           <div class="part">
             <div class="part-head"><span class="part-badge">1</span><h3>Gather three artifacts</h3></div>
-            <p>Tenant pkg (CDN), tenant <code>.mobileconfig</code> (Quilr console → macOS / Kandji), public File-Access <code>.mobileconfig</code>.</p>
+            <p>Tenant pkg (CDN), tenant <code>.mobileconfig</code> (WhiteMatter console → macOS / Kandji), public File-Access <code>.mobileconfig</code>.</p>
           </div>
           <div class="part">
             <div class="part-head"><span class="part-badge">2</span><h3>Custom Profiles (both mobileconfigs)</h3></div>
@@ -325,7 +326,7 @@ chmod 644 /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json</code><
           </div>
           <div class="part">
             <div class="part-head"><span class="part-badge">4</span><h3>Custom App (pkg)</h3></div>
-            <p><strong>Library → Add Library Item → Custom App</strong>, upload the pkg, name &ldquo;Quilr Browser Extension,&rdquo; configure Audit &amp; Enforce (request the script from Quilr support), assign to the same Blueprint after the preinstall Custom Script.</p>
+            <p><strong>Library → Add Library Item → Custom App</strong>, upload the pkg, name &ldquo;WhiteMatter Browser Extension,&rdquo; configure Audit &amp; Enforce (request the script from WhiteMatter support), assign to the same Blueprint after the preinstall Custom Script.</p>
           </div>
         </div>
 
@@ -338,14 +339,14 @@ chmod 644 /tmp/quilr-be-install.json /Users/Shared/quilr-be-install.json</code><
           </div>
           <div class="part">
             <div class="part-head"><span class="part-badge">2</span><h3>Add the package</h3></div>
-            <p><strong>Software Deployment → Add Package → Add Windows Package.</strong> Name &ldquo;Quilr Browser Extension,&rdquo; category Security, browse to <code>Quilr.msi</code>. In MSI/MSP Properties enter:</p>
+            <p><strong>Software Deployment → Add Package → Add Windows Package.</strong> Name &ldquo;WhiteMatter Browser Extension,&rdquo; category Security, browse to <code>Quilr.msi</code>. In MSI/MSP Properties enter:</p>
             <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>MSI properties</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
 <pre><code>TENANT=<span class="v">&lt;TENANT-ID&gt;</span></code></pre></div>
             <div class="callout crit"><span class="ico">⛔</span><div><span class="ct">Parameter is TENANT</span> Same MSI and property as every other Windows deployment path (<code>TENANTID</code> belongs to the endpoint agent, not this MSI). Without it the extension installs but stays idle until reinstalled. Optional properties (<code>PROXY</code>, <code>BROWSERS</code>, <code>SKIPEXTENSIONSETTINGS</code>, &hellip;) go in the same MSI/MSP Properties field — see the <a href="../Step%203%20-%20Manual%20Installation/index.html">Step&nbsp;3 MSI property reference</a>.</div></div>
           </div>
           <div class="part">
             <div class="part-head"><span class="part-badge">3</span><h3>Install configuration</h3></div>
-            <p><strong>Configurations → Add Configuration → Install MSI Software.</strong> Name &ldquo;Install Quilr Browser Extension,&rdquo; select the package, Run as System, target <code>WIN-Quilr-Extension</code>, Deploy.</p>
+            <p><strong>Configurations → Add Configuration → Install MSI Software.</strong> Name &ldquo;Install WhiteMatter Browser Extension,&rdquo; select the package, Run as System, target <code>WIN-Quilr-Extension</code>, Deploy.</p>
           </div>
           <div class="part">
             <div class="part-head"><span class="part-badge">4</span><h3>Optional · enforce via browser policy</h3></div>
@@ -378,7 +379,7 @@ Set-ItemProperty $ff -Name updates_disabled -Value 0 -Type DWord</code></pre></d
           </div>
           <div class="part">
             <div class="part-head"><span class="part-badge">2</span><h3>Create the Application (MSI deployment type)</h3></div>
-            <p><strong>Software Library → Application Management → Applications → Create Application.</strong> Choose type <strong>Windows Installer (*.msi)</strong> and point it at <code>Quilr.msi</code>. Name &ldquo;Quilr Browser Extension,&rdquo; publisher &ldquo;Quilr AI.&rdquo; On the generated deployment type, override the install command line:</p>
+            <p><strong>Software Library → Application Management → Applications → Create Application.</strong> Choose type <strong>Windows Installer (*.msi)</strong> and point it at <code>Quilr.msi</code>. Name &ldquo;WhiteMatter Browser Extension,&rdquo; publisher &ldquo;WhiteMatter.&rdquo; On the generated deployment type, override the install command line:</p>
             <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>cmd</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
 <pre><code>msiexec /i "Quilr.msi" TENANT=&lt;TENANT-ID&gt; /qn /norestart</code></pre></div>
             <div class="callout crit"><span class="ico">⛔</span><div><span class="ct">Parameter is TENANT</span> Same MSI and property as the Intune · Windows tab — mandatory, obtain from <a href="mailto:support@quilr.ai">support@quilr.ai</a>. Without it the extension installs but stays idle.</div></div>

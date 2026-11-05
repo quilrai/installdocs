@@ -3,22 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Step 1 · Prerequisites — Quilr Endpoint Agent</title>
+<title>Step 1 · Prerequisites — WhiteMatter Endpoint Agent</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../../assets/styles.css" />
 
-  <!-- sop-favicon v1 -->
-  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
-  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+  <!-- sop-favicon v2 — WhiteMatter mark; the SVG follows the browser's light/dark theme -->
+  <link rel="icon" href="/sop/assets/brand/favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/svg+xml" href="/sop/assets/brand/favicon.svg" />
+  <link rel="apple-touch-icon" href="/sop/assets/brand/apple-touch-icon.png" />
 </head>
 <body>
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">
       <div class="logo">Q</div>
-      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+      <div><div class="brand-name">WhiteMatter</div><div class="brand-sub">Deployment SOP</div></div>
     </div>
     <div class="nav-group-title">Overview</div>
     <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
@@ -83,10 +84,10 @@
         <span class="chip"><span class="k">Gate</span> Do not proceed until complete</span>
       </div>
 
-      <h2>1 · Quilr environment &amp; install bundle</h2>
+      <h2>1 · WhiteMatter environment &amp; install bundle</h2>
       <ul>
         <li>Identify your <strong>tenant environment</strong> (for example <strong>US Prod</strong> or <strong>JP POC</strong>). This determines the base/DLP hosts below.</li>
-        <li>Obtain your <strong>tenant ID</strong> from Quilr support — required by the installer to phone home.</li>
+        <li>Obtain your <strong>tenant ID</strong> from WhiteMatter support — required by the installer to phone home.</li>
         <li>Download the platform-specific installer bundle.</li>
       </ul>
 
@@ -147,8 +148,8 @@
 
       <h2>4 · Network requirements</h2>
       <ul>
-        <li>Endpoints must reach the Quilr backplane hosts on <strong>TCP&nbsp;443</strong> (outbound HTTPS).</li>
-        <li>TLS-intercepting proxies (Zscaler, Netskope, Symantec, Forcepoint, iboss) must <strong>SSL-bypass every Quilr backplane host</strong> — otherwise the proxy re-signs the certificate and the agent&rsquo;s trust chain fails.</li>
+        <li>Endpoints must reach the WhiteMatter backplane hosts on <strong>TCP&nbsp;443</strong> (outbound HTTPS).</li>
+        <li>TLS-intercepting proxies (Zscaler, Netskope, Symantec, Forcepoint, iboss) must <strong>SSL-bypass every WhiteMatter backplane host</strong> — otherwise the proxy re-signs the certificate and the agent&rsquo;s trust chain fails.</li>
       </ul>
 
       <h3>Shared hosts — all environments (TCP/443)</h3>
@@ -208,12 +209,12 @@ dlpone.quilr.ai</code></pre>
       </div>
 
       <h2>Coexisting with an existing SSL-inspection proxy (PAC)</h2>
-      <p>The Quilr endpoint agent does its <strong>own SSL inspection locally</strong> (WinDivert driver on Windows, Network Extension
+      <p>The WhiteMatter endpoint agent does its <strong>own SSL inspection locally</strong> (WinDivert driver on Windows, Network Extension
       on macOS). If you <strong>already</strong> run a web filter / SWG (Zscaler, Netskope, Forcepoint, Cisco Umbrella, Palo Alto&hellip;)
       that does SSL inspection and is published through a <strong>PAC file</strong>, two solutions would otherwise fight over the
-      same TLS session. To let Quilr monitor AI sites cleanly you must:</p>
+      same TLS session. To let WhiteMatter monitor AI sites cleanly you must:</p>
       <ol>
-        <li><strong>Merge Quilr&rsquo;s PAC logic into your existing PAC</strong> — route the monitored AI / collaboration hosts to the local Quilr listener, and keep your current routing for everything else.</li>
+        <li><strong>Merge WhiteMatter&rsquo;s PAC logic into your existing PAC</strong> — route the monitored AI / collaboration hosts to the local WhiteMatter listener, and keep your current routing for everything else.</li>
         <li><strong>SSL-bypass those same hosts on your SWG</strong> — so the upstream gateway does not re-decrypt and re-sign them.</li>
       </ol>
 
@@ -225,12 +226,12 @@ dlpone.quilr.ai</code></pre>
         PAC routing. Always pair the merge with an SSL-bypass entry.</div>
       </div>
 
-      <h3>Quilr-hosted PAC</h3>
-      <p>Quilr publishes a ready PAC whose <code>FindProxyForURL()</code> sends monitored hosts to the local agent and everything
+      <h3>WhiteMatter-hosted PAC</h3>
+      <p>WhiteMatter publishes a ready PAC whose <code>FindProxyForURL()</code> sends monitored hosts to the local agent and everything
       else <code>DIRECT</code>. If you have <em>no</em> existing PAC, point your OS proxy settings straight at this URL; if you
       <em>do</em>, fetch it and merge:</p>
       <div class="code">
-        <div class="code-head"><span class="label"><span class="dot"></span>Quilr PAC</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
+        <div class="code-head"><span class="label"><span class="dot"></span>WhiteMatter PAC</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
 <pre><code><span class="c"># Hosted PAC (application/x-ns-proxy-autoconfig)</span>
 https://discover.quilrai.dev/pac/<span class="v">&lt;TENANT-ID&gt;</span>
 
@@ -278,12 +279,12 @@ less /tmp/quilr.pac</code></pre>
         <li><code>discover.quilrai.dev</code></li>
         <li>All monitored AI &amp; collaboration hosts (the <code>quilrHosts</code> list above)</li>
       </ul>
-      <p>Validate the merged PAC (e.g. with Node.js) to confirm monitored hosts hit the local Quilr listener, internal hosts stay
+      <p>Validate the merged PAC (e.g. with Node.js) to confirm monitored hosts hit the local WhiteMatter listener, internal hosts stay
       <code>DIRECT</code>, and other traffic still reaches your upstream proxy.</p>
 
       <div data-os="win">
         <h2>Windows — antivirus / EDR exclusion</h2>
-        <p>Allow the Quilr install directory in your antivirus / EDR so the agent service and its WFP kernel driver are not
+        <p>Allow the WhiteMatter install directory in your antivirus / EDR so the agent service and its WFP kernel driver are not
         blocked, throttled, or quarantined. Add this exclusion <em>before</em> deployment:</p>
         <div class="code">
           <div class="code-head"><span class="label"><span class="dot"></span>AV / EDR exclusion path</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
@@ -299,7 +300,7 @@ less /tmp/quilr.pac</code></pre>
       </div>
 
       <h2>5 · Certificate trust chain</h2>
-      <p>The agent&rsquo;s leaf certificate chains to a Quilr <strong>root + intermediate</strong> that must land in the system
+      <p>The agent&rsquo;s leaf certificate chains to a WhiteMatter <strong>root + intermediate</strong> that must land in the system
       trust store <em>before the agent service starts</em>. Each deployment method covers CA deployment as its first part —
       see Steps&nbsp;3 and&nbsp;5.</p>
 

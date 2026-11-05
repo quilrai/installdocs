@@ -1,14 +1,28 @@
 // @ts-check
 const { themes } = require('prism-react-renderer');
 
+const baseUrl = process.env.SITE_BASE_URL || '/';
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Quilr Endpoint Agent Docs',
+  title: 'WhiteMatter Endpoint Agent Docs',
   tagline: 'Adapt AI Securely',
-  favicon: 'img/favicon.ico',
+  // SVG favicon follows the browser's light/dark theme; the .ico (sized so
+  // Chrome still prefers the SVG) and apple-touch-icon cover Safari / iOS.
+  favicon: 'img/favicon.svg',
+  headTags: [
+    {
+      tagName: 'link',
+      attributes: { rel: 'icon', href: `${baseUrl}img/favicon.ico`, sizes: '32x32' },
+    },
+    {
+      tagName: 'link',
+      attributes: { rel: 'apple-touch-icon', href: `${baseUrl}img/apple-touch-icon.png` },
+    },
+  ],
 
   url: process.env.SITE_URL || 'https://installdocs.quilrai.dev',
-  baseUrl: process.env.SITE_BASE_URL || '/',
+  baseUrl,
 
   organizationName: 'quilr-ai',
   projectName: 'endpoint-agent-docs',
@@ -73,14 +87,15 @@ const config = {
         defaultMode: 'dark',
         respectPrefersColorScheme: true,
       },
-      image: 'img/QuilrAI-light.png',
+      image: 'img/whitematter-social.png',
       navbar: {
         title: '',
         logo: {
-          alt: 'Quilr AI',
-          src: 'img/QuilrAI-light.png',
-          srcDark: 'img/QuilrAI-dark.png',
-          width: 120,
+          alt: 'WhiteMatter',
+          src: 'img/whitematter-logo-black.svg',
+          srcDark: 'img/whitematter-logo-white.svg',
+          width: 160,
+          height: 16,
         },
         items: [
           {
@@ -114,7 +129,7 @@ const config = {
           },
           {
             href: 'https://www.quilr.ai/',
-            label: 'Quilr.ai',
+            label: 'WhiteMatter',
             position: 'right',
           },
         ],
@@ -142,12 +157,12 @@ const config = {
           {
             title: 'More',
             items: [
-              { label: 'Quilr.ai', href: 'https://www.quilr.ai/' },
+              { label: 'WhiteMatter', href: 'https://www.quilr.ai/' },
               { label: 'All Docs', href: 'https://docs.quilrai.dev/' },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Quilr AI — Adapt AI Securely.`,
+        copyright: `Copyright © ${new Date().getFullYear()} WhiteMatter — Adapt AI Securely.`,
       },
       prism: {
         theme: themes.github,

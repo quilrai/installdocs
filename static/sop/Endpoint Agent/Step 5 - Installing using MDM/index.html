@@ -3,22 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Step 5 · Installing using MDM — Quilr Endpoint Agent</title>
+<title>Step 5 · Installing using MDM — WhiteMatter Endpoint Agent</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../../assets/styles.css" />
 
-  <!-- sop-favicon v1 -->
-  <link rel="icon" type="image/png" href="/sop/assets/quilr-icon.png" />
-  <link rel="apple-touch-icon" href="/sop/assets/quilr-icon.png" />
+  <!-- sop-favicon v2 — WhiteMatter mark; the SVG follows the browser's light/dark theme -->
+  <link rel="icon" href="/sop/assets/brand/favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/svg+xml" href="/sop/assets/brand/favicon.svg" />
+  <link rel="apple-touch-icon" href="/sop/assets/brand/apple-touch-icon.png" />
 </head>
 <body>
 <div class="layout">
   <aside class="sidebar">
     <div class="brand">
       <div class="logo">Q</div>
-      <div><div class="brand-name">Quilr&nbsp;AI</div><div class="brand-sub">Deployment SOP</div></div>
+      <div><div class="brand-name">WhiteMatter</div><div class="brand-sub">Deployment SOP</div></div>
     </div>
     <div class="nav-group-title">Overview</div>
     <ul class="nav"><li><a href="../../index.html">Start here</a></li></ul>
@@ -118,7 +119,7 @@
 
           <div class="part">
             <div class="part-head"><span class="part-badge">3</span><h3>Deploy the MSI as a Win32 app</h3></div>
-            <p><strong>Apps → All apps → Add → Windows app (Win32)</strong>, upload the <code>.intunewin</code>. Name &ldquo;Quilr Endpoint Agent,&rdquo; publisher &ldquo;Quilr AI.&rdquo;</p>
+            <p><strong>Apps → All apps → Add → Windows app (Win32)</strong>, upload the <code>.intunewin</code>. Name &ldquo;WhiteMatter Endpoint Agent,&rdquo; publisher &ldquo;WhiteMatter.&rdquo;</p>
             <div class="table-wrap"><table>
               <thead><tr><th>Field</th><th>Value</th></tr></thead>
               <tbody>
@@ -128,12 +129,12 @@
                 <tr><td>Device restart</td><td>No specific action</td></tr>
               </tbody>
             </table></div>
-            <div class="callout crit"><span class="ico">⛔</span><div><span class="ct">Replace &lt;TENANT-ID&gt;</span> The MSI fails to enroll without the tenant ID from Quilr support.</div></div>
+            <div class="callout crit"><span class="ico">⛔</span><div><span class="ct">Replace &lt;TENANT-ID&gt;</span> The MSI fails to enroll without the tenant ID from WhiteMatter support.</div></div>
             <p><strong>Requirements:</strong> architecture x64, minimum OS Windows 10 1809 (or your baseline). <strong>Detection rule:</strong> use the MSI detection type and allow auto-population of the product code. <strong>Assignment:</strong> Required → add <code>WIN-Quilr-Pilot</code> → Review + Create.</p>
             <p>Devices sync within 8 hours, or manually via <strong>Settings → Accounts → Access work or school → Sync</strong>.</p>
           </div>
 
-          <div class="callout warn"><span class="ico">🌐</span><div><span class="ct">Edge &amp; Chrome are excluded</span> The endpoint agent excludes <code>msedge.exe</code> and <code>chrome.exe</code> — cover those with the Quilr browser extension. Test interception in Firefox or a native app.</div></div>
+          <div class="callout warn"><span class="ico">🌐</span><div><span class="ct">Edge &amp; Chrome are excluded</span> The endpoint agent excludes <code>msedge.exe</code> and <code>chrome.exe</code> — cover those with the WhiteMatter browser extension. Test interception in Firefox or a native app.</div></div>
 
           <h4>Rollback</h4>
           <ol><li>Change the MSI assignment from Required to <strong>Uninstall</strong></li><li>Unassign both CA certificate profiles</li><li>Verify <code>certutil -store Root|CA | findstr /i quilr</code> and the service query all return nothing</li></ol>
@@ -209,7 +210,7 @@ exit 0</code></pre></div>
           <div class="part">
             <div class="part-head"><span class="part-badge">3</span><h3>Package + install policy (deploy third)</h3></div>
             <h4>Pre-install script</h4>
-            <p><strong>Settings → Computer Management → Scripts → New</strong>, name &ldquo;Quilr — Write tenant config (pre-install)&rdquo;:</p>
+            <p><strong>Settings → Computer Management → Scripts → New</strong>, name &ldquo;WhiteMatter — Write tenant config (pre-install)&rdquo;:</p>
             <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
 <pre><code>#!/bin/bash
 TENANT="<span class="v">&lt;TENANT-ID&gt;</span>"
@@ -218,7 +219,7 @@ exit 0</code></pre></div>
             <h4>Package &amp; policy</h4>
             <ol>
               <li><strong>Settings → Computer Management → Packages → New</strong> → upload <code>quilr-endpoint-agent-installer.pkg</code> (category &ldquo;Endpoint Security,&rdquo; priority 10)</li>
-              <li><strong>Computers → Policies → New</strong> → &ldquo;Install Quilr Endpoint Agent&rdquo;</li>
+              <li><strong>Computers → Policies → New</strong> → &ldquo;Install WhiteMatter Endpoint Agent&rdquo;</li>
               <li>Triggers: <em>Recurring Check-in</em> + <em>Enrollment Complete</em>; frequency <em>Once per computer</em></li>
               <li>Packages tab: add installer, action = Install; attach the pre-install script with Priority = <em>Before</em></li>
               <li>Scope to the same group; save</li>
@@ -230,7 +231,7 @@ exit 0</code></pre></div>
         <!-- ============ KANDJI ============ -->
         <div class="tab-panel" data-panel="kandji">
           <h3>Kandji — macOS</h3>
-          <p>Five library items, assigned to a Blueprint (e.g. &ldquo;macOS — Quilr Pilot&rdquo;), in strict order.</p>
+          <p>Five library items, assigned to a Blueprint (e.g. &ldquo;macOS — WhiteMatter Pilot&rdquo;), in strict order.</p>
 
           <div class="part">
             <div class="part-head"><span class="part-badge">1</span><h3>Certificates (deploy first)</h3></div>
@@ -244,7 +245,7 @@ exit 0</code></pre></div>
 
           <div class="part">
             <div class="part-head"><span class="part-badge">3</span><h3>Custom App with Audit &amp; Enforce (deploy last)</h3></div>
-            <p><strong>Library → Add Library Item → Custom App</strong>, name &ldquo;Quilr Endpoint Agent,&rdquo; upload the PKG. Paste the pre-install script:</p>
+            <p><strong>Library → Add Library Item → Custom App</strong>, name &ldquo;WhiteMatter Endpoint Agent,&rdquo; upload the PKG. Paste the pre-install script:</p>
             <div class="code"><div class="code-head"><span class="label"><span class="dot"></span>bash · pre-install</span><button class="copy-btn" data-label="Copy"><span class="cl">Copy</span></button></div>
 <pre><code>#!/bin/bash
 TENANT="<span class="v">&lt;TENANT-ID&gt;</span>"   <span class="c"># from Quilr support</span>
@@ -288,8 +289,8 @@ exit 0</code></pre></div>
 
           <div class="part">
             <div class="part-head"><span class="part-badge">2</span><h3>Add the MSI to the software repository</h3></div>
-            <p><strong>Software Deployment → Package Creation → Packages → Add Package → Windows.</strong> Name &ldquo;Quilr Endpoint Agent,&rdquo; type &ldquo;MSI/MSP.&rdquo; Locate the installable from the shared folder or local computer.</p>
-            <div class="callout crit"><span class="ico">⛔</span><div><span class="ct">MSI/MSP Properties (install)</span> Enter <code>TENANTID=&lt;TENANT-ID&gt;</code>. Without it the agent installs but cannot phone home — it sits idle. Leave MST File Name blank unless Quilr provides a transform. Architecture: 64-bit.</div></div>
+            <p><strong>Software Deployment → Package Creation → Packages → Add Package → Windows.</strong> Name &ldquo;WhiteMatter Endpoint Agent,&rdquo; type &ldquo;MSI/MSP.&rdquo; Locate the installable from the shared folder or local computer.</p>
+            <div class="callout crit"><span class="ico">⛔</span><div><span class="ct">MSI/MSP Properties (install)</span> Enter <code>TENANTID=&lt;TENANT-ID&gt;</code>. Without it the agent installs but cannot phone home — it sits idle. Leave MST File Name blank unless WhiteMatter provides a transform. Architecture: 64-bit.</div></div>
           </div>
 
           <div class="part">
@@ -303,9 +304,9 @@ certutil -addstore -f CA   "%~dp0quilr-ea-intermediate-ca.crt"</code></pre></div
 
           <div class="part">
             <div class="part-head"><span class="part-badge">4</span><h3>Install MSI/EXE Software configuration</h3></div>
-            <p><strong>Configurations → Add Configuration → Computer → Install MSI/EXE Software</strong>, name &ldquo;Quilr Endpoint Agent — Install.&rdquo;</p>
+            <p><strong>Configurations → Add Configuration → Computer → Install MSI/EXE Software</strong>, name &ldquo;WhiteMatter Endpoint Agent — Install.&rdquo;</p>
             <ul>
-              <li>Package Type: MSI · MSI Package Name: &ldquo;Quilr Endpoint Agent&rdquo;</li>
+              <li>Package Type: MSI · MSI Package Name: &ldquo;WhiteMatter Endpoint Agent&rdquo;</li>
               <li>Operation Type: <strong>Install Completely</strong> · Install as: <strong>System User</strong></li>
               <li>Allow user interaction: <strong>No</strong> (silent)</li>
               <li>Installation Option: &ldquo;During or After Startup&rdquo; · Reboot Policy: &ldquo;Do not reboot&rdquo;</li>
@@ -315,7 +316,7 @@ certutil -addstore -f CA   "%~dp0quilr-ea-intermediate-ca.crt"</code></pre></div
 
           <div class="part">
             <div class="part-head"><span class="part-badge">5</span><h3>Force-install the browser extension (Edge &amp; Chrome)</h3></div>
-            <p>Because the agent excludes <code>msedge.exe</code> and <code>chrome.exe</code>, deploy the extension via Registry configurations. Obtain the exact extension IDs/URLs from Quilr support.</p>
+            <p>Because the agent excludes <code>msedge.exe</code> and <code>chrome.exe</code>, deploy the extension via Registry configurations. Obtain the exact extension IDs/URLs from WhiteMatter support.</p>
             <div class="table-wrap"><table>
               <thead><tr><th>Browser</th><th>Registry key &amp; value</th></tr></thead>
               <tbody>

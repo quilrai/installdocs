@@ -68,7 +68,7 @@ curl -fsSL -o /tmp/quilr-manifest.xml \
 
 | Failure | Likely cause | Fix |
 |---|---|---|
-| `403` / `404` | Wrong `<TENANT-ID>` in the policy | Confirm the tenant ID with **Quilr support** (`support@quilr.ai`) and re-push the policy from your MDM |
+| `403` / `404` | Wrong `<TENANT-ID>` in the policy | Confirm the tenant ID with **WhiteMatter support** (`support@quilr.ai`) and re-push the policy from your MDM |
 | `Connection timed out` / `Could not resolve host` | Firewall, DNS filter, or proxy blocking `quilr-extensions.quilr.ai` | Allowlist the host. The full URL allow-list lives in [URL Exception List — AI Apps](/reference/url-exceptions-ai) and `quilr-extensions.quilr.ai` should already be there |
 | `SSL handshake error` / *issuer mismatch* | An upstream SWG (Netskope, Zscaler, Cisco Umbrella, etc.) is decrypting `quilr-extensions.quilr.ai` and presenting its own leaf cert | Add `quilr-extensions.quilr.ai` to the SWG's **SSL-bypass / Do Not Decrypt** list. See [URL Exception List — AI Apps](/reference/url-exceptions-ai) §3 |
 | `HTTP/2 200` but body is HTML, not XML | Captive portal / login page intercepting the request | Same as above — get the SWG out of the way |
@@ -106,7 +106,7 @@ curl -fsSL -I "https://quilr-extensions.quilr.ai/${TENANT}/vanguard.crx" | head 
 
 ### (Optional) Confirm the manifest still points at the same `.crx`
 
-If the URL above ever returns `404`, Quilr may have moved the `.crx` to a different filename. Cross-check what the live manifest is advertising:
+If the URL above ever returns `404`, WhiteMatter may have moved the `.crx` to a different filename. Cross-check what the live manifest is advertising:
 
 ```bash
 # macOS — the codebase attribute should match the URL you just probed
@@ -137,13 +137,13 @@ Sometimes the browser just needs to be coaxed into picking up the new policy:
 - **Restart the browser**. Force-installed extensions are loaded at startup; an in-flight browser instance won't pick up a freshly-pushed policy until next launch.
 - **Edge** → `edge://policy/` → **Reload policies** → close every Edge window → relaunch.
 - **Chrome** → `chrome://extensions/` → toggle **Developer mode** on → click **Update**. Then `chrome://policy/` → **Reload policies** → restart Chrome.
-- If the device is **roaming / off-network**, the install can be delayed until the device sees the management URL again — bring it on-net or have the user open the Quilr CDN URL once manually.
+- If the device is **roaming / off-network**, the install can be delayed until the device sees the management URL again — bring it on-net or have the user open the WhiteMatter CDN URL once manually.
 
 ---
 
 ## 5. Extension is visible but popup is red / yellow
 
-If `chrome://extensions` shows the Quilr extension as installed and enabled, but the popup ([Validate Installation Check 3](/extension/validate-installation#check-3-the-extension-popup-reports-persona-active--extension-enabled)) shows a red / yellow status, the WebExtension is installed but the **native messaging agent** isn't running.
+If `chrome://extensions` shows the WhiteMatter extension as installed and enabled, but the popup ([Validate Installation Check 3](/extension/validate-installation#check-3-the-extension-popup-reports-persona-active--extension-enabled)) shows a red / yellow status, the WebExtension is installed but the **native messaging agent** isn't running.
 
 That means the MSI / pkg side of the chain is broken, **not** the policy chain you just verified. Jump to:
 

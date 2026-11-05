@@ -1,8 +1,8 @@
-# Quilr Endpoint Agent Docs
+# WhiteMatter Endpoint Agent Docs
 
-> Deployment, configuration, and troubleshooting guides for the **Quilr Endpoint Agent** (Windows + macOS) and the **Quilr Browser Extension**. Operator-facing, MDM-agnostic where possible, vendor-specific where it matters.
+> Deployment, configuration, and troubleshooting guides for the **WhiteMatter Endpoint Agent** (Windows + macOS) and the **WhiteMatter Browser Extension**. Operator-facing, MDM-agnostic where possible, vendor-specific where it matters.
 
-Quilr is an AI-data-security platform. Two products are documented here:
+WhiteMatter is an AI-data-security platform. Two products are documented here:
 
 - **Endpoint Agent** — runs on the device and intercepts outbound TLS to AI assistants (ChatGPT, Claude, Gemini, etc.) and collaboration apps (Slack, MS Teams). On Windows via a WinDivert filter driver; on macOS via a Network Extension + PPPC profile. Internally the binaries are named `sentinel` / `sentinel-proxy`; on disk they live under `/Library/Application Support/QuilrAI/` (macOS) and `%ProgramFiles%\QuilrAI` (Windows).
 - **Browser Extension** — covers Edge / Chrome (and Safari on macOS). Captures at the **DOM level** (no TLS interception) and talks to a small **native messaging agent** binary installed by the same MSI/pkg. Edge / Chrome on Windows are intentionally excluded from the WinDivert driver and rely on the extension instead.
@@ -27,7 +27,7 @@ The MSI / pkg is mandatory in every rollout; MDM browser-extension policy (`Exte
 
 - [Validate Installation](https://installdocs.quilrai.dev/reference/validate-installation): MDM-agnostic post-install validation. Five checks per platform + one-liner scripts. Functional test sends a prompt to `claude.ai`; cert-chain check ("Issuer = Quilr" on the leaf) proves WFP / Network-Extension interception is active. Paths: `/Applications/QuilrAIProxy.app` + `/Library/Application Support/QuilrAI` (macOS), `%ProgramFiles%\QuilrAI` (Windows).
 - [Troubleshooting](https://installdocs.quilrai.dev/reference/troubleshooting): 30-second triage, log paths (Sentinel family — `/Library/Logs/Sentinel/agent.stderr.log`, `proxy.log.YYYY-MM-DD`), kill-switch behaviour, escalation script (`diag-bundle.sh`).
-- [PAC Configuration](https://installdocs.quilrai.dev/reference/pac-configuration): optional — only when the customer already runs a PAC-based web filter (Zscaler / Netskope / Forcepoint / Cisco Umbrella / Palo Alto / Symantec / McAfee / Check Point / iboss / Menlo / Cloudflare Gateway / Squid …). Quilr-hosted PAC at https://discover.quilrai.dev/pac/<TENANT-ID>; otherwise the WinDivert driver / Network Extension handles routing without PAC.
+- [PAC Configuration](https://installdocs.quilrai.dev/reference/pac-configuration): optional — only when the customer already runs a PAC-based web filter (Zscaler / Netskope / Forcepoint / Cisco Umbrella / Palo Alto / Symantec / McAfee / Check Point / iboss / Menlo / Cloudflare Gateway / Squid …). WhiteMatter-hosted PAC at https://discover.quilrai.dev/pac/<TENANT-ID>; otherwise the WinDivert driver / Network Extension handles routing without PAC.
 - [URL Exception List — AI Apps](https://installdocs.quilrai.dev/reference/url-exceptions-ai): monitored AI hosts (ChatGPT, Claude, Gemini, etc.) for SWG SSL-bypass. Per-vendor configuration (Netskope, Zscaler, Cisco, Palo Alto, …).
 - [URL Exception List — Non-AI Apps](https://installdocs.quilrai.dev/reference/url-exceptions-nonai): non-AI hosts (auth, CDN) for SWG SSL-bypass.
 
@@ -37,7 +37,7 @@ The MSI / pkg is mandatory in every rollout; MDM browser-extension policy (`Exte
 
 ## Browser Extension — Deployment Guides
 
-- [Microsoft Intune — macOS](https://installdocs.quilrai.dev/extension/intune-macos): tenant pkg from `quilr-extensions.quilr.ai/<TENANT-ID>/browser-util/quilr-installer-mac.pkg` + tenant `.mobileconfig` (from Quilr console) + shared File-Access mobileconfig.
+- [Microsoft Intune — macOS](https://installdocs.quilrai.dev/extension/intune-macos): tenant pkg from `quilr-extensions.quilr.ai/<TENANT-ID>/browser-util/quilr-installer-mac.pkg` + tenant `.mobileconfig` (from WhiteMatter console) + shared File-Access mobileconfig.
 - [Microsoft Intune — Windows (MSI)](https://installdocs.quilrai.dev/extension/intune-windows): wrap `Quilr.msi` as `.intunewin`, install command `msiexec /i Quilr.msi TENANT=<TENANT-ID> /qn /norestart`. *(note: TENANT, no `ID` suffix, for the browser extension; the Endpoint Agent uses `TENANTID`)*. Optional §3 ExtensionSettings JSON policy.
 - [Jamf Pro — macOS](https://installdocs.quilrai.dev/extension/jamf): Configuration Profile × 2 + Package + Policy.
 - [Kandji — macOS](https://installdocs.quilrai.dev/extension/kandji): Custom Profile × 2 + Custom App.
@@ -51,8 +51,8 @@ The MSI / pkg is mandatory in every rollout; MDM browser-extension policy (`Exte
 
 ## Key facts (machine-readable cheat sheet)
 
-- **Brand vs internal naming:** product is "Quilr Endpoint Agent" / "Quilr Browser Extension"; internal binaries are the `sentinel` family on disk and process listings. The macOS app bundle is `/Applications/QuilrAIProxy.app` (not `QuilrEndpointAgent.app`).
-- **Tenant ID** is provided by Quilr support (`support@quilr.ai`). Used as:
+- **Brand vs internal naming:** product is "WhiteMatter Endpoint Agent" / "WhiteMatter Browser Extension"; internal binaries are the `sentinel` family on disk and process listings. The macOS app bundle is `/Applications/QuilrAIProxy.app` (not `QuilrEndpointAgent.app`).
+- **Tenant ID** is provided by WhiteMatter support (`support@quilr.ai`). Used as:
   - Endpoint Agent MSI: `TENANTID=<TENANT-ID>` (in MSI/MSP Properties or as a Win32 install-command parameter).
   - Browser Extension MSI: `TENANT=<TENANT-ID>` *(different parameter name — note no `ID` suffix)*.
   - As a path segment in tenant-specific URLs (`https://quilr-extensions.quilr.ai/<TENANT-ID>/...`).
@@ -70,10 +70,10 @@ The MSI / pkg is mandatory in every rollout; MDM browser-extension policy (`Exte
 - **Browser extension does NOT do TLS interception.** It captures at the DOM level via the WebExtensions API. The "Issuer = Quilr" cert-chain check applies **only** to the Endpoint Agent's WinDivert driver / macOS Network Extension. Source of truth for the extension is the popup status + event flow to the console.
 - **SWG-bypass hosts** (Netskope / Zscaler / Cisco / Palo Alto / etc.):
   - `quilr-extensions.quilr.ai` — installer + extension distribution + manifest + .crx
-  - `app.quilr.ai`, `dlpone.quilr.ai`, `discover.quilrai.dev`, `log.quilrai.dev` — Quilr control plane (varies by tenant environment)
+  - `app.quilr.ai`, `dlpone.quilr.ai`, `discover.quilrai.dev`, `log.quilrai.dev` — WhiteMatter control plane (varies by tenant environment)
   - Plus every monitored AI host in `/reference/url-exceptions-ai`.
 
 ## Optional
 
 - [Search](https://installdocs.quilrai.dev/search): local search index (no external service). Built via `@easyops-cn/docusaurus-search-local`.
-- [`llms-full.txt`](https://installdocs.quilrai.dev/llms-full.txt): *(not currently published — let Quilr know if you want a flat full-text dump of every guide for LLM ingestion.)*
+- [`llms-full.txt`](https://installdocs.quilrai.dev/llms-full.txt): *(not currently published — let WhiteMatter know if you want a flat full-text dump of every guide for LLM ingestion.)*

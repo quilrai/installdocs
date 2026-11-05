@@ -3,9 +3,9 @@ title: ManageEngine Endpoint Central — Windows (MSI)
 description: On-prem MDM via ManageEngine Endpoint Central.
 ---
 
-# Quilr Endpoint Agent — ManageEngine Endpoint Central Deployment Guide (Windows / MSI)
+# WhiteMatter Endpoint Agent — ManageEngine Endpoint Central Deployment Guide (Windows / MSI)
 
-**Subtitle:** Silent mass deployment of the Quilr Endpoint Agent CA trust chain, MSI installer, and browser extension using the ManageEngine Endpoint Central (formerly Desktop Central) "Install MSI/EXE Software" computer configuration.
+**Subtitle:** Silent mass deployment of the WhiteMatter Endpoint Agent CA trust chain, MSI installer, and browser extension using the ManageEngine Endpoint Central (formerly Desktop Central) "Install MSI/EXE Software" computer configuration.
 
 **Version:** 2026.05.21
 
@@ -13,13 +13,13 @@ description: On-prem MDM via ManageEngine Endpoint Central.
 
 ## 1. Overview
 
-This guide walks a **ManageEngine Endpoint Central** (formerly **Desktop Central**) administrator through deploying the **Quilr Endpoint Agent for Windows** to a fleet of managed computers. The Windows agent ships as an **MSI** that installs a Windows service plus a WinDivert kernel driver (a WFP-based packet-capture component) for on-device traffic interception.
+This guide walks a **ManageEngine Endpoint Central** (formerly **Desktop Central**) administrator through deploying the **WhiteMatter Endpoint Agent for Windows** to a fleet of managed computers. The Windows agent ships as an **MSI** that installs a Windows service plus a WinDivert kernel driver (a WFP-based packet-capture component) for on-device traffic interception.
 
 The deployment uses Endpoint Central's **Software Deployment** module: you add the MSI to the **Software Repository** once, then push it with an **Install MSI/EXE Software** computer configuration to a target group. The Endpoint Central agent on each computer downloads the package from the repository and runs the install silently under the **System User** account — no end-user interaction.
 
 **The deployment order is: CA certificates first, then the MSI.** The agent validates TLS against Quilr's internal CA, so the Windows machine trust store must be populated before the service starts its first outbound connection. The browser extension (Part 5) is independent and can be deployed in parallel.
 
-**Browser coverage note.** On Windows, the agent-interceptor configuration **excludes** `msedge.exe` and `chrome.exe` from the endpoint agent — that traffic is captured by the **Quilr browser extension** instead (Part 5), avoiding double-capture. Every other process (native apps, Firefox, custom HTTP clients) is captured by the endpoint agent's WinDivert driver.
+**Browser coverage note.** On Windows, the agent-interceptor configuration **excludes** `msedge.exe` and `chrome.exe` from the endpoint agent — that traffic is captured by the **WhiteMatter browser extension** instead (Part 5), avoiding double-capture. Every other process (native apps, Firefox, custom HTTP clients) is captured by the endpoint agent's WinDivert driver.
 
 **Endpoint Central terminology used in this guide:**
 
@@ -50,8 +50,8 @@ The deployment uses Endpoint Central's **Software Deployment** module: you add t
 | Agent enrollment | Target computers have the Endpoint Central agent installed and showing as **Managed / contacted** |
 | Software Repository | A configured **Network Share** or **HTTP** repository reachable by agents (or distribution servers for remote offices) |
 | Target group | A custom group / OU for the rollout — e.g. `WIN-Quilr-Pilot` |
-| Signed installer | `quilr-endpoint-agent.msi` is Authenticode-signed by Quilr; the WinDivert driver inside is WHQL/EV-signed |
-| Network egress | Endpoints can reach the Quilr distribution host and control plane (see *URL Exception List — AI Apps* / *Non-AI Apps* companion guides for SSL-bypass entries) |
+| Signed installer | `quilr-endpoint-agent.msi` is Authenticode-signed by WhiteMatter; the WinDivert driver inside is WHQL/EV-signed |
+| Network egress | Endpoints can reach the WhiteMatter distribution host and control plane (see *URL Exception List — AI Apps* / *Non-AI Apps* companion guides for SSL-bypass entries) |
 | Bundle download | [`https://quilr-extensions.quilr.ai/endpoint-agent/prod/windows/installer/quilr-endpoint-agent-win-install-bundle.zip`](https://quilr-extensions.quilr.ai/endpoint-agent/prod/windows/installer/quilr-endpoint-agent-win-install-bundle.zip) (see Part 1 for staging steps) |
 
 ---
@@ -60,11 +60,11 @@ The deployment uses Endpoint Central's **Software Deployment** module: you add t
 
 ### Step A. Obtain the bundle
 
-The Windows install bundle is distributed by **Quilr support**. Contact your Quilr support representative to request the download URL and any associated checksum for the current production build (architecture path: `windows/64`).
+The Windows install bundle is distributed by **WhiteMatter support**. Contact your WhiteMatter support representative to request the download URL and any associated checksum for the current production build (architecture path: `windows/64`).
 
 1. **Download the bundle** from [`https://quilr-extensions.quilr.ai/endpoint-agent/prod/windows/installer/quilr-endpoint-agent-win-install-bundle.zip`](https://quilr-extensions.quilr.ai/endpoint-agent/prod/windows/installer/quilr-endpoint-agent-win-install-bundle.zip).
 2. Download the zip on the workstation you use to administer Endpoint Central.
-3. Verify the checksum provided by Quilr before extracting.
+3. Verify the checksum provided by WhiteMatter before extracting.
 4. Unzip into a clean staging directory.
 
 ### Step B. Bundle contents
@@ -81,7 +81,7 @@ quilr-endpoint-agent-install-bundle-win/
 |---|---|---|---|
 | `certs/quilr-root-ca.crt` | Quilr root CA — anchor of trust | **Custom Script** config → machine **Root** store | 1 |
 | `certs/quilr-ea-intermediate-ca.crt` | Quilr intermediate CA — chains to the root | **Custom Script** config → machine **Intermediate (CA)** store | 1 |
-| `quilr-endpoint-agent.msi` | Installs the Quilr Endpoint Agent service + WinDivert driver | **Software Repository package** → *Install MSI Software* config | 2 |
+| `quilr-endpoint-agent.msi` | Installs the WhiteMatter Endpoint Agent service + WinDivert driver | **Software Repository package** → *Install MSI Software* config | 2 |
 
 > **Order of operations:** Deploy the **"Install MSI Software" configuration (Part 4)** — the MSI installs the CA chain into the Local Machine trust store automatically. The Custom Script in **Part 3 is optional** and only needed if you want the chain in place *before* the MSI runs.
 
@@ -117,8 +117,8 @@ Create the package **once**; you reuse it in the Install configuration (Part 6) 
 | Field | Value |
 |---|---|
 | MSI/MSP File Name | `quilr-endpoint-agent.msi` |
-| MST File Name | *(leave blank unless Quilr provides a transform)* |
-| MSI/MSP Properties (install) | *(blank — Endpoint Central runs MSIs silently; add `KEY=VALUE` pairs only if Quilr specifies them)* |
+| MST File Name | *(leave blank unless WhiteMatter provides a transform)* |
+| MSI/MSP Properties (install) | *(blank — Endpoint Central runs MSIs silently; add `KEY=VALUE` pairs only if WhiteMatter specifies them)* |
 
 > **Silent install:** Endpoint Central installs MSI packages silently by default (no `/qn` needed — that is handled by the platform).
 >
@@ -128,9 +128,9 @@ Create the package **once**; you reuse it in the Install configuration (Part 6) 
 > TENANTID=<TENANT-ID>
 > ```
 >
-> Replace `<TENANT-ID>` with the tenant identifier supplied by **Quilr support** (`support@quilr.ai`). The MSI's postinstall reads this property and uses it to enroll the device into the correct Quilr tenant. Without `TENANTID`, the agent installs but cannot phone home — it will sit idle.
+> Replace `<TENANT-ID>` with the tenant identifier supplied by **WhiteMatter support** (`support@quilr.ai`). The MSI's postinstall reads this property and uses it to enroll the device into the correct WhiteMatter tenant. Without `TENANTID`, the agent installs but cannot phone home — it will sit idle.
 >
-> Add any additional space-separated `PROPERTY=VALUE` pairs in the same field if Quilr support provides further custom MSI properties.
+> Add any additional space-separated `PROPERTY=VALUE` pairs in the same field if WhiteMatter support provides further custom MSI properties.
 
 ### Step D. Advanced settings and package properties (optional)
 
@@ -146,7 +146,7 @@ Click **Add Package**. The package now appears under *Software Deployment → Pa
 
 ## 5. Part 3 — Deploy the Quilr CA Certificates *(Optional — Custom Script Configuration)*
 
-> **Optional — the MSI handles this on its own.** The Quilr MSI installer (deployed in Part 4) automatically writes the Quilr root and intermediate CAs into the Local Machine **Trusted Root** and **Intermediate** stores when they are missing. The installer runs as `LocalSystem`, so no admin prompt is shown.
+> **Optional — the MSI handles this on its own.** The WhiteMatter MSI installer (deployed in Part 4) automatically writes the Quilr root and intermediate CAs into the Local Machine **Trusted Root** and **Intermediate** stores when they are missing. The installer runs as `LocalSystem`, so no admin prompt is shown.
 >
 > Run this Custom Script configuration **only** if any of the following apply:
 >
@@ -238,9 +238,9 @@ Click **Deploy** to push immediately, or **Save as Draft** to stage it. Agents i
 
 ---
 
-## 7. Part 5 — Force-Install the Quilr Browser Extension (Edge + Chrome)
+## 7. Part 5 — Force-Install the WhiteMatter Browser Extension (Edge + Chrome)
 
-Because the agent-interceptor config excludes `msedge.exe` and `chrome.exe` on Windows, those two browsers are covered by the **Quilr browser extension**. Force-install it via a **Registry** computer configuration that writes the `ExtensionInstallForcelist` policy keys. (If you license **Browser Security Plus**, you can manage extensions there instead.)
+Because the agent-interceptor config excludes `msedge.exe` and `chrome.exe` on Windows, those two browsers are covered by the **WhiteMatter browser extension**. Force-install it via a **Registry** computer configuration that writes the `ExtensionInstallForcelist` policy keys. (If you license **Browser Security Plus**, you can manage extensions there instead.)
 
 ### Step A. Microsoft Edge — `ExtensionInstallForcelist`
 
@@ -263,11 +263,11 @@ Because the agent-interceptor config excludes `msedge.exe` and `chrome.exe` on W
    - **Value data**: `<chrome-extension-id>;https://clients2.google.com/service/update2/crx`
 3. **Define Target**: `WIN-Quilr-Pilot`. **Deploy**.
 
-> Get the exact extension ID and update URL from Quilr support. For a self-hosted extension, use `<extension-id>;https://<quilr-update-host>/updates.xml` as the value data.
+> Get the exact extension ID and update URL from WhiteMatter support. For a self-hosted extension, use `<extension-id>;https://<quilr-update-host>/updates.xml` as the value data.
 
 ### Step C. Verify
 
-On a pilot device, open `edge://extensions` and `chrome://extensions` — the Quilr extension must be present, **enabled**, and marked *Installed by your organization* (no remove button).
+On a pilot device, open `edge://extensions` and `chrome://extensions` — the WhiteMatter extension must be present, **enabled**, and marked *Installed by your organization* (no remove button).
 
 ---
 
@@ -281,11 +281,11 @@ On a pilot device, open `edge://extensions` and `chrome://extensions` — the Qu
 | Intermediate CA file | `certs/quilr-ea-intermediate-ca.crt` → machine **CA / Intermediate** store (`certutil -addstore CA`) |
 | Architecture path (CDN) | `windows/64` |
 | Bundle download | [`https://quilr-extensions.quilr.ai/endpoint-agent/prod/windows/installer/quilr-endpoint-agent-win-install-bundle.zip`](https://quilr-extensions.quilr.ai/endpoint-agent/prod/windows/installer/quilr-endpoint-agent-win-install-bundle.zip) |
-| Browser extension ID + update URL | Obtain from Quilr support |
+| Browser extension ID + update URL | Obtain from WhiteMatter support |
 | Endpoint Central target (suggested) | `WIN-Quilr-Pilot` (promote to `WIN-Quilr-Production` after validation) |
 | Operation Type (install) | **Install Completely** |
 | Operation Type (rollback) | **Remove** |
-| Windows service name | *Confirm with Quilr support — typically a System service in the `quilrai` family* |
+| Windows service name | *Confirm with WhiteMatter support — typically a System service in the `quilrai` family* |
 
 ---
 
@@ -314,9 +314,9 @@ Get-Service | Where-Object { $_.Name -match 'quilrai|quilr' }
 netsh wfp show state | findstr /i "WinDivert quilr"
 ```
 
-**Live intercept (functional test):** In **Firefox** or a native app (not Edge/Chrome — those go through the extension), reach a monitored AI host (e.g. send a prompt). Confirm the event appears in the Quilr console.
+**Live intercept (functional test):** In **Firefox** or a native app (not Edge/Chrome — those go through the extension), reach a monitored AI host (e.g. send a prompt). Confirm the event appears in the WhiteMatter console.
 
-**Browser extension active:** `edge://extensions` and `chrome://extensions` show the Quilr extension *Installed by your organization*, enabled.
+**Browser extension active:** `edge://extensions` and `chrome://extensions` show the WhiteMatter extension *Installed by your organization*, enabled.
 
 **Endpoint Central reporting:**
 
@@ -324,7 +324,7 @@ netsh wfp show state | findstr /i "WinDivert quilr"
 - The *Quilr CA Trust* Custom Script configuration = *Applied / Success*.
 - The Edge/Chrome Registry configurations = *Applied / Success*.
 
-> **Agent logs:** the Windows agent writes logs under its ProgramData directory (in the `quilrai` family, e.g. `%PROGRAMDATA%\quilrai\logs\`) and emits to the Windows **Event Log**. Confirm the exact path with Quilr support / the Windows release notes — it is not assumed here.
+> **Agent logs:** the Windows agent writes logs under its ProgramData directory (in the `quilrai` family, e.g. `%PROGRAMDATA%\quilrai\logs\`) and emits to the Windows **Event Log**. Confirm the exact path with WhiteMatter support / the Windows release notes — it is not assumed here.
 
 ---
 
@@ -339,9 +339,9 @@ netsh wfp show state | findstr /i "WinDivert quilr"
 | Package never downloads to the endpoint | Software Repository (Network Share / HTTP) unreachable from the agent or distribution server | Verify the repository path/URL and that the agent (or its distribution server) can reach it |
 | Browser shows "Cannot verify identity" for a monitored host | Upstream SWG (Netskope / Zscaler / etc.) is decrypting the same host | Add the host to the SWG's SSL-bypass list — see the *URL Exception List — AI Apps* (or *Non-AI Apps*) companion guide |
 | Edge/Chrome traffic not captured at all | Expected — Edge/Chrome are excluded from the endpoint agent on Windows | Confirm the **browser extension** (Part 5) is force-installed and enabled; the extension, not the WinDivert driver, covers those browsers |
-| Extension missing from `edge://extensions` | Registry force-list policy not applied, or wrong extension ID / update URL | Re-check the `ExtensionInstallForcelist` value (`ID;UPDATE_URL`) against what Quilr support provided; re-deploy |
+| Extension missing from `edge://extensions` | Registry force-list policy not applied, or wrong extension ID / update URL | Re-check the `ExtensionInstallForcelist` value (`ID;UPDATE_URL`) against what WhiteMatter support provided; re-deploy |
 
-For deeper diagnostics, see the *Quilr Endpoint Agent Troubleshooting Guide* and the `logsamples/` folder.
+For deeper diagnostics, see the *WhiteMatter Endpoint Agent Troubleshooting Guide* and the `logsamples/` folder.
 
 ---
 
@@ -354,7 +354,7 @@ For deeper diagnostics, see the *Quilr Endpoint Agent Troubleshooting Guide* and
    - `certutil -store Root | findstr /i quilr` returns nothing
    - `certutil -store CA | findstr /i quilr` returns nothing
    - `Get-Service | ? Name -match 'quilrai|quilr'` returns nothing
-   - Quilr extension absent from `edge://extensions` / `chrome://extensions`
+   - WhiteMatter extension absent from `edge://extensions` / `chrome://extensions`
 
 ---
 
@@ -362,11 +362,11 @@ For deeper diagnostics, see the *Quilr Endpoint Agent Troubleshooting Guide* and
 
 | Step | Action | Where in Endpoint Central |
 |---|---|---|
-| 1 | Obtain Windows install bundle (MSI + certs) | Request URL from Quilr support |
+| 1 | Obtain Windows install bundle (MSI + certs) | Request URL from WhiteMatter support |
 | 2 | Add the MSI to the Software Repository | Software Deployment → Package Creation → Packages → Add Package → Windows |
 | 3 | Deploy the two CA certs (run **first**) | Configurations → Custom Script (certutil -addstore) |
 | 4 | Create the *Install MSI Software* config (run **second**) | Configurations → Install MSI/EXE Software |
-| 5 | Force-install the Quilr browser extension (Edge + Chrome) | Configurations → Registry (ExtensionInstallForcelist) |
+| 5 | Force-install the WhiteMatter browser extension (Edge + Chrome) | Configurations → Registry (ExtensionInstallForcelist) |
 | 6 | Define target = `WIN-Quilr-Pilot`; validate certs → MSI → extension | Each configuration → Define Target |
 | 7 | Promote to `WIN-Quilr-Production` | Re-target the configurations |
 
@@ -384,8 +384,8 @@ For deeper diagnostics, see the *Quilr Endpoint Agent Troubleshooting Guide* and
 | §3/§5 Custom Script & Registry configurations | [Computer Configurations](https://www.manageengine.com/products/desktop-central/help/computer_configuration/computer_configuration.html) |
 | §6 Defining targets for a configuration | [Defining Targets](https://www.manageengine.com/products/desktop-central/help/configurations/defining_targets.html) |
 
-> **Microsoft Intune counterpart:** for an Intune-based rollout, use the companion *Quilr Endpoint Agent — Microsoft Intune Deployment Guide (Windows / MSI)*.
+> **Microsoft Intune counterpart:** for an Intune-based rollout, use the companion *WhiteMatter Endpoint Agent — Microsoft Intune Deployment Guide (Windows / MSI)*.
 
 ---
 
-*End of document — Quilr AI | Adapt AI Securely*
+*End of document — WhiteMatter | Adapt AI Securely*

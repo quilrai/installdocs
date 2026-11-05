@@ -3,9 +3,9 @@ title: Microsoft Intune — macOS (pkg)
 description: MDM via Microsoft Intune. CA trust + Configuration Profiles + pkg.
 ---
 
-# Quilr Endpoint Agent — Microsoft Intune Deployment Guide (macOS / pkg)
+# WhiteMatter Endpoint Agent — Microsoft Intune Deployment Guide (macOS / pkg)
 
-**Subtitle:** Mass deployment of the Quilr Endpoint Agent CA trust chain, configuration profiles, and pkg installer via Microsoft Intune on macOS.
+**Subtitle:** Mass deployment of the WhiteMatter Endpoint Agent CA trust chain, configuration profiles, and pkg installer via Microsoft Intune on macOS.
 
 **Version:** 2026.05.11
 
@@ -13,7 +13,7 @@ description: MDM via Microsoft Intune. CA trust + Configuration Profiles + pkg.
 
 ## 1. Overview
 
-This guide walks an Intune administrator through deploying the **Quilr Endpoint Agent for macOS** to a fleet of Apple devices using Microsoft Intune. The bundle ships the Quilr CA trust chain, two `.mobileconfig` profiles (Full Disk Access PPPC and Network Extension approval), and the installer package — identical payloads to the Jamf and Kandji rollouts, delivered through Intune objects.
+This guide walks an Intune administrator through deploying the **WhiteMatter Endpoint Agent for macOS** to a fleet of Apple devices using Microsoft Intune. The bundle ships the Quilr CA trust chain, two `.mobileconfig` profiles (Full Disk Access PPPC and Network Extension approval), and the installer package — identical payloads to the Jamf and Kandji rollouts, delivered through Intune objects.
 
 **The deployment order is strict and intentional: CA certificates first, then both configuration profiles, then the installer package.** Following this order means the agent finds a populated trust store and pre-approved system permissions on its very first launch — no failed TLS handshake, no end-user prompt, no blocked network extension dialog.
 
@@ -46,7 +46,7 @@ This guide walks an Intune administrator through deploying the **Quilr Endpoint 
 | MDM enrollment | Target Macs enrolled via Automated Device Enrollment (ADE) or Company Portal, showing **User-Approved MDM** (`profiles status -type enrollment`) |
 | Entra ID group | A device or user group for the rollout — e.g. `MAC-Quilr-Pilot` |
 | Signed installer | `quilr-endpoint-agent-installer.pkg` signed with a *Developer ID Installer* certificate and notarized; contains a payload + `CFBundleVersion` (required for Intune managed PKG) |
-| Network egress | Endpoints can reach the Quilr backplane hosts on TCP 443 — see §3 for the full allowlist (and *URL Exception List — AI Apps* / *Non-AI Apps* for SWG SSL-bypass) |
+| Network egress | Endpoints can reach the WhiteMatter backplane hosts on TCP 443 — see §3 for the full allowlist (and *URL Exception List — AI Apps* / *Non-AI Apps* for SWG SSL-bypass) |
 | Bundle download | [`https://quilr-extensions.quilr.ai/endpoint-agent/prod/mac/installer/quilr-endpoint-agent-install-bundle.zip`](https://quilr-extensions.quilr.ai/endpoint-agent/prod/mac/installer/quilr-endpoint-agent-install-bundle.zip) (see Part 1 for staging steps) |
 | Profile size | Each `.mobileconfig` must be **< ~1 MB** (Intune custom profile limit) and uploaded as-is — do not re-sign |
 
@@ -54,11 +54,11 @@ This guide walks an Intune administrator through deploying the **Quilr Endpoint 
 
 ## 3. Firewall and Network Allowlist
 
-The Quilr Endpoint Agent makes outbound **HTTPS (TCP 443)** to a small set of Quilr backplane hosts. Where the perimeter is enforced — corporate firewall, egress proxy, or TLS-intercepting Secure Web Gateway (Zscaler, Netskope, Symantec, Forcepoint, etc.) — these hosts must be allowed **before** the PKG is deployed in Part 4.
+The WhiteMatter Endpoint Agent makes outbound **HTTPS (TCP 443)** to a small set of WhiteMatter backplane hosts. Where the perimeter is enforced — corporate firewall, egress proxy, or TLS-intercepting Secure Web Gateway (Zscaler, Netskope, Symantec, Forcepoint, etc.) — these hosts must be allowed **before** the PKG is deployed in Part 4.
 
-> **Pick the row that matches your tenant.** The host set depends on which Quilr environment your bundle was built against (`bff`, `dlpPrefix`, `updateUrlPrefix`). Confirm with Quilr support if you are unsure which environment applies.
+> **Pick the row that matches your tenant.** The host set depends on which WhiteMatter environment your bundle was built against (`bff`, `dlpPrefix`, `updateUrlPrefix`). Confirm with WhiteMatter support if you are unsure which environment applies.
 
-### Step A. Quilr control-plane hosts
+### Step A. WhiteMatter control-plane hosts
 
 **Shared across all environments** — allowlist these regardless of tenant:
 
@@ -80,7 +80,7 @@ The Quilr Endpoint Agent makes outbound **HTTPS (TCP 443)** to a small set of Qu
 | **IND Prod** | `https://platform.quilrai.com` | `https://dlp-platform.quilrai.com` |
 | **JP POC** | `https://app-jp.quilr.ai` | `https://dlpone-jp-1.quilr.ai` |
 | **UAE POC** | `https://trust.quilr.ai` | `https://dlp-platform.quilr.ai` |
-> **Dedicated PaaS / on-prem deployments?** If your tenant runs on a customer-owned domain (your own DNS / on-prem control plane), the shared hosts above still apply — Quilr support provides the tailored Base URL + DLP allowlist for your specific deployment. Contact `support@quilr.ai`.
+> **Dedicated PaaS / on-prem deployments?** If your tenant runs on a customer-owned domain (your own DNS / on-prem control plane), the shared hosts above still apply — WhiteMatter support provides the tailored Base URL + DLP allowlist for your specific deployment. Contact `support@quilr.ai`.
 
 ### Step B. Additional update / artifact CDN (env-specific)
 
@@ -97,7 +97,7 @@ If your environment is not listed above, Step A alone covers update distribution
 
 If your egress sits behind Zscaler / Netskope / Symantec WSS / Forcepoint / iboss / etc., add **every** host from Steps A and B to the **SSL-bypass** (no TLS inspection) list. The agent pins TLS to Quilr's internal CA chain (deployed in Part 2) — re-signing through the SWG's CA breaks the handshake and the agent will fail to connect.
 
-For the *upstream* SWG rules covering monitored **AI** hosts (ChatGPT, Claude, Gemini, etc.), see the companion *URL Exception List — AI Apps* and *URL Exception List — Non-AI Apps* guides — those are about apps the agent **inspects**, not the Quilr backplane itself.
+For the *upstream* SWG rules covering monitored **AI** hosts (ChatGPT, Claude, Gemini, etc.), see the companion *URL Exception List — AI Apps* and *URL Exception List — Non-AI Apps* guides — those are about apps the agent **inspects**, not the WhiteMatter backplane itself.
 
 ### Step D. Validate egress from a pilot Mac
 
@@ -132,7 +132,7 @@ The macOS Application Firewall controls **inbound** connections only — outboun
 | `com.apple.security.firewall` | Leave the macOS Application Firewall at default (inbound-only). No outbound config needed. |
 | `com.apple.proxy.https.global` / `com.apple.proxy.http.global` | Explicit HTTPS/HTTP proxy with `ExceptionsList` containing every Step A and Step B host so they bypass the upstream SWG. |
 
-**Agent `.pkg` postinstall** — for fleets that enforce PF-based egress on the endpoint. The Quilr macOS agent ships as a signed `.pkg`. Its postinstall script can drop a PF anchor at `/etc/pf.anchors/quilr-allowlist`:
+**Agent `.pkg` postinstall** — for fleets that enforce PF-based egress on the endpoint. The WhiteMatter macOS agent ships as a signed `.pkg`. Its postinstall script can drop a PF anchor at `/etc/pf.anchors/quilr-allowlist`:
 
 ```bash
 #!/bin/bash
@@ -156,11 +156,11 @@ pfctl -f /etc/pf.conf
 pfctl -e 2>/dev/null || true
 ```
 
-Persist PF across reboots: macOS loads `/etc/pf.conf` at boot once it references the anchor. The Quilr agent's existing `/Library/LaunchDaemons/com.sentinel.agent.plist` covers the agent itself.
+Persist PF across reboots: macOS loads `/etc/pf.conf` at boot once it references the anchor. The WhiteMatter agent's existing `/Library/LaunchDaemons/com.sentinel.agent.plist` covers the agent itself.
 
-The standard path on macOS is to allowlist Quilr backplane FQDNs at the **egress proxy / SWG / corporate firewall**, not via endpoint PF rules — use the `.pkg` postinstall path only when fleet policy requires endpoint-side enforcement.
+The standard path on macOS is to allowlist WhiteMatter backplane FQDNs at the **egress proxy / SWG / corporate firewall**, not via endpoint PF rules — use the `.pkg` postinstall path only when fleet policy requires endpoint-side enforcement.
 
-> **Windows counterpart:** for the Windows side of an Intune rollout, see the firewall section in the companion *Quilr Endpoint Agent — Intune Windows / MSI* guide. Step A and Step B host lists are the same on both platforms.
+> **Windows counterpart:** for the Windows side of an Intune rollout, see the firewall section in the companion *WhiteMatter Endpoint Agent — Intune Windows / MSI* guide. Step A and Step B host lists are the same on both platforms.
 
 ---
 
@@ -168,11 +168,11 @@ The standard path on macOS is to allowlist Quilr backplane FQDNs at the **egress
 
 ### Step A. Obtain the bundle
 
-The install bundle zip is distributed by **Quilr support**. Contact your Quilr support representative to request the download URL and any associated checksum for the current production build (architecture path: `mac/silicon`).
+The install bundle zip is distributed by **WhiteMatter support**. Contact your WhiteMatter support representative to request the download URL and any associated checksum for the current production build (architecture path: `mac/silicon`).
 
 1. **Download the bundle** from [`https://quilr-extensions.quilr.ai/endpoint-agent/prod/mac/installer/quilr-endpoint-agent-install-bundle.zip`](https://quilr-extensions.quilr.ai/endpoint-agent/prod/mac/installer/quilr-endpoint-agent-install-bundle.zip).
 2. Download the zip on the workstation you use to administer Intune.
-3. Verify the checksum provided by Quilr before extracting.
+3. Verify the checksum provided by WhiteMatter before extracting.
 4. Unzip into a clean staging directory.
 
 ### Step B. Bundle contents
@@ -193,7 +193,7 @@ quilr-endpoint-agent-install-bundle/
 | `certs/quilr-ea-intermediate-ca.crt` | Quilr intermediate CA — chains to the root | **Trusted Certificate profile** | 1 |
 | `quilr-endpoint-agent_FullDiskAccess.mobileconfig` | Pre-grants Full Disk Access + App Management (PPPC) | **Custom configuration profile** | 2 |
 | `quilr-endpoint-agent-nw-extension.mobileconfig` | Pre-approves the Network Extension / content filter | **Custom configuration profile** | 2 |
-| `quilr-endpoint-agent-installer.pkg` | Installs the Quilr Endpoint Agent to `/Applications` | **Unmanaged macOS PKG app** | 3 |
+| `quilr-endpoint-agent-installer.pkg` | Installs the WhiteMatter Endpoint Agent to `/Applications` | **Unmanaged macOS PKG app** | 3 |
 
 > **Order of operations:** Always deploy in this sequence — **(1) Trusted Certificate profiles (Part 2), (2) both Custom configuration profiles (Part 3), (3) the PKG app (Part 4).** When the .pkg lands last, the agent inherits a populated trust store and every required system approval on its first launch — no failed TLS handshakes, no user prompts, no blocked extensions.
 
@@ -201,7 +201,7 @@ quilr-endpoint-agent-install-bundle/
 
 ## 5. Part 2 — Deploy CA Certificates to the System Trust Store
 
-The Quilr Endpoint Agent validates TLS against Quilr's internal CA, so the System keychain must trust the chain before the agent runs. A Trusted Certificate profile delivers **one** certificate each, so create **two** profiles.
+The WhiteMatter Endpoint Agent validates TLS against Quilr's internal CA, so the System keychain must trust the chain before the agent runs. A Trusted Certificate profile delivers **one** certificate each, so create **two** profiles.
 
 > **Microsoft constraint:** an Intune Trusted Certificate profile can deliver **only** a root or an intermediate certificate — exactly what we need. Provide each `.crt`/`.cer` as a separate profile.
 
@@ -234,7 +234,7 @@ In the Intune console, both Trusted Certificate profiles should show *Succeeded*
 
 ## 6. Part 3 — Deploy the Configuration Profiles
 
-Upload each `.mobileconfig` from the bundle root as a **Custom configuration profile** **after** the certs have landed and **before** the PKG app. Upload them as **two separate** custom profiles — do not merge their payloads, since each one is signed by Quilr and corresponds to a distinct system control surface.
+Upload each `.mobileconfig` from the bundle root as a **Custom configuration profile** **after** the certs have landed and **before** the PKG app. Upload them as **two separate** custom profiles — do not merge their payloads, since each one is signed by WhiteMatter and corresponds to a distinct system control surface.
 
 ### Step A. General workflow for every `.mobileconfig`
 
@@ -247,7 +247,7 @@ For each `.mobileconfig`, repeat the following:
 5. **Configuration profile file**: upload the `.mobileconfig`.
 6. **Assignments**: add the `MAC-Quilr-Pilot` group. **Review + create**.
 
-> **Channel warning:** once you save a custom profile you **cannot change** its deployment channel. Both Quilr profiles must be on the **Device** channel — if you pick User by mistake, delete and recreate.
+> **Channel warning:** once you save a custom profile you **cannot change** its deployment channel. Both WhiteMatter profiles must be on the **Device** channel — if you pick User by mistake, delete and recreate.
 
 ### Step B. Profile-by-profile reference
 
@@ -263,7 +263,7 @@ For each `.mobileconfig`, repeat the following:
 | `kTCCServiceSystemPolicyAllFiles` (Full Disk Access) | Read the TCC database, read protected directories during file-upload extraction |
 | `kTCCServiceAppManagement` | Manage the installed agent binaries on macOS 14+ where App Management is gated |
 
-Both entries are matched against the agent's CodeRequirement (Team ID + bundle ID + designated requirement). If Quilr re-signs with a new Team ID, the profile must be re-issued.
+Both entries are matched against the agent's CodeRequirement (Team ID + bundle ID + designated requirement). If WhiteMatter re-signs with a new Team ID, the profile must be re-issued.
 
 ### Step D. Confirm both profiles are applied on a pilot device
 
@@ -287,9 +287,9 @@ Add the package **last** as an **Unmanaged macOS PKG app**. (A *managed* line-of
 
 ### Step A. Pre-install — write the tenant config
 
-Before the `.pkg` runs, the agent's postinstall reads `/tmp/quilr-endpoint-agent.json` to enroll into the correct Quilr tenant. In the unmanaged macOS PKG app config, expand **Pre-install script** and paste the snippet below.
+Before the `.pkg` runs, the agent's postinstall reads `/tmp/quilr-endpoint-agent.json` to enroll into the correct WhiteMatter tenant. In the unmanaged macOS PKG app config, expand **Pre-install script** and paste the snippet below.
 
-Replace `<TENANT-ID>` with the tenant identifier supplied by **Quilr support** (`support@quilr.ai`).
+Replace `<TENANT-ID>` with the tenant identifier supplied by **WhiteMatter support** (`support@quilr.ai`).
 
 ```bash
 #!/bin/bash
@@ -303,8 +303,8 @@ exit 0
 
 1. **Apps → All apps → Add → App type: macOS app (PKG)** *(unmanaged PKG)*.
 2. **App package file**: upload `quilr-endpoint-agent-installer.pkg`.
-3. **Name**: *Quilr Endpoint Agent*. **Publisher**: *Quilr AI*.
-4. *(Optional)* **Pre-install / post-install scripts**: leave default unless Quilr supplies them.
+3. **Name**: *WhiteMatter Endpoint Agent*. **Publisher**: *WhiteMatter*.
+4. *(Optional)* **Pre-install / post-install scripts**: leave default unless WhiteMatter supplies them.
 
 ### Step B. App information / detection
 
@@ -379,7 +379,7 @@ sudo log stream --predicate 'subsystem == "ai.quilr.endpoint"' --info
 
 **Intune reporting:**
 
-- **Apps → Quilr Endpoint Agent → Device install status** = *Installed*.
+- **Apps → WhiteMatter Endpoint Agent → Device install status** = *Installed*.
 - **Devices → Configuration** → both Trusted Certificate profiles + both custom profiles = *Succeeded*.
 
 ---
@@ -394,9 +394,9 @@ sudo log stream --predicate 'subsystem == "ai.quilr.endpoint"' --info
 | Custom profile fails to apply | Profile on wrong channel, or `.mobileconfig` > ~1 MB | Recreate on the **Device** channel; channel can't be changed after save. Confirm file size |
 | Browser shows "Cannot verify identity" for a monitored host | Upstream SWG (Netskope / Zscaler / etc.) is decrypting the host | Add the host to the SWG's SSL-bypass list — see the *URL Exception List — AI Apps* (or *Non-AI Apps*) companion guide |
 | PKG app stuck at *Pending* | Device hasn't checked in since assignment | Open **Company Portal → Devices → Check status / Sync**, or wait for the next MDM check-in |
-| PKG reports *Installed* in Intune but app missing on device | Package lacks `CFBundleVersion`/install-location, so Intune mis-reports | Request a correctly-built package from Quilr support |
+| PKG reports *Installed* in Intune but app missing on device | Package lacks `CFBundleVersion`/install-location, so Intune mis-reports | Request a correctly-built package from WhiteMatter support |
 
-For deeper diagnostics, see the *Quilr Endpoint Agent Troubleshooting Guide* and the `logsamples/` folder.
+For deeper diagnostics, see the *WhiteMatter Endpoint Agent Troubleshooting Guide* and the `logsamples/` folder.
 
 ---
 
@@ -419,7 +419,7 @@ For deeper diagnostics, see the *Quilr Endpoint Agent Troubleshooting Guide* and
 
 | Step | Action | Where in Intune |
 |---|---|---|
-| 1 | Obtain macOS install bundle zip | Request URL from Quilr support |
+| 1 | Obtain macOS install bundle zip | Request URL from WhiteMatter support |
 | 2 | Create Root CA Trusted Certificate profile (deploy **first**) | Devices → Configuration → Trusted certificate |
 | 3 | Create Intermediate CA Trusted Certificate profile (deploy **first**) | Devices → Configuration → Trusted certificate |
 | 4 | Upload both mobileconfigs as Custom profiles — FDA + NW Extension, **Device channel** (deploy **second**) | Devices → Configuration → Templates → Custom |
@@ -440,8 +440,8 @@ For deeper diagnostics, see the *Quilr Endpoint Agent Troubleshooting Guide* and
 | §6 Managed macOS LOB PKG (alternative) | [Add macOS line-of-business apps](https://learn.microsoft.com/en-us/intune/app-management/deployment/add-lob-macos) |
 | §10 Rollback — macOS shell scripts | [Use shell scripts on macOS devices](https://learn.microsoft.com/en-us/intune/intune-service/apps/macos-shell-scripts) |
 
-> **Windows counterpart:** for the Windows side of an Intune rollout, use the companion *Quilr Endpoint Agent — Microsoft Intune Deployment Guide (Windows / MSI)*.
+> **Windows counterpart:** for the Windows side of an Intune rollout, use the companion *WhiteMatter Endpoint Agent — Microsoft Intune Deployment Guide (Windows / MSI)*.
 
 ---
 
-*End of document — Quilr AI | Adapt AI Securely*
+*End of document — WhiteMatter | Adapt AI Securely*

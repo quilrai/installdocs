@@ -3,9 +3,9 @@ title: macOS Manual Install
 description: Manual install for technicians / no-MDM pilots.
 ---
 
-# Quilr Endpoint Agent — Manual Deployment Guide (macOS)
+# WhiteMatter Endpoint Agent — Manual Deployment Guide (macOS)
 
-**Subtitle:** Hands-on, single-Mac installation of the Quilr Endpoint Agent — trusting the CA chain, installing the pkg, and approving the System Extension and Full Disk Access interactively, with no MDM.
+**Subtitle:** Hands-on, single-Mac installation of the WhiteMatter Endpoint Agent — trusting the CA chain, installing the pkg, and approving the System Extension and Full Disk Access interactively, with no MDM.
 
 **Version:** 2026.05.21
 
@@ -13,7 +13,7 @@ description: Manual install for technicians / no-MDM pilots.
 
 ## 1. Overview
 
-This guide covers installing the **Quilr Endpoint Agent for macOS** **by hand on a single Mac** — for a pilot machine, a test/lab device, a developer workstation, or any Mac that is **not enrolled in an MDM** (Jamf, Kandji, Intune). You run the installer locally and approve macOS security prompts interactively at the keyboard.
+This guide covers installing the **WhiteMatter Endpoint Agent for macOS** **by hand on a single Mac** — for a pilot machine, a test/lab device, a developer workstation, or any Mac that is **not enrolled in an MDM** (Jamf, Kandji, Intune). You run the installer locally and approve macOS security prompts interactively at the keyboard.
 
 **How this differs from an MDM rollout.** With an MDM, configuration profiles silently pre-trust the CA chain, pre-grant Full Disk Access (PPPC), and pre-approve the System Extension before the agent ever runs — the user sees nothing. **Manually, there is no profile to pre-approve anything**, so you must perform three approvals yourself:
 
@@ -23,7 +23,7 @@ This guide covers installing the **Quilr Endpoint Agent for macOS** **by hand on
 | PPPC profile pre-grants Full Disk Access | Toggle the agent on in **System Settings → Privacy & Security → Full Disk Access** (Part 5) |
 | System Extension payload pre-approves the content filter | Click **Allow** in **System Settings → Privacy & Security**, then **Allow** the network filter dialog (Part 4) |
 
-**Order of operations:** trust the **CA certificates first**, then install the **pkg**, then approve the **System Extension** and **Full Disk Access** on first launch. Trusting the CA before the agent runs means its first TLS handshake against the Quilr control plane succeeds — no failed handshake, no retry loop.
+**Order of operations:** trust the **CA certificates first**, then install the **pkg**, then approve the **System Extension** and **Full Disk Access** on first launch. Trusting the CA before the agent runs means its first TLS handshake against the WhiteMatter control plane succeeds — no failed handshake, no retry loop.
 
 > **You must be physically at the Mac.** The System Extension and Full Disk Access approvals require clicking buttons in System Settings — they cannot be done over plain SSH. Use Screen Sharing / a console session if the Mac is remote.
 
@@ -44,7 +44,7 @@ This guide covers installing the **Quilr Endpoint Agent for macOS** **by hand on
 | Physical / console access | Screen Sharing or a logged-in console session to click the System Settings approvals (not plain SSH) |
 | macOS version | A current macOS release (Apple Silicon or Intel); System Extension approval lives in **System Settings → Privacy & Security** on macOS 13+ |
 | Signed installer | `quilr-endpoint-agent-installer.pkg` — Developer ID Installer-signed and notarized (Team ID `W8FHSH4RM5`) |
-| Network egress | The Mac can reach the Quilr distribution host and control plane (see *URL Exception List — AI Apps* / *Non-AI Apps* companion guides for SSL-bypass entries) |
+| Network egress | The Mac can reach the WhiteMatter distribution host and control plane (see *URL Exception List — AI Apps* / *Non-AI Apps* companion guides for SSL-bypass entries) |
 | Bundle download | [`https://quilr-extensions.quilr.ai/endpoint-agent/prod/mac/installer/quilr-endpoint-agent-install-bundle.zip`](https://quilr-extensions.quilr.ai/endpoint-agent/prod/mac/installer/quilr-endpoint-agent-install-bundle.zip) (see Part 1 for staging steps) |
 
 ---
@@ -53,11 +53,11 @@ This guide covers installing the **Quilr Endpoint Agent for macOS** **by hand on
 
 ### Step A. Obtain the bundle
 
-The install bundle is distributed by **Quilr support**. Request the download URL and any associated checksum for the current production build (architecture path: `mac/silicon`).
+The install bundle is distributed by **WhiteMatter support**. Request the download URL and any associated checksum for the current production build (architecture path: `mac/silicon`).
 
 1. **Download the bundle** from [`https://quilr-extensions.quilr.ai/endpoint-agent/prod/mac/installer/quilr-endpoint-agent-install-bundle.zip`](https://quilr-extensions.quilr.ai/endpoint-agent/prod/mac/installer/quilr-endpoint-agent-install-bundle.zip).
 2. Download the zip onto the target Mac (or copy it across).
-3. Verify the checksum provided by Quilr before extracting.
+3. Verify the checksum provided by WhiteMatter before extracting.
 4. Unzip into a working directory, e.g. `~/Downloads/quilr/`.
 
 ### Step B. Bundle contents
@@ -85,7 +85,7 @@ quilr-endpoint-agent-install-bundle/
 
 ## 4. Part 2 — Trust the Quilr CA Certificates
 
-The Quilr Endpoint Agent validates TLS against Quilr's internal CA, so the **System keychain** must trust the chain before the agent runs. Add the **root** as a trusted root and the **intermediate** so the chain resolves.
+The WhiteMatter Endpoint Agent validates TLS against Quilr's internal CA, so the **System keychain** must trust the chain before the agent runs. Add the **root** as a trusted root and the **intermediate** so the chain resolves.
 
 ### Step A. Add the certificates (admin Terminal)
 
@@ -125,7 +125,7 @@ The package is Developer ID-signed and notarized, so Gatekeeper allows it withou
 
 #### Pre-install — write the tenant config
 
-Before running `installer -pkg`, write the tenant config to `/tmp` so the agent's postinstall script can enroll the device into the correct Quilr tenant. Run this in Terminal as the admin user:
+Before running `installer -pkg`, write the tenant config to `/tmp` so the agent's postinstall script can enroll the device into the correct WhiteMatter tenant. Run this in Terminal as the admin user:
 
 ```bash
 #!/bin/bash
@@ -135,7 +135,7 @@ printf '{"tenant_id":"%s","discover_skip":false}\n' "$TENANT" \
 exit 0
 ```
 
-Replace `<TENANT-ID>` with the tenant identifier supplied by **Quilr support** (`support@quilr.ai`).
+Replace `<TENANT-ID>` with the tenant identifier supplied by **WhiteMatter support** (`support@quilr.ai`).
 
 ```bash
 sudo installer -pkg quilr-endpoint-agent-installer.pkg -target /
@@ -290,11 +290,11 @@ sudo log stream --predicate 'subsystem == "ai.quilr.endpoint"' --info
 | `systemextensionsctl list` shows `[activated waiting for user]` | The System Extension was never approved | **System Settings → Privacy & Security → Allow** (Part 4); authenticate as admin |
 | Network content not intercepted at all | The "would like to filter network content" dialog was declined | Re-trigger by restarting the daemon (`bootout` then `bootstrap` on `/Library/LaunchDaemons/com.sentinel.agent.plist`) and click **Allow** |
 | FDA prompt keeps reappearing / file reads fail | Full Disk Access not toggled on for QuilrAIProxy | Enable it in **System Settings → Privacy & Security → Full Disk Access** (Part 5); confirm `TCC.db` shows `allowed = 1` |
-| pkg won't open ("cannot be opened") | Gatekeeper quarantine on a copied file | Right-click → **Open**, or allow under **Privacy & Security**; confirm the pkg is the notarized Quilr build |
+| pkg won't open ("cannot be opened") | Gatekeeper quarantine on a copied file | Right-click → **Open**, or allow under **Privacy & Security**; confirm the pkg is the notarized WhiteMatter build |
 | Browser shows "Cannot verify identity" for a monitored host | Upstream SWG (Netskope / Zscaler / etc.) is decrypting the same host | Add the host to the SWG's SSL-bypass list — see the *URL Exception List* companion guides |
-| Agent installed but no events in the console | Control-plane auth / config fetch failing | Tail `/Library/Logs/quilrai/agent.stderr.log`; see the *Quilr Endpoint Agent Troubleshooting Guide* and `logsamples/` |
+| Agent installed but no events in the console | Control-plane auth / config fetch failing | Tail `/Library/Logs/quilrai/agent.stderr.log`; see the *WhiteMatter Endpoint Agent Troubleshooting Guide* and `logsamples/` |
 
-For deeper diagnostics, run the bundled collector and send it to Quilr support:
+For deeper diagnostics, run the bundled collector and send it to WhiteMatter support:
 
 ```bash
 sudo /Applications/QuilrAIProxy.app/Contents/Resources/diag-bundle.sh \
@@ -353,7 +353,7 @@ security find-certificate -a /Library/Keychains/System.keychain | grep -i quilr 
 
 | Step | Action | Where |
 |---|---|---|
-| 1 | Obtain and unzip the macOS bundle | Request URL from Quilr support |
+| 1 | Obtain and unzip the macOS bundle | Request URL from WhiteMatter support |
 | 2 | Trust the root + intermediate CA (deploy **first**) | `security add-trusted-cert` → System keychain |
 | 3 | Install the agent pkg | `sudo installer -pkg ... -target /` |
 | 4 | Approve the System Extension + content filter | System Settings → Privacy & Security → **Allow** |
@@ -369,11 +369,11 @@ security find-certificate -a /Library/Keychains/System.keychain | grep -i quilr 
 | Approve a System Extension on macOS | Apple — *Manage system and network extensions* (System Settings → Privacy & Security) |
 | `security add-trusted-cert` usage | `man security` (macOS) — the `add-trusted-cert` verb and `-r trustRoot` / `trustAsRoot` options |
 | Full Disk Access (TCC) | Apple — *Control access to files and folders* (Privacy & Security) |
-| Deeper diagnostics & log samples | *Quilr Endpoint Agent Troubleshooting Guide* + `logsamples/` |
-| URL / SSL-bypass exceptions | *Quilr Endpoint Agent URL Exception List — AI Apps* / *Non-AI Apps* |
+| Deeper diagnostics & log samples | *WhiteMatter Endpoint Agent Troubleshooting Guide* + `logsamples/` |
+| URL / SSL-bypass exceptions | *WhiteMatter Endpoint Agent URL Exception List — AI Apps* / *Non-AI Apps* |
 
-> **MDM counterparts:** to deploy at scale instead of by hand, use the companion *Quilr Endpoint Agent* deployment guides for **Jamf Pro**, **Kandji**, or **Microsoft Intune (macOS / pkg)**.
+> **MDM counterparts:** to deploy at scale instead of by hand, use the companion *WhiteMatter Endpoint Agent* deployment guides for **Jamf Pro**, **Kandji**, or **Microsoft Intune (macOS / pkg)**.
 
 ---
 
-*End of document — Quilr AI | Adapt AI Securely*
+*End of document — WhiteMatter | Adapt AI Securely*

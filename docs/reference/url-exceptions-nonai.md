@@ -3,7 +3,7 @@ title: URL Exception List — Non-AI Apps
 description: Non-AI hosts (auth/CDNs) — for SWG SSL-bypass.
 ---
 
-# Quilr Endpoint Agent — Web Proxy / SWG Exception List (Non-AI Apps)
+# WhiteMatter Endpoint Agent — Web Proxy / SWG Exception List (Non-AI Apps)
 
 **SSL-inspection bypass list for collaboration apps — Slack and Microsoft Teams**
 *Version 2026.05.11 — derived from `agent-interceptor` config (id 285, version 64)*
@@ -14,11 +14,11 @@ description: Non-AI hosts (auth/CDNs) — for SWG SSL-bypass.
 
 ## 1. Why This List Exists
 
-In addition to AI assistants, the Quilr Endpoint Agent monitors a small set of **collaboration apps** where sensitive content commonly leaves the organisation as chat messages or file uploads — namely **Slack** and **Microsoft Teams**. The agent intercepts the outbound traffic on the device, extracts message text and any attached files (after OCR / PDF / DOCX / XLSX / plaintext extraction), and ships structured events to the Quilr control plane for policy.
+In addition to AI assistants, the WhiteMatter Endpoint Agent monitors a small set of **collaboration apps** where sensitive content commonly leaves the organisation as chat messages or file uploads — namely **Slack** and **Microsoft Teams**. The agent intercepts the outbound traffic on the device, extracts message text and any attached files (after OCR / PDF / DOCX / XLSX / plaintext extraction), and ships structured events to the WhiteMatter control plane for policy.
 
-If your environment already runs a secure web gateway or CASB — **Netskope**, **Zscaler ZIA**, **Cisco Umbrella SIG / Secure Web Appliance**, **Palo Alto Prisma Access**, **Forcepoint ONE**, **Symantec/Broadcom WSS / Edge SWG (ProxySG)**, **McAfee/Skyhigh SWG**, **Check Point Harmony**, **iboss**, **Cloudflare Gateway**, **Menlo**, etc. — those products also terminate and re-sign TLS for the same hosts. **Two decryptors in the same path do not coexist.** When the upstream SWG presents its own CA, the Quilr agent sees an unexpected leaf certificate, pinning checks fail, request signatures break, and the chain fails closed.
+If your environment already runs a secure web gateway or CASB — **Netskope**, **Zscaler ZIA**, **Cisco Umbrella SIG / Secure Web Appliance**, **Palo Alto Prisma Access**, **Forcepoint ONE**, **Symantec/Broadcom WSS / Edge SWG (ProxySG)**, **McAfee/Skyhigh SWG**, **Check Point Harmony**, **iboss**, **Cloudflare Gateway**, **Menlo**, etc. — those products also terminate and re-sign TLS for the same hosts. **Two decryptors in the same path do not coexist.** When the upstream SWG presents its own CA, the WhiteMatter agent sees an unexpected leaf certificate, pinning checks fail, request signatures break, and the chain fails closed.
 
-> **The fix:** add every host in §3 to the SWG's **SSL/TLS inspection bypass**. Quilr decrypts on the host, captures the message/file, re-encrypts before packets leave the device.
+> **The fix:** add every host in §3 to the SWG's **SSL/TLS inspection bypass**. WhiteMatter decrypts on the host, captures the message/file, re-encrypts before packets leave the device.
 
 For interception to function correctly, every URL listed here must:
 
@@ -36,9 +36,9 @@ For interception to function correctly, every URL listed here must:
 | **Zscaler ZIA admin** | Policy → SSL Inspection → "Do Not Inspect" rule on a URL Category containing the §3 hosts. See §3.2. |
 | **Other SWG / proxy admin** | Add §3 domains to your product's "SSL bypass" feature — see §3.3 for the per-vendor cheat sheet. |
 | **Firewall / ZTNA admin** | Allow outbound 443 to every host in §3 from the macOS fleet. |
-| **EDR / Mac admin** | If a host-based content filter sits in front of Quilr's network extension, allow-list the Quilr agent process. |
-| **Compliance / DLP owner** | Use §4 to evidence which collaboration endpoints are actively monitored for message + file content by Quilr on the device. |
-| **Quilr admin** | Regenerate this guide when the `agent-interceptor` config version changes. |
+| **EDR / Mac admin** | If a host-based content filter sits in front of WhiteMatter's network extension, allow-list the WhiteMatter agent process. |
+| **Compliance / DLP owner** | Use §4 to evidence which collaboration endpoints are actively monitored for message + file content by WhiteMatter on the device. |
+| **WhiteMatter admin** | Regenerate this guide when the `agent-interceptor` config version changes. |
 
 ---
 
@@ -58,7 +58,7 @@ For interception to function correctly, every URL listed here must:
 1. Sign in to the Netskope tenant admin console.
 2. Navigate to **Policies → Real-time Protection → SSL Decryption**.
 3. Click **New Policy** (top-right).
-4. **Source**: scope to the macOS device group running the Quilr Endpoint Agent.
+4. **Source**: scope to the macOS device group running the WhiteMatter Endpoint Agent.
 5. **Destination**: Custom Category `Quilr Agent Bypass — Collab Apps` containing `*.slack.com`, `files.slack.com`, `teams.microsoft.com`, `teams.cloud.microsoft`.
 6. **Action**: **Do Not Decrypt**.
 7. **Set Order**: place this rule **above** any "Decrypt All" rule.
@@ -123,7 +123,7 @@ Files uploaded to Slack are extracted (OCR / PDF / DOCX / XLSX / plain text) bef
 
 | Application | macOS exclusions | Windows exclusions | Notes |
 |---|---|---|---|
-| **Slack** (`chat.postMessage`) | *(none)* | `msedge.exe`, `chrome.exe` | Web traffic via Edge/Chrome is captured by the Quilr browser extension instead. The Slack desktop client (not in the exclusion list) is captured by the endpoint agent. |
+| **Slack** (`chat.postMessage`) | *(none)* | `msedge.exe`, `chrome.exe` | Web traffic via Edge/Chrome is captured by the WhiteMatter browser extension instead. The Slack desktop client (not in the exclusion list) is captured by the endpoint agent. |
 | **Slack File Upload** (`files.slack.com/upload/v1/...`) | *(none)* | *(none)* | **Special case** — both lists are empty, so every process on every platform is intercepted, including Edge and Chrome on Windows. |
 | **MS Teams Web** + **ALT** | *(none)* | `msedge.exe`, `chrome.exe` | Web traffic via Edge/Chrome captured by browser extension. Teams desktop client captured by endpoint agent. |
 
@@ -144,7 +144,7 @@ Files uploaded to Slack are extracted (OCR / PDF / DOCX / XLSX / plain text) bef
 | Last updated | `2026-05-11T07:59:01 UTC` |
 | Active | `true` |
 
-When the version above bumps, fetch the latest config from the Quilr control plane and regenerate this document.
+When the version above bumps, fetch the latest config from the WhiteMatter control plane and regenerate this document.
 
 ---
 
@@ -186,11 +186,11 @@ If the issuer line shows your network proxy's CA, your upstream proxy is decrypt
 
 ## 8. Change Management
 
-- **Adding a URL:** update the `agent-interceptor` source in the Quilr control plane, increment `version`, bump the version line in this document and re-run the generator.
+- **Adding a URL:** update the `agent-interceptor` source in the WhiteMatter control plane, increment `version`, bump the version line in this document and re-run the generator.
 - **Removing a URL:** confirm with policy and compliance owners.
 - **Browser exclusions:** toggle `msedge.exe` / `chrome.exe` in `excluded_apps.win` per rule. Section 5 must be updated.
 - **Distribution:** ship this guide alongside the Jamf deployment bundle and republish on any source-config version change.
 
 ---
 
-*End of document — Quilr AI | Adapt AI Securely*
+*End of document — WhiteMatter | Adapt AI Securely*
