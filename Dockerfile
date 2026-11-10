@@ -5,6 +5,8 @@
 FROM nginx:1.27-alpine
 
 COPY static/sop /usr/share/nginx/html/sop
+# Root /favicon.ico fallback for browsers that ask for it before reading <link rel="icon">
+COPY static/sop/assets/brand/whitematter-favicon.ico /usr/share/nginx/html/favicon.ico
 
 # Compact nginx config: root redirects to /sop/, gzip on, cache static assets
 RUN cat > /etc/nginx/conf.d/default.conf <<'EOF'

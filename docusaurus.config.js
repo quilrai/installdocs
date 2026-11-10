@@ -7,17 +7,23 @@ const baseUrl = process.env.SITE_BASE_URL || '/';
 const config = {
   title: 'WhiteMatter Endpoint Agent Docs',
   tagline: 'Adapt AI Securely',
-  // SVG favicon follows the browser's light/dark theme; the .ico (sized so
-  // Chrome still prefers the SVG) and apple-touch-icon cover Safari / iOS.
-  favicon: 'img/favicon.svg',
+  // Favicons: one solid tile (white WM on #B080F7) in every format, so the icon
+  // shows on light and dark tab bars. No prefers-color-scheme in the SVG:
+  // Safari 26+ uses SVG favicons but ignores media queries in them.
+  // Set here, not via `favicon`, so the ICO carries `sizes` and browsers that
+  // support SVG pick the SVG. static/favicon.ico covers /favicon.ico.
   headTags: [
     {
       tagName: 'link',
-      attributes: { rel: 'icon', href: `${baseUrl}img/favicon.ico`, sizes: '32x32' },
+      attributes: { rel: 'icon', href: `${baseUrl}img/whitematter-favicon.ico`, sizes: '32x32' },
     },
     {
       tagName: 'link',
-      attributes: { rel: 'apple-touch-icon', href: `${baseUrl}img/apple-touch-icon.png` },
+      attributes: { rel: 'icon', type: 'image/svg+xml', href: `${baseUrl}img/whitematter-favicon.svg` },
+    },
+    {
+      tagName: 'link',
+      attributes: { rel: 'apple-touch-icon', href: `${baseUrl}img/whitematter-apple-touch-icon.png` },
     },
   ],
 
